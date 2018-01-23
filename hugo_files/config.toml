@@ -1,0 +1,7 @@
+baseURL = "https://chrisdbhr.github.io"
+languageCode = "pt-br"
+title = "CHRISdbhr Site"
+
+# theme to use (located by default in /themes/THEMENAME/)
+themesDir =                   "themes"
+theme =                       "casper-two"
