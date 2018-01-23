@@ -1,118 +1,52 @@
 ﻿<!DOCTYPE html>
-
-<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Links úteis - Monitoria Jogos Digitais</title>
-	<style>
-		body {
-			font-family: 'Roboto', sans-serif;
-			margin: 0;
-			background-color: #e3e3e3;
-			color: black;
-		}
-
-		.flexible {
-			flex-direction: column;
-			min-height: 90vh;
-			display: inline-block;
-		}
-
-		section.content {
-			flex: 1;
-		}
-
-		/* Left */
-		.sides {
-			margin: 1vw 3vw 1vw 3vw;
-		}
-
-		.left-content {
-			width: 60vw;
-		}
-
-		/* Right */
-		.right-content {
-			right: 0;
-		}
-
-		/* Footer */
-		.footer {
-			height: 10%;
-			margin-bottom: 0;
-			background-color: grey;
-			padding: 14px 16px;
-			overflow: hidden;
-			text-align: center;
-			color: #373737;
-		}
-
-			.footer a {
-				color: black;
-				text-decoration: none;
-			}
-
-				.footer a:hover {
-					text-decoration: underline;
-				}
-
-		/*Use a media query to add a breakpoint at 800px:*/
-		@media (max-width:800px) {
-			.left-content, .right-content {
-				width: 90%; /*The width is 100%, when the viewport is 800px or smaller*/
-			}
-		}
-	</style>
-
-
+	<title>Welcome to Vue</title>
+	<script src="https://unpkg.com/vue"></script>
 </head>
 <body>
-	<div class="sides left-content flexible">
-		Vários links úteis selecionados por mim para o curso de Jogos da PUCPR. Se quiser adicionar algo, entre em contato comigo no próprio Discord da monitoria.
-	
-		<h1>Links gerais e comunidades</h1>
-		<h2>Grupo no Discord</h2>
+	<div id="app">
+		<img src="https://vuejs.org/images/logo.png" alt="Vue logo">
+		<h1>\{{ greeting }}</h1>
 		<ul>
 			<li>
-				<h3><a href="https://discord.gg/JACKY5S">Link para entrar</a></h3>
-				Auxílio direto com a maioria dos Monitores do curso. Por voz, texto e imagens.
-			</li>
-		</ul>
-
-		<h2>Youtube</h2>
-		Canais em que os monitores fazem vídeos aulas e lives explicando sobre diversos conteúdos.
-		<ul>
-			<li>
-				<h3><a href="https://www.youtube.com/user/Kabesao18">Monitoria Chris</a></h3>
-				Meu canal de Monitoria com vídeos de programação com foco em Unity, macetes e dicas gerais.
-			</li>
-		</ul>
-
-		<h2>Facebook</h2>
-		Links para alguns perfis e páginas importantes. Não fale coisas importantes com o coordenador do curso por facebook, use o <a href="mailto:brunodepaula@gmail.com">email</a> dele.
-		<ul>
-			<li>
-				<h3><a href="https://www.facebook.com/monitoriapucpr/">Página Oficial da Monitoria PUCPR</a></h3>
-				Eles postam alguns horários de algumas aulas.
+				To learn more about Vue, visit
+				<a :href="docsURL" target="_blank">
+					\{{ humanizeURL(docsURL) }}
+				</a>
 			</li>
 			<li>
-				<h3><a href="https://www.facebook.com/groups/jogospucpr/">Grupo do curso de Jogos</a></h3>
-				É o que tem mais membros, de todos os períodos. Mas também tem algumas pessoas que nem do curso são lá.
+				For live help with simple questions, check out
+				<a :href="discordURL" target="_blank">
+					the Discord chat
+				</a>
 			</li>
-
+			<li>
+				For more complex questions, post to
+				<a :href="forumURL" target="_blank">
+					the forum
+				</a>
+			</li>
 		</ul>
-
 	</div>
 
-	<div class="sides right-content flexible">
-		<iframe src="https://discordapp.com/widget?id=290219218987778048&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
-
-	</div>
-
-	<div class="footer">
-		Página mantida por <b><a href="https://chrisdbhr.github.io">Christopher Hernandez</a></b>. Atualizada em Janeiro de 2018.<br /> Entre em contato comigo se algum link está desatualizado, ou se quer adicionar algum. De preferencia, use o Discord.
-	</div>
-
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				greeting: 'Welcome to your Vue.js app!',
+				docsURL: 'http://vuejs.org/guide/',
+				discordURL: 'https://chat.vuejs.org',
+				forumURL: 'http://forum.vuejs.org/'
+			},
+			methods: {
+				humanizeURL: function (url) {
+					return url
+						.replace(/^https?:\/\//, '')
+						.replace(/\/$/, '')
+				}
+			}
+		})
+	</script>
 </body>
 </html>
