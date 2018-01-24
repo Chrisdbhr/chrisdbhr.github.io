@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on CHRISdbhr Site</title>
+    <link>https://chrisdbhr.github.io/categories/</link>
+    <description>Recent content in Categories on CHRISdbhr Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <copyright>© 2018</copyright>
+    
+	<atom:link href="https://chrisdbhr.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Development</title>
+      <link>https://chrisdbhr.github.io/categories/development/</link>
+      <pubDate>Mon, 02 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://chrisdbhr.github.io/categories/development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Food</title>
+      <link>https://chrisdbhr.github.io/categories/food/</link>
+      <pubDate>Sat, 28 Sep 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://chrisdbhr.github.io/categories/food/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://chrisdbhr.github.io/categories/golang/</link>
+      <pubDate>Mon, 02 Jun 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://chrisdbhr.github.io/categories/golang/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
