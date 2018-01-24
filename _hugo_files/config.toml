@@ -18,9 +18,9 @@ canonifyurls    = true
   customCSS = []
   RSSLink = ""
 
-  twitterName = "faketryghost"
-  fbName = "fakeghost"
-  githubName = "eueung"
+  twitterName = "chrisdbhr"
+  fbName = ""
+  githubName = "chrisdbhr"
 
   logo = "hugo-logo.png"
   orgName = "EM"
