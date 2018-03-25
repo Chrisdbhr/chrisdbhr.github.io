@@ -58,3 +58,4 @@ google_analytics: UA-78841852-4
 # The following settings are NECESSARY for the Prologue theme to run:
 theme: jekyll-theme-prologue
 collections: [sections]
+encoding: utf-8
