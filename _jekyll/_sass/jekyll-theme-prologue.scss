@@ -1,4 +1,4 @@
-@import 'libs/vars';
+﻿@import 'libs/vars';
 @import 'libs/functions';
 @import 'libs/mixins';
 @charset "UTF-8";
@@ -135,7 +135,7 @@
 		outline: 0;
 
 		&:hover {
-			color: #E27689;
+			color: #f17a4b;
 			border-bottom-color: rgba(255, 255, 255, 0);
 		}
 	}
@@ -249,7 +249,7 @@
 		&.avatar48 {
 			width: 48px;
 			height: 48px;
-			background: #f00;
+			background: rgba(0, 0, 0, 0.00);
 
 			img {
 				width: 48px;
@@ -609,7 +609,7 @@
 						color: #fff;
 
 						span:before {
-							color: #e27689;
+							color: #f17a4b;
 						}
 					}
 				}
