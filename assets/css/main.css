@@ -1196,7 +1196,7 @@ body {
   font-size: 19pt;
   font-weight: 300;
   line-height: 1.75em;
-  color: #888; }
+  color: #000; }
   body.is-loading * {
     -moz-transition: none !important;
     -webkit-transition: none !important;
@@ -1212,12 +1212,13 @@ input, textarea, select {
   font-size: 19pt;
   font-weight: 300;
   line-height: 1.75em;
-  color: #444; }
+  color: #222; }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 300;
-  color: #111;
-  line-height: 1.5em; }
+  color: #222;
+  line-height: 1.5em;
+  font-weight: bolder; }
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   color: inherit;
