@@ -189,6 +189,15 @@ input, textarea {
         background-color: #e64a41;
     }
 
+.fa-twitter {
+    padding: 2vh 2.7vh;
+    background-color: #121312;
+}
+
+    .fa-twitter:hover {
+        background-color: #1da1f2;
+    }
+
 /* VIDEO */
 video {
     position: fixed;
