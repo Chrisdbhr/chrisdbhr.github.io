@@ -1,0 +1,5 @@
+blockquote.gt3_quote {margin: 20px 0;padding: 10px;border: #e5e5e5 1px dashed;position: relative;}
+blockquote.gt3_quote:before {content: "";width: 2px;height: 100%;position: absolute;left: 0;top: 0;display: block;background: #757579;}
+blockquote.gt3_quote .gt3_quote_content {padding: 5px;border: #e5e5e5 1px dotted;margin-top: 10px;color: #8f8f8f;}
+blockquote.gt3_quote .gt3_quote_author {margin-top: 10px;padding: 5px;border: #e5e5e5 1px dotted;margin-bottom: 10px;color: #333;}
+.gt3_dropcap {display: inline-block;float: left;font-size: 28px;line-height: 30px;font-weight: 700;margin: 1px 15px 0 0;width: auto;height: auto;text-transform: uppercase;color: #363636;padding: 5px;border: #e5e5e5 1px dashed;}
