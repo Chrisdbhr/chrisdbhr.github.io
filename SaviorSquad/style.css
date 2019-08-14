@@ -29,8 +29,8 @@ a, a:visited, a:hover, a:active {
     display: flex;
     -webkit-align-items: center; /* Safari 7.0+ */
     align-items: center;
-    padding-top: 4vh;
-    padding-bottom: 4vh;
+    padding-top: 3vh;
+    padding-bottom: 2vh;
 }
 
 
