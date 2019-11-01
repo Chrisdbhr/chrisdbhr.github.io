@@ -3,8 +3,8 @@ body {
 	color: white;
 	margin: 0;
 	/* font-family: 'Roboto', sans-serif; */
-	font-family: 'Open Sans', sans-serif;
 	text-shadow: 2px 2px 8px #00000055;
+	font-family: 'Open Sans', sans-serif;
 }
 
 .Frame {
@@ -45,49 +45,37 @@ html>body .Row.Expand {
 	z-index: -10;
 }
 
-
-
-
-.bottom-info a,
-.bottom-info a:visited,
-.bottom-info a:active {
+/* Links default */
+a,
+:link, 
+:visited {
 	text-decoration: none;
 	color: black;
-	border: 2px solid white;
+	border: 2px solid transparent;
 	background-color: white;
 	border-radius: 8px;
 	padding-left: 2px;
-	padding-right: 4px;
+	padding-right: 2px;
 }
-.bottom-info a:hover {
-	color:black;
-	background-color: white;
-}
-
-
-
-
-
-/* mouse over link */
-.bottom-info a:hover {
-	color: white;
-	border-color: black;
+a:hover {
+	color:white;
 	background-color: black;
 }
 
+
+
+
 /* Style all font awesome icons */
-.fa {
+.fa, i.fab {
 	padding: 17px;
 	font-size: 32px;
 	size: 32px;
 	text-align: center;
 	text-decoration: none;
-	border: 0px;
 	color: white;
 	background-color: black;
 	opacity: 0.5;
 	margin-right: 8px;
-	border-radius: 50%;
 }
 
 .fa:hover {
@@ -110,6 +98,20 @@ html>body .Row.Expand {
 }
 
 
+
+.callToActionButton {
+	margin-top: 32px;
+	margin-bottom: 32px;
+}
+.callToActionButton a{
+	color:rgba(255, 255, 255, 0.85);
+	background-color: #f96854;
+	padding:12px;
+}
+.callToActionButton a:hover{
+	color:white;
+	background-color: #f96854;
+}
 
 
 
