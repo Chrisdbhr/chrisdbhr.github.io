@@ -67,54 +67,32 @@ a:hover {
 
 /* Style all font awesome icons */
 .fa, i.fab {
-	padding: 17px;
-	font-size: 32px;
-	size: 32px;
-	text-align: center;
+	padding: 4px;
 	text-decoration: none;
-	color: white;
-	background-color: black;
-	opacity: 0.5;
-	margin-right: 8px;
 }
-
-.fa:hover {
-	color: white;
-	background-color: black;
-	opacity: 1;
-}
-
-/* Set a specific color for each brand */
-.fa-twitter:hover {
-	background-color: #55ACEE;
-}
-
-.fa-windows:hover {
-	background-color: #0066CC;
-}
-
-.fa-patreon:hover {
-	background-color: #f96854;
-}
-
 
 
 .callToActionButton {
-	padding-top: 6px;
-	margin-top: 32px;
-	margin-bottom: 32px;
+	margin-top: 16px;
+	margin-bottom: 16px;
 }
 .callToActionButton a{
-	color:rgba(255, 255, 255, 0.85);
-	background-color: #f96854;
+	color:#ffffffDD;
+	background-color: #00000055;
 	padding:12px;
 }
 .callToActionButton a:hover{
-	color:white;
-	background-color: #f96854;
+	color:black;
+	background-color: white;
 }
 
 
+.picpay a{
+	background-color: #0FC66E;
+}
+.patreon a{
+	background-color: #f96854;
+}
 
 
 
