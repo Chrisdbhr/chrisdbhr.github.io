@@ -36,8 +36,12 @@
 			});
 
 			// version number
+			$.getJSON('https://itch.io/api/1/x/wharf/latest?target=chrisdbhr/resultarias&channel_name=win32', function(data) {
+				var obj = JSON.parse(data);
+				document.getElementById("versionNumber").innerHTML = "v" + obj.latest;
+			});
 			/*var data = $.getJSON("https://chrisdbhr.github.io/resultarias/latest-version.json", function (data) {
-				document.getElementById("versionNumber").innerHTML = "v" + data.latest;
+				
 			});*/
 		});
 
