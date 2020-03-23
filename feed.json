@@ -1,0 +1,27 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "CHRISdbhr",
+    "description": "",
+    "home_page_url": "https://github.com/Chrisdbhr/chrisdbhr.github.io",
+    "feed_url": "https://github.com/Chrisdbhr/chrisdbhr.github.io/feed.json",
+    "user_comment": "",
+    "author": {
+        "name": "CHRISdbhr"
+    },
+    "items": [
+        {
+            "id": "https://github.com/Chrisdbhr/chrisdbhr.github.io/test.html",
+            "url": "https://github.com/Chrisdbhr/chrisdbhr.github.io/test.html",
+            "title": "test",
+            "summary": "this",
+            "content_html": "this",
+            "author": {
+                "name": "CHRISdbhr"
+            },
+            "tags": [
+            ],
+            "date_published": "2020-03-23T12:48:42-03:00",
+            "date_modified": "2020-03-23T12:48:42-03:00"
+        }
+    ]
+}
