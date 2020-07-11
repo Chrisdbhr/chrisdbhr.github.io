@@ -2089,7 +2089,7 @@ input, select, textarea {
 				white-space: nowrap;
 			}
 
-			.image.thumb:hover:after , .video.thumb:hover:after {
+			.image.thumb:hover:after, .video.thumb:hover:after {
 				opacity: 1.0;
 			}
 
@@ -2098,7 +2098,7 @@ input, select, textarea {
 				opacity: 1.0;
 			}
 
-		.image img, video {
+		.image img, .image video {
 			border-radius: 0.35em;
 			display: block;
 		}
@@ -2122,6 +2122,7 @@ input, select, textarea {
 		}
 
 			.image.left img, .image.right img,
+			.image.left video, .image.right video,
 			.video.left video, .video.right video {
 				width: 100%;
 			}
@@ -2132,7 +2133,8 @@ input, select, textarea {
 			width: 100%;
 		}
 
-			.image.fit img, .video.fit video {
+			.image.fit img, .image.fit video,
+			.video.fit video {
 				width: 100%;
 			}
 
@@ -2144,7 +2146,7 @@ input, select, textarea {
 				display: none;
 			}
 
-			.image.avatar img , .video.avatar video {
+			.image.avatar img, .image.avatar video, .video.avatar video {
 				border-radius: 0%;
 				width: 100%;
 			}
