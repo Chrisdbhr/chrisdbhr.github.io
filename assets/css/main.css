@@ -131,7 +131,7 @@ input, select, textarea {
 	}
 
 	p {
-		margin: 0 0 2em 0;
+		margin: 0 0 0.5em 0;
 	}
 
 	h1, h2, h3, h4, h5, h6 {
@@ -2088,6 +2088,12 @@ input, select, textarea {
 				top: 50%;
 				white-space: nowrap;
 			}
+			.image.thumb.play:after{
+				content: 'Play now';
+			}
+			.image.thumb.download:after{
+				content: 'Download';
+			}
 
 			.image.thumb:hover:after, .video.thumb:hover:after {
 				opacity: 1.0;
@@ -2165,7 +2171,7 @@ input, select, textarea {
 
 	ul {
 		list-style: disc;
-		margin: 0 0 2em 0;
+		margin: 0 0 0.5em 0;
 		padding-left: 1em;
 	}
 
@@ -2574,7 +2580,7 @@ input, select, textarea {
 		.work-item p {
 			font-size: 0.8em;
 			line-height: 1.5em;
-			margin: 0;
+			margin: 0.5em;
 		}
 
 /* Header */
