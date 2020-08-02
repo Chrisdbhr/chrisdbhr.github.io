@@ -3,6 +3,7 @@
 
 :root {
 	--text-link: #00b0f4;
+	--highlight-color: #F27405;
 }
 
 /*
@@ -1844,7 +1845,7 @@ input, select, textarea {
 		input[type="email"]:focus,
 		select:focus,
 		textarea:focus {
-			border-color: #F27405;
+			border-color: var(--highlight-color);
 		}
 
 	select {
@@ -1949,7 +1950,7 @@ input, select, textarea {
 
 		input[type="checkbox"]:focus + label:before,
 		input[type="radio"]:focus + label:before {
-			border-color: #F27405;
+			border-color: var(--highlight-color);
 		}
 
 	input[type="checkbox"] + label:before {
@@ -2052,7 +2053,6 @@ input, select, textarea {
 			-webkit-transition: opacity 0.2s ease-in-out;
 			-ms-transition: opacity 0.2s ease-in-out;
 			transition: opacity 0.2s ease-in-out;
-			background: url("images/overlay.png");
 			border-radius: 0.35em;
 			content: '';
 			display: block;
@@ -2478,8 +2478,8 @@ input, select, textarea {
 		input[type="reset"]:hover,
 		input[type="button"]:hover,
 		.button:hover {
-			border-color: #F27405;
-			color: #F27405 !important;
+			border-color: var(--highlight-color);
+			color: var(--highlight-color) !important;
 		}
 
 		input[type="submit"]:active,
@@ -2487,8 +2487,8 @@ input, select, textarea {
 		input[type="button"]:active,
 		.button:active {
 			background-color: rgba(73, 191, 157, 0.1);
-			border-color: #F27405;
-			color: #F27405 !important;
+			border-color: var(--highlight-color);
+			color: var(--highlight-color) !important;
 		}
 
 		input[type="submit"].icon,
@@ -2531,8 +2531,8 @@ input, select, textarea {
 		input[type="reset"].primary,
 		input[type="button"].primary,
 		.button.primary {
-			background-color: #F27405;
-			border-color: #F27405;
+			background-color: var(--highlight-color);
+			border-color: var(--highlight-color);
 			color: #ffffff !important;
 		}
 
@@ -2540,16 +2540,16 @@ input, select, textarea {
 			input[type="reset"].primary:hover,
 			input[type="button"].primary:hover,
 			.button.primary:hover {
-				background-color: #F27405;
-				border-color: #F27405;
+				background-color: var(--highlight-color);
+				border-color: var(--highlight-color);
 			}
 
 			input[type="submit"].primary:active,
 			input[type="reset"].primary:active,
 			input[type="button"].primary:active,
 			.button.primary:active {
-				background-color: #F27405;
-				border-color: #F27405;
+				background-color: var(--highlight-color);
+				border-color: var(--highlight-color);
 			}
 
 		input[type="submit"].disabled, input[type="submit"]:disabled,
