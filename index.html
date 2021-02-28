@@ -15,6 +15,25 @@
 		gtag('js', new Date());
 
 		gtag('config', 'UA-78841852-4');
+
+		const pixCode = '00020126410014BR.GOV.BCB.PIX0119chrisdbhr@gmail.com52040000530398654040.005802BR5925CHRISTOPHER BORBA H RAVAI6009SAO PAULO622605226NbsgljUW7j6DvrB0fRdbt63043178';
+
+        function copyPixToClipboard() {
+            copyToClipboard(pixCode);
+            alert("Código copiado!");
+        }
+
+        const copyToClipboard = str => {
+            const el = document.createElement('textarea');
+            el.value = str;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        };
 	</script>
 
 	<title>CHRISdbhr Website</title>
@@ -387,18 +406,18 @@
 		<h2>Donation</h2>
 		<div class="row">
 
-			<!-- Picpay Monthly -->
+			<!-- Pix -->
 			<article class="col-6 col-12-xsmall work-item">
-				<a href="https://picpay.me/chrisjogos" target="_blank">
-					<div class="image fit thumb">
-						<img alt="Picpay Assinaturas Promotion" src="images/thumbs/picpay-chrisjogos.png"/>
-					</div>
-					<!-- Project Title -->
-					<h3>Picpay Subscription</h3>
-				</a>
+				<div class="image fit">
+					<img alt="PIX" src="images/thumbs/pix-chrisjogos.png"/>
+				</div>
+
+				<!-- Project Title -->
+				<h3>PIX para <strong>chrisdbhr@gmail.com</strong></h3>
+
 				<!-- Description -->
 				<p>
-					Monthly donation on Picpay (R$).
+					<button id="inputPixToClipboard" onclick="copyPixToClipboard()">Copiar código PIX</button>
 				</p>
 			</article>
 
