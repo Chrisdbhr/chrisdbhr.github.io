@@ -1,0 +1,73 @@
+{
+  "credits" : [
+    {
+      "mainTitle" : "Graphics",
+      "subTitles":[
+        {
+          "title" : "3D",
+          "creditTo":[
+            {
+              "name" : "Anne Calamucci",
+              "commentary" : "3D graphics supervision",
+              "link" : "",
+              "picture" : ""
+            },
+            {
+              "name" : "Roberth Araujo",
+              "commentary" : "",
+              "link" : "",
+              "picture" : ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mainTitle" : "Sound",
+      "subTitles":[
+        {
+          "title" : "Voice Acting",
+          "creditTo":[
+            {
+              "name" : "Rennan Gabriel Meira de Oliveira",
+              "commentary" : "Voice of The Hourglass",
+              "link" : "",
+              "picture" : ""
+            }
+          ]
+        },
+        {
+          "title" : "Music",
+          "creditTo":[
+            {
+              "name" : "Bruno Vais Sampaio",
+              "commentary" : "Outstanding musician and sound effects creator",
+              "link" : "",
+              "picture" : ""
+            },
+            {
+              "name" : "Lucas Matias",
+              "commentary" : "Prototype music and supervision",
+              "link" : "",
+              "picture" : ""
+            },
+            {
+              "name" : "Josh James Lim",
+              "commentary" : "",
+              "link" : "",
+              "picture" : ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+    
+    
+    
+    
+    
+    
+    
+    
