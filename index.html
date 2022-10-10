@@ -9,32 +9,6 @@
 <head>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78841852-4"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-
-		gtag('config', 'UA-78841852-4');
-
-		const pixCode = '00020126410014BR.GOV.BCB.PIX0119chrisdbhr@gmail.com52040000530398654040.005802BR5925CHRISTOPHER BORBA H RAVAI6009SAO PAULO622605226NbsgljUW7j6DvrB0fRdbt63043178';
-
-        function copyPixToClipboard() {
-            copyToClipboard(pixCode);
-            alert("Código copiado!");
-        }
-
-        const copyToClipboard = str => {
-            const el = document.createElement('textarea');
-            el.value = str;
-            el.setAttribute('readonly', '');
-            el.style.position = 'absolute';
-            el.style.left = '-9999px';
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-        };
-	</script>
 
 	<title>CHRISdbhr Website</title>
 	<meta charset="utf-8"/>
@@ -585,24 +559,23 @@
 	<!-- Donation -->
 	<section id="donation">
 
-		<h2>Donation</h2>
+		<h2>Apoie meu trabalho!</h2>
 		<div class="row">
 
 			<!-- Pix -->
 			<article class="col-6 col-12-xsmall work-item">
-				<div class="image fit">
-					<img alt="PIX" src="images/thumbs/pix-chrisjogos.png"/>
-				</div>
-
-				<!-- Project Title -->
-				<h3>PIX para <strong>chrisdbhr@gmail.com</strong></h3>
-
+				<a href="https://livepix.gg/chrisdbhr" target="_blank">
+					<div class="image fit thumb">
+						<img alt="PIX" src="images/thumbs/pix-chrisjogos.png"/>
+					</div>
+					<!-- Project Title -->
+					<h3>Apoie por PIX</h3>
+				</a>
 				<!-- Description -->
 				<p>
-					<a href="https://chrisdbhr.itch.io/resultarias" id="inputPixToClipboard" onclick="copyPixToClipboard()" class="button primary small icon fa-copy">
-						Copiar código PIX
-					</a>
+					O apoio pode ser feito pelo site <a href="https://livepix.gg/chrisdbhr">LivePix</a> uma vez ou mensalmente e vai diretamente para o desenvolvimento dos projetos!
 				</p>
+
 			</article>
 
 			<!-- Patreon -->
@@ -616,37 +589,7 @@
 				</a>
 				<!-- Description -->
 				<p>
-					You can donate monthly value for me on my Patreon (in dolars).
-				</p>
-			</article>
-
-			<!-- Picpay One Time -->
-			<article class="col-6 col-12-xsmall work-item">
-				<a href="https://picpay.me/chrisdbhr" target="_blank">
-					<div class="image fit thumb">
-						<img alt="Picpay Onetime Promotion" src="images/thumbs/picpay-chrisdbhr.png"/>
-					</div>
-					<!-- Project Title -->
-					<h3>Doação no Picpay</h3>
-				</a>
-				<!-- Description -->
-				<p>
-					Qualquer valor é investido diretamente em meus projetos, agradeço qualquer valor ❤
-				</p>
-			</article>
-
-			<!-- Amazon Wishlist -->
-			<article class="col-6 col-12-xsmall work-item">
-				<a href="https://amazon.com.br/hz/wishlist/ls/RKHOLBJWVFR7" target="_blank">
-					<div class="image fit thumb">
-						<img alt="Amazon Wishlist Promotion" src="images/thumbs/amazon-wl.png"/>
-					</div>
-					<!-- Project Title -->
-					<h3>Amazon Wishlist</h3>
-				</a>
-				<!-- Description -->
-				<p>
-					Coisas que quero e as pessoas pode comprar como um presente.
+					You can donate monthly value for me on my Patreon!
 				</p>
 			</article>
 
