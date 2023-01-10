@@ -2036,6 +2036,13 @@ input, select, textarea {
 			font-family: 'Font Awesome 5 Brands';
 		}
 
+		/* Video */
+		.wrapper iframe{
+			width: 100%; /* This Forces video to 100% of parent's width */
+			height:unset; /* This Overwrites the height attribute of Youtube's embed code */
+			aspect-ratio: 16 / 9; /* This adjusts video height to keep the desired aspect ratio*/
+		}
+
 /* Image */
 
 	.image, .video {
