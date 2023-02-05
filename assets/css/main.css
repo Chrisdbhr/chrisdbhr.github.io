@@ -3,7 +3,8 @@
 
 :root {
 	--text-link: #00b0f4;
-	--highlight-color: #F27405;
+	--highlight-color: #D76787;
+	--highlight-hover-color: #51B5D6;
 }
 
 /*
@@ -2468,7 +2469,7 @@ input, select, textarea {
 		background-color: transparent;
 		border-radius: 0.35em;
 		border: solid 3px #efefef;
-		color: #787878 !important;
+		color: #e4e4e4 !important;
 		cursor: pointer;
 		display: inline-block;
 		font-weight: 400;
@@ -2548,8 +2549,9 @@ input, select, textarea {
 			input[type="reset"].primary:hover,
 			input[type="button"].primary:hover,
 			.button.primary:hover {
-				background-color: var(--highlight-color);
-				border-color: var(--highlight-color);
+				background-color: var(--highlight-hover-color);
+				border-color: var(--highlight-hover-color);
+				color:rgba(32, 32, 32, 1) !important;
 			}
 
 			input[type="submit"].primary:active,
