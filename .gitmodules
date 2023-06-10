@@ -1,0 +1,3 @@
+[submodule "blog-chrisdbhr"]
+	path = blog-chrisdbhr
+	url = git@github.com:Chrisdbhr/blog-chrisdbhr.git
