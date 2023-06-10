@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ChrisDBHR Blog</title>
+    <description>Posts related to the development of my projects.</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 10 Jun 2023 16:24:39 -0300</pubDate>
+    <lastBuildDate>Sat, 10 Jun 2023 16:24:39 -0300</lastBuildDate>
+    <generator>Jekyll v4.3.2</generator>
+    
+      <item>
+        <title>Localization - How my game is translated to 14+ languages with almost no cost</title>
+        <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
+&lt;p&gt;I love to make my games accessible to the most people possible, but accessibility features take time to implement so I am pretty sure that’s the reason most companies simply don’t do them, time equals money so…&lt;/p&gt;
+
+&lt;p&gt;With that in mind, I had to find a quick and easy solution to make all possible texts support translation in my game, and an even simpler way to translate all of them when new text was added or changed.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-and-wow&quot;&gt;How and wow&lt;/h2&gt;
+&lt;p&gt;Programming one from scratch is a possibility but since this is a common issue, I had to look for free or open source solutions first. After looking through some git repositories and paid Unity Assets, I ended up finding what I think was the best option: Unity Localization Package. This package is developed and supported by Unity, that’s awesome because I always prefer to use Unity official assets while looking for third party solutions, because I am sure that they will keep it updated and supporting the latest versions of the engine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-03-04/1.png&quot; alt=&quot;package&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The neat part of this package is that it can export all the game text in one or more Google Sheets, meaning that I can use Google Translate inside it to translate all texts automatically!&lt;/p&gt;
+
+&lt;p&gt;I know Google Translate can lead to some wrong translations but remember that I am a solo-developer working in the game in my free time. This solution is quick and pretty reliable, and I have the support of the community to fix some things that could be better, in the game Discord Server I already have been reached by a Turkish person that helped fix a lot of things!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-03-04/2.png&quot; alt=&quot;package&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Making the game available in multiple languages made it appear on foreign websites with that information highlighting it. I believe this is a very good thing, I always get excited when I play a game in my main language (Brazilian Portuguese), and I remember seeing a person with a positive reaction when they saw the game opened automatically already with their language selected!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-03-04/3.png&quot; alt=&quot;package&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;about-the-game&quot;&gt;About the game&lt;/h2&gt;
+
+&lt;p&gt;Resultarias is a surrealist adventure narrated through dream exploration, even though it does not have dialogs or collectable with pages of texts to read, this makes possible the largest amount of people able to read all the interface texts, which is a good thing! And I pretty sure this could be used to translate games with longer texts and a small budget too.&lt;/p&gt;
+
+&lt;p&gt;The game is in Early Access and it is available on Steam, a Free version is available to test:&lt;/p&gt;
+&lt;iframe src=&quot;https://store.steampowered.com/widget/2230030&quot; frameborder=&quot;0&quot; width=&quot;100%&quot; height=&quot;190&quot;&gt;&lt;a href=&quot;https://store.steampowered.com/app/2230030&quot;&gt;resultarias on Steam&lt;/a&gt;&lt;/iframe&gt;
+</description>
+        <pubDate>Sat, 04 Mar 2023 00:00:00 -0300</pubDate>
+        <link>http://localhost:4000/localization-how-my-game-is-translated/</link>
+        <guid isPermaLink="true">http://localhost:4000/localization-how-my-game-is-translated/</guid>
+        
+        
+        <category>unity</category>
+        
+        <category>localization</category>
+        
+        <category>gamedev</category>
+        
+      </item>
+    
+  </channel>
+</rss>
