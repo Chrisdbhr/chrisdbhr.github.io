@@ -43,6 +43,22 @@ ol, ul {
 	list-style: none;
 }
 
+/* VIDEO */
+#bgvid {
+	overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+    transition: 1s opacity;
+}
+
 blockquote, q {
 	quotes: none;
 }
@@ -2556,6 +2572,7 @@ input, select, textarea {
 /* Header */
 
 	#header {
+		overflow: hidden;
 		display: -moz-flex;
 		display: -webkit-flex;
 		display: -ms-flex;
@@ -2572,9 +2589,8 @@ input, select, textarea {
 		-webkit-justify-content: space-between;
 		-ms-justify-content: space-between;
 		justify-content: space-between;
-		background-color: #23272A;
 		background-attachment: scroll,								scroll;
-		background-image: url("images/overlay.png"), url("../../images/bg.jpg");
+		background-image: url("images/overlay.png");
 		background-position: top left,							top left;
 		background-repeat: repeat,								no-repeat;
 		background-size: cover;
@@ -2668,6 +2684,7 @@ input, select, textarea {
 		max-width: 1080px;
 		padding: 8em 4em 4em 4em;
 		width: calc(100% - 35%);
+		background-color: #36393f;
 	}
 
 		#main > section {
