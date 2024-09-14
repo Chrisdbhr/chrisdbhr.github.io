@@ -9,6 +9,7 @@ body {
     align-items: center;
     height: 100%;
     margin: 0;
+    overflow: hidden;
 }
 
 img {
