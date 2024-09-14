@@ -9,14 +9,14 @@ const languageContent = {
         downloadCV: "Download PDF",
         viewOnlineCV: "View Online",
         flagSrc: "https://flagcdn.com/w40/us.png",
-        buttonText: "View in English"
+        buttonText: "Ver em português"
     },
     pt: {
         name: "Acesse o meu currículo",
         downloadCV: "Baixar PDF",
         viewOnlineCV: "Ver Online",
         flagSrc: "https://flagcdn.com/w40/br.png",
-        buttonText: "Ver em português"
+        buttonText: "View in English"
     }
 };
 
