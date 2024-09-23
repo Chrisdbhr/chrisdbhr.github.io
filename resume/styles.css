@@ -1,3 +1,9 @@
+:root {
+    --main-color: #0088bb;
+    --main-color-hover: #004864;
+    --border-radius: 10px;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -37,13 +43,13 @@ p {
     text-decoration: none;
     color: white;
     background-color: transparent;
-    border: 2px solid #004080;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
+    border: 2px solid var(--main-color);
+    border-radius: var(--border-radius);
+    transition: background-color, color;
 }
 
 .buttons a:hover {
-    background-color: #004080;
+    background-color: var(--main-color);
     color: white;
 }
 
@@ -56,17 +62,17 @@ p {
 }
 
 #language-button {
-    background-color: #004080;
+    background-color: var(--main-color);
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     font-weight: bold;
 }
 
 #language-button:hover {
-    background-color: #003366;
+    background-color: var(--main-color-hover);
 }
 
 footer {
@@ -78,7 +84,7 @@ footer {
 
 footer a {
     margin: 0 10px;
-    color: #004080;
+    color: var(--main-color);
     text-decoration: none;
 }
 
