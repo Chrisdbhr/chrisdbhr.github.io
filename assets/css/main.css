@@ -2237,6 +2237,10 @@ input, select, textarea {
 
 /* Actions */
 
+	ul.ul-no-dots {
+		list-style: none;
+	}
+
 	ul.actions {
 		display: -moz-flex;
 		display: -webkit-flex;
