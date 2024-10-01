@@ -32,7 +32,7 @@ function setLanguage(lang) {
 
     // Adjust links based on the language
     document.getElementById('download-cv').href = googleDocsLinks[lang] + "/export?format=pdf";
-    document.getElementById('view-online-cv').href = googleDocsLinks[lang] + "/preview?rm=demo";
+    document.getElementById('view-online-cv').href = googleDocsLinks[lang] + "/preview";
 }
 
 function toggleLanguage() {
