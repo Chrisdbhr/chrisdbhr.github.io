@@ -1,94 +1,116 @@
-<!DOCTYPE HTML>
-<!--
-Prologue by HTML5 UP
-html5up.net | @ajlkn
-Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-Jekyll integration by Chris Bobbe | chrisbobbe.github.io
--->
-<html><head><!-- Robots -->
-  <meta name="robots" content="noindex, nofollow" /><!-- Title, description, author --><title>404 Error | CHRISdbhr - Portfólio e meus projetos</title>
-  <meta name="description" content="Meus jogos desenvolvidos, minhas redes sociais e meus outros projetos." />
-  <meta name="author" content="Chris" />
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="404 Error | CHRISdbhr - Portfólio e meus projetos" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/assets/images/avatar.png" />
-  <meta property="og:url" content="/404" />
-  <meta property="og:site_name" content="CHRISdbhr" />
-  <meta property="og:description" content="Meus jogos desenvolvidos, minhas redes sociais e meus outros projetos." />
-  
-  <!-- Styles -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!--[if lte IE 8]><script src="/assets/js/ie/html5shiv.js" defer></script><![endif]-->
-  <link rel="stylesheet" href="/assets/css/main.css" />
-  <!--[if lte IE 8]><link rel="stylesheet" href="/assets/css/ie8.css" /><![endif]-->
-  <!--[if lte IE 9]><link rel="stylesheet" href="/assets/css/ie9.css" /><![endif]-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Não Encontrada - 404</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #d1d1d1;
+      text-align: center;
+      overflow: hidden;
+      background-color: #000;
+    }
+    h1 {
+      font-size: 100px; /* Tamanho grande para 404 */
+      animation: fadeIn 1s;
+      margin: 0;
+    }
+    p {
+      font-size: 20px;
+      animation: fadeIn 1s 0.5s;
+    }
+    .countdown {
+      font-size: 30px;
+      margin-top: 20px;
+      animation: fadeIn 1s 1s;
+    }
+    .back-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    .back-button:hover {
+      background-color: #666;
+    }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+  </style>
+  <script>
+    function translatePage() {
+      const lang = navigator.language || navigator.userLanguage;
+      const translateScript = document.createElement('script');
+      translateScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit`;
+      document.head.appendChild(translateScript);
 
-  <!-- Site icons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="msapplication-TileColor" content="#2d89ef">
-  <meta name="theme-color" content="#ffffff">
+      window.googleTranslateElementInit = function() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'pt',
+          includedLanguages: 'en,es,fr,de,it,pt,zh-CN,ja,ru,ar',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+      };
+    }
+  </script>
+</head>
+<body onload="translatePage()">
+<div id="particles-js"></div>
+<h1>404</h1>
+<p>Desculpe, mas a página que você está procurando não existe.</p>
+<div class="countdown" id="countdown">Redirecionando em 10 segundos...</div>
+<button class="back-button" onclick="window.history.back()">Voltar</button>
 
-  <!-- Scripts -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-  <script src="/assets/js/jquery.scrolly.min.js" defer></script>
-  <script src="/assets/js/jquery.scrollzer.min.js" defer></script>
-  <script src="/assets/js/skel.min.js" defer></script>
-  <script src="/assets/js/util.js" defer></script>
-  <!--[if lte IE 8]><script src="/assets/js/ie/respond.min.js" defer></script><![endif]-->
-  <script src="/assets/js/main.js" defer></script>
+<script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 100 },
+      size: { value: 3 },
+      move: {
+        speed: 1,
+        direction: "none",
+        out_mode: "bounce",
+      },
+      opacity: { value: 0.5 },
+    },
+    interactivity: {
+      events: {
+        onhover: { enable: false }, // Desabilita a interação de hover
+      }
+    },
+    retina_detect: true,
+  });
 
-</head><body><!-- Header -->
-<div id="header">
-  <div class="top"><!-- Logo -->
-<div id="logo">
-  <a href="/" id="home-link">
-    <span class="image avatar48"><img src="/assets/images/avatar.png" alt="Avatar of Chris" /></span>
-    <h1 id="title">CHRISdbhr</h1>
-    <p>Portfólio e meus projetos</p>
-  </a>
-</div><!-- Nav -->
-<nav id="nav">
-  <ul><li><a href="/" id="home-link">
-            <span class="icon fa-home">Home</span>
-          </a></li><li><a href="/blog/" id="meus-jogos-link">
-            <span class="icon fa-gamepad">Meus jogos</span>
-          </a></li><li><a href="/analises/" id="análises-de-faculdades-link">
-            <span class="icon fa-search">Análises de faculdades</span>
-          </a></li><li><a href="/categories/" id="categorias-link">
-            <span class="icon fa-tags">Categorias</span>
-          </a></li></ul>
-</nav></div>
-  <div class="bottom"><!-- Social Icons -->
-<ul class="icons"><li><a href="https://twitter.com/chrisdbhr" class="icon fa-twitter"><span class="label">Twitter</span></a></li><li><a href="https://facebook.com/chrisdbhr" class="icon fa-facebook"><span class="label">Facebook</span></a></li><li><a href="https://linkedin.com/in/chrisdbhr" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li><li><a href="https://github.com/chrisdbhr" class="icon fa-github"><span class="label">GitHub</span></a></li><li><a href="https://pinterest.com/chrisdbhr" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li><li><a href="mailto:chrisdbhr@gmail.com" class="icon fa-envelope"><span class="label">Email</span></a></li></ul>
-</div>
-</div>
-<!-- Main -->
-<div id="main">
-	<!-- Page -->
-	<article class="shade-two">
-	  <div class="container">
-			<header>
-				<h2>404 Error</h2></header><p>Página não encontrada. This is not the way.</p></div>
-	</article>
-</div><!-- Footer -->
-<div id="footer">
-  
-  <!-- Copyright -->
-  <ul class="copyright">
-    
-      <li>&copy;CHRISdbhr. Todos os direitos reservados.</li>
-    
-    <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-    <li>Jekyll integration: <a href="https://chrisbobbe.github.io/">Chris Bobbe</a></li>
-  </ul>
-  
-</div><script id="dsq-count-scr" src="//chrisdbhr.disqus.com/count.js" async></script>
-	</body>
+  let countdown = 10;
+  const countdownElement = document.getElementById('countdown');
+
+  const interval = setInterval(() => {
+    countdown--;
+    countdownElement.textContent = `Redirecionando em ${countdown} segundos...`;
+    if (countdown <= 0) {
+      clearInterval(interval);
+      window.location.href = 'https://chrisjogos.com'; // Redireciona para a homepage
+    }
+  }, 1000);
+</script>
+</body>
 </html>
