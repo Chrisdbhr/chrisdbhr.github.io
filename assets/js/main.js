@@ -4,6 +4,23 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
+// Page Translation
+function translatePage() {
+	var userLang = navigator.language || navigator.userLanguage;
+	var googleTranslateElement = new google.translate.TranslateElement({
+		pageLanguage: 'en',
+		includedLanguages: `en,es,fr,de,zh-CN,ja,pt,ru,it,ko,nl,ar,th`,
+		layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+	}, 'google_translate_element');
+
+	// Tradução automática
+	if (userLang.startsWith('en')) {
+		googleTranslateElement.translate('en');
+	} else {
+		googleTranslateElement.translate(userLang);
+	}
+}
+
 (function($) {
 
 	var $window = $(window),
