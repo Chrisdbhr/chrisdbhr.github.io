@@ -52,7 +52,7 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: -999;
     }
   </style>
   <script>
@@ -78,27 +78,18 @@
 <h1>404</h1>
 <p>Desculpe, mas a página que você está procurando não existe.</p>
 <div class="countdown" id="countdown">Redirecionando em 10 segundos...</div>
-<button class="back-button" onclick="window.history.back()">Voltar</button>
+<button class="back-button" onclick="window.location.href = '/'">Voltar</button>
 
 <script>
-  particlesJS("particles-js", {
-    particles: {
-      number: { value: 100 },
-      size: { value: 3 },
-      move: {
-        speed: 1,
-        direction: "none",
-        out_mode: "bounce",
-      },
-      opacity: { value: 0.5 },
-    },
-    interactivity: {
-      events: {
-        onhover: { enable: false }, // Desabilita a interação de hover
-      }
-    },
-    retina_detect: true,
-  });
+  // Função para carregar a configuração do particles.js do arquivo JSON
+  fetch('particlesjs-config.json')
+          .then(response => response.json())
+          .then(config => {
+            particlesJS("particles-js", config);
+          })
+          .catch(error => {
+            console.error('Erro ao carregar a configuração do particles.js:', error);
+          });
 
   let countdown = 10;
   const countdownElement = document.getElementById('countdown');
@@ -108,7 +99,7 @@
     countdownElement.textContent = `Redirecionando em ${countdown} segundos...`;
     if (countdown <= 0) {
       clearInterval(interval);
-      window.location.href = 'https://chrisjogos.com'; // Redireciona para a homepage
+      window.location.href = '/'; // Redireciona para a raiz do site
     }
   }, 1000);
 </script>
