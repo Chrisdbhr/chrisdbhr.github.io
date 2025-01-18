@@ -1,6 +1,6 @@
 :root {
-    --main-color: #0088bb;
-    --main-color-hover: #004864;
+    --main-color: #2c5d87;
+    --main-color-hover: #1f405e;
     --border-radius: 10px;
 }
 
@@ -11,7 +11,7 @@ html, body {
 }
 
 body {
-    background-color: #13120e;
+    background-color: #141414;
     color: #FFFFFF;
     font-family: 'Inter', sans-serif;
     text-align: center;
