@@ -1,1 +1,1 @@
-http-server .
+npx serve .
