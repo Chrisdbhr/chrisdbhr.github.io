@@ -2,9 +2,9 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic");
 
 :root {
-	--text-link: #2c5d87;
-	--highlight-color: #D76787;
-	--highlight-hover-color: #1c3c57;
+	--text-link: #51B5D6;
+	--highlight-color: #2c5d87;
+	--highlight-hover-color: #51B5D6;
 }
 
 /*
@@ -139,6 +139,9 @@ input, select, textarea {
 		a:hover {
 			border-bottom-color: transparent;
 			color: var(--text-link) !important;
+		}
+
+		a:not(.button):hover {
 			text-decoration: underline;
 		}
 
@@ -224,9 +227,9 @@ input, select, textarea {
 	}
 
 	code {
-		background: #f7f7f7;
+		background: #383838;
 		border-radius: 0.35em;
-		border: solid 2px #efefef;
+		border: solid 2px #141414;
 		font-family: "Courier New", monospace;
 		font-size: 0.9em;
 		margin: 0 0.25em;
@@ -1835,7 +1838,7 @@ input, select, textarea {
 		-webkit-appearance: none;
 		-ms-appearance: none;
 		appearance: none;
-		background: #f7f7f7;
+		background: #141414;
 		border-radius: 0.35em;
 		border: solid 2px transparent;
 		color: inherit;
@@ -2439,12 +2442,12 @@ input, select, textarea {
 		-webkit-appearance: none;
 		-ms-appearance: none;
 		appearance: none;
-		-moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-		-webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-		-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-		transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+		-moz-transition: all 0.2s ease;
+		-webkit-transition: all 0.2s ease;
+		-ms-transition: all 0.2s ease;
+		transition: all 0.2s ease;
 		background-color: transparent;
-		border-radius: 0.35em;
+		border-radius: 8px;
 		border: solid 3px #efefef;
 		color: #e4e4e4 !important;
 		cursor: pointer;
@@ -2458,6 +2461,7 @@ input, select, textarea {
 		text-align: center;
 		text-decoration: none;
 		white-space: nowrap;
+		box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 	}
 
 		input[type="submit"]:hover,
@@ -2513,6 +2517,11 @@ input, select, textarea {
 			font-size: 1.35em;
 		}
 
+		.button:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+		}
+
 		input[type="submit"].primary,
 		input[type="reset"].primary,
 		input[type="button"].primary,
@@ -2520,6 +2529,7 @@ input, select, textarea {
 			background-color: var(--highlight-color);
 			border-color: var(--highlight-color);
 			color: #ffffff !important;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 		}
 
 			input[type="submit"].primary:hover,
@@ -2528,7 +2538,8 @@ input, select, textarea {
 			.button.primary:hover {
 				background-color: var(--highlight-hover-color);
 				border-color: var(--highlight-hover-color);
-				color:rgba(32, 32, 32, 1) !important;
+				color: #141414 !important;
+				transform: translateY(-2px);
 			}
 
 			input[type="submit"].primary:active,
@@ -2537,6 +2548,8 @@ input, select, textarea {
 			.button.primary:active {
 				background-color: var(--highlight-color);
 				border-color: var(--highlight-color);
+				transform: scale(0.98);
+				cursor: pointer;
 			}
 
 		input[type="submit"].disabled, input[type="submit"]:disabled,
@@ -2688,7 +2701,7 @@ input, select, textarea {
 		max-width: 1080px;
 		padding: 8em 4em 4em 4em;
 		width: calc(100% - 35%);
-		background-color: #36393f;
+		background-color: #383838;
 	}
 
 		#main > section {
