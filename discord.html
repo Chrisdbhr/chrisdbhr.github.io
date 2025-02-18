@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Countdown to December 1 2025</title>
+  <title>O grande anúncio</title>
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
   <style>
     body, html {
@@ -13,6 +13,7 @@
       overflow: hidden;
       background-color: #000;
       color: #ff4444;
+      user-select: none;
       font-family: 'Anton', sans-serif;
       display: flex;
       flex-direction: column;
@@ -61,6 +62,19 @@
       transform: scale(1.05);
     }
 
+    #hidden-text {
+      color: rgba(255, 255, 255, 0);
+      font-size: 1rem;
+      user-select: text;
+      transition: color 0.3s ease;
+      text-align: center;
+    }
+
+    #hidden-text::selection {
+      background: rgba(255, 255, 255, 0);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.02); }
@@ -75,6 +89,9 @@
         font-size: 1.2rem;
         padding: 12px 25px;
       }
+      #hidden-text {
+        font-size: 0.9rem;
+      }
     }
 
     @media (max-width: 480px) {
@@ -85,6 +102,9 @@
         font-size: 1rem;
         padding: 10px 20px;
       }
+      #hidden-text {
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -93,16 +113,10 @@
     <div id="countdown">00:00:00:00</div>
   </div>
   <a id="discord-button" href="https://discord.gg/86mC3vU" target="_blank">Entrar no Concord</a>
-
-  <!-- Audio elements -->
-  <audio id="tick1" src="tick.mp3"></audio>
-  <audio id="tick2" src="tick2.mp3"></audio>
+  <div id="hidden-text">Enquanto pode</div>
 
   <script>
     const countdownElement = document.getElementById('countdown');
-    const tick1 = document.getElementById('tick1');
-    const tick2 = document.getElementById('tick2');
-    let tickToggle = false;
 
     const targetDate = new Date('2025-12-01T00:00:00').getTime();
 
@@ -122,16 +136,9 @@
       const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
       countdownElement.textContent = 
-        `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:` +
+        `${String(days).padStart(2, '0')} dias, ${String(hours).padStart(2, '0')}:` +
         `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-      // Play alternating tick sounds
-      const currentTick = tickToggle ? tick1 : tick2;
-      currentTick.currentTime = 0;
-      currentTick.play().catch(error => {
-        // Handle audio autoplay restrictions
-      });
-      tickToggle = !tickToggle;
     }
 
     // Start the countdown and music
