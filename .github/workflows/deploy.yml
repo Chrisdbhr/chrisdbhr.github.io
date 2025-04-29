@@ -35,42 +35,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Detect package manager
-        id: detect-package-manager
-        working-directory: _src/blog
+      - name: Instalar e garantir que o pnpm está disponível
         run: |
-          if [ -f "pnpm-lock.yaml" ]; then
-            echo "manager=pnpm" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=pnpm" >> $GITHUB_OUTPUT
-            echo "lockfile=pnpm-lock.yaml" >> $GITHUB_OUTPUT
-            exit 0
-          elif [ -f "yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=yarn" >> $GITHUB_OUTPUT
-            echo "lockfile=yarn.lock" >> $GITHUB_OUTPUT
-            exit 0
-          elif [ -f "package-lock.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
-            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
-            echo "lockfile=package-lock.json" >> $GITHUB_OUTPUT
-            exit 0
-          else
-            echo "Unable to determine package manager"
-            exit 1
-          fi
-      - name: Debug package manager detection
-        run: |
-          echo "Detected manager: ${{ steps.detect-package-manager.outputs.manager }}"
-          echo "Using lock file: ${{ steps.detect-package-manager.outputs.lockfile }}"
-      - name: Setup Node
+          echo "Instalando pnpm..."
+          npm install -g pnpm || { echo "Falha ao instalar pnpm"; exit 1; }
+          echo "pnpm instalado com sucesso"
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
-          cache-dependency-path: ${{ env.BUILD_PATH }}/${{ steps.detect-package-manager.outputs.lockfile }}
+          cache: 'pnpm'
+          cache-dependency-path: '**/pnpm-lock.yaml'
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
