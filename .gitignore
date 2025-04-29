@@ -290,3 +290,4 @@ __pycache__/
 # Jekyll
 _site/
 Gemfile.lock
+_src/blog/dist
