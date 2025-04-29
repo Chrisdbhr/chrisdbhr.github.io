@@ -35,32 +35,45 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
       - name: Instalar e garantir que o pnpm está disponível
         run: |
           echo "Instalando pnpm..."
           npm install -g pnpm || { echo "Falha ao instalar pnpm"; exit 1; }
           echo "pnpm instalado com sucesso"
+          
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: 'pnpm'
           cache-dependency-path: '**/pnpm-lock.yaml'
+          
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+        
       - name: Install pnpm if not available
         if: steps.detect-package-manager.outputs.manager == 'pnpm'
         run: |
           if ! command -v pnpm &> /dev/null; then
             npm install -g pnpm
           fi
+          
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: pnpm install
         working-directory: ${{ env.BUILD_PATH }}
+
+      - name: Ensure Astro is installed
+        run: |
+          if ! command -v astro &> /dev/null; then
+            pnpm add astro --global
+          fi
+        working-directory: ${{ env.BUILD_PATH }}
+
       - name: Build with Astro
         run: |
-          ${{ steps.detect-package-manager.outputs.runner }} astro build \
+          pnpm astro build \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
