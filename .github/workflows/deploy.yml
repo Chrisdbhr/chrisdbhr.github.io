@@ -14,9 +14,13 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: _src/blog

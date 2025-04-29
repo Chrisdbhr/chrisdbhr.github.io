@@ -5,7 +5,7 @@ description: "Articles related to the development of my projects."
 logo: 'assets/images/logo.png'
 favicon: 'favicon.ico'
 baseurl: /blog
-destination: ../blog
+destination: ../../blog
 google_analytics: ''
 disqus: 'chrisdbhr'
 mailchimp-list: 'https://chrisjogos.us9.list-manage.com/subscribe/post?u=41ce9a31ee13341cac8a4fdf7&amp;id=075583e015&amp;f_id=00700de1f0'
