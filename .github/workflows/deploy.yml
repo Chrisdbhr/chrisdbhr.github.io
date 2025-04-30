@@ -1,32 +1,21 @@
-# Sample workflow for building and deploying an Astro site to GitHub Pages
-#
-# To get started with Astro see: https://docs.astro.build/en/getting-started/
-#
 name: Deploy Astro site to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["master"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 env:
-  BUILD_PATH: "_src/blog" # default value when not using subfolders
-  # BUILD_PATH: subfolder
+  BUILD_PATH: "_src/blog"
 
 jobs:
   build:
@@ -35,58 +24,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
-      - name: Instalar e garantir que o pnpm está disponível
-        run: |
-          echo "Instalando pnpm..."
-          npm install -g pnpm || { echo "Falha ao instalar pnpm"; exit 1; }
-          echo "pnpm instalado com sucesso"
-          
-      - name: Configurar Node.js
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: 'pnpm'
-          cache-dependency-path: '**/pnpm-lock.yaml'
-          
+          cache: 'npm'
+          cache-dependency-path: ${{ env.BUILD_PATH }}/package-lock.json
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-        
-      - name: Install pnpm if not available
-        if: steps.detect-package-manager.outputs.manager == 'pnpm'
-        run: |
-          if ! command -v pnpm &> /dev/null; then
-            npm install -g pnpm
-          fi
-          
-      - name: Install dependencies
-        run: pnpm install
-        working-directory: ${{ env.BUILD_PATH }}
 
-      - name: Ensure Astro is installed
-        run: |
-          if ! command -v astro &> /dev/null; then
-            pnpm add astro --global
-          fi
+      - name: Install dependencies
+        run: npm ci
         working-directory: ${{ env.BUILD_PATH }}
 
       - name: Build with Astro
         run: |
-          pnpm astro build \
+          npx astro build \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
-        
+
       - name: Move blog build to root
         run: |
           mkdir -p dist/blog
-          cp -r _src/blog/dist/* dist/blog/
-          
+          cp -r ${{ env.BUILD_PATH }}/dist/* dist/blog/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./ # ${{ env.BUILD_PATH }}/dist
+          path: dist
 
   deploy:
     environment:
