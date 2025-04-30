@@ -48,15 +48,17 @@ jobs:
         working-directory: ${{ env.BUILD_PATH }}
 
         
-      - name: Mover build do blog para 'blog/'
+      - name: Preparar artefato com blog e arquivos da raiz (excluindo _*)
         run: |
-          mkdir -p blog
-          cp -r ${{ env.BUILD_PATH }}/dist/* blog/
-
+          mkdir -p site
+          rsync -av --exclude '_*/' ./ site/
+          mkdir -p site/blog
+          cp -r ${{ env.BUILD_PATH }}/dist/* site/blog/
+            
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: blog
+          path: site
 
   deploy:
     environment:
