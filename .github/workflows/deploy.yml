@@ -44,7 +44,7 @@ jobs:
         run: |
           npx astro build \
             --site "${{ steps.pages.outputs.origin }}" \
-            --base "${{ steps.pages.outputs.base_path }}"
+            --base "blog"
         working-directory: ${{ env.BUILD_PATH }}
 
       - name: Debug Build Directory
