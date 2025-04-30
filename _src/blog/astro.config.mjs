@@ -28,6 +28,7 @@ export default defineConfig({
   },
   base: '/blog/',
   trailingSlash: "always",
+  cleanUrls: true,
   integrations: [
     tailwind(
         {
@@ -67,9 +68,6 @@ export default defineConfig({
       },
     }),
   ],
-  experimental: {
-    cleanUrls: true,
-  },
   markdown: {
     remarkPlugins: [
       remarkMath,
