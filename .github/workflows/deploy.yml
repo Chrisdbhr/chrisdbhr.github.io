@@ -47,13 +47,6 @@ jobs:
             --base "blog"
         working-directory: ${{ env.BUILD_PATH }}
 
-      - name: Debug Build Directory
-        run: |
-          echo "Checking contents of BUILD_PATH"
-          ls -la ${{ env.BUILD_PATH }}
-          echo "Checking contents of BUILD_PATH/dist"
-          ls -la ${{ env.BUILD_PATH }}/dist
-        working-directory: ${{ env.BUILD_PATH }}
         
       - name: Mover build do blog para 'blog/'
         run: |
