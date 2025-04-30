@@ -23,7 +23,7 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 export default defineConfig({
   site: "https://chrisjogos.com/",
   build: {
-    outDir: "../../dist/blog",
+    outDir: "dist/blog",
   },
   base: '/blog/',
   trailingSlash: "always",
