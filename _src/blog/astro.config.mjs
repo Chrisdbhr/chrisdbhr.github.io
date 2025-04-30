@@ -22,7 +22,10 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 // https://astro.build/config
 export default defineConfig({
   site: "https://chrisjogos.com/",
-  output: "dist/blog",
+  output: "static",
+  build: {
+    outDir: "dist/blog",
+  },
   base: '/blog/',
   trailingSlash: "always",
   integrations: [
