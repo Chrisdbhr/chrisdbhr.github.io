@@ -47,10 +47,10 @@ jobs:
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
 
-      - name: Move blog build to root
+      - name: Mover build do blog para 'blog/'
         run: |
-          mkdir -p dist/blog
-          cp -r ${{ env.BUILD_PATH }}/dist/* dist/blog/
+          mkdir -p blog
+          cp -r ${{ env.BUILD_PATH }}/dist/* blog/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
