@@ -42,7 +42,7 @@ jobs:
 
       - name: Build with Astro
         run: |
-          npx astro build \
+          npx astro build && pagefind \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "blog"
         working-directory: ${{ env.BUILD_PATH }}
