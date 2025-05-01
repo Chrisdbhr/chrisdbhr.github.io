@@ -2,7 +2,7 @@
 name: "Blog ChrisJogos.com"
 title: "Blog ChrisJogos.com"
 description: "Articles related to the development of my projects."
-logo: 'assets/images/logo.png'
+logo: '/assets/images/logo.png'
 favicon: 'favicon.ico'
 baseurl: /blog
 destination: ../../blog

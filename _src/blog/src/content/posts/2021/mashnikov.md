@@ -6,7 +6,7 @@ category: Games
 tags: [ Unity, 3D ]
 author: chris
 image: "mashnikov.png"
-draft: true
+draft: false
 ---
 
 > The world is being dominated by streamers wanting to make an army of zombie viewers, soldier Mashnikov is summoned to eradicate the epicenter of the epidemic in Ourinhos-SP!

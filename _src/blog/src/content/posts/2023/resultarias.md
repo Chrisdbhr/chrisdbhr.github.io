@@ -5,7 +5,7 @@ published: 2021-07-22
 category: Games
 tags: [ Unity, 3D ]
 author: chris
-image: "images/resultarias/bgVideoPoster.jpg"
+image: "/assets/images/resultarias/bgVideoPoster.jpg"
 draft: true
 ---
 
