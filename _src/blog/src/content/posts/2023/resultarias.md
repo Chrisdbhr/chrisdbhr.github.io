@@ -3,9 +3,9 @@ title:  "Resultarias"
 description: "Birthday game made in 2 weeks in July 2021 using Unity that I made together with friends from Discord!"
 published: 2021-07-22
 category: Games
-tags: [ Unity, 3D ]
+tags: [ Unity, 3D, Self-published ]
 author: chris
-image: "/assets/images/resultarias/bgVideoPoster.jpg"
+image: "../assets/images/resultarias/bgVideoPoster.jpg"
 draft: true
 ---
 

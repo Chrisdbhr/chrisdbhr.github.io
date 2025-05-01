@@ -5,7 +5,7 @@ published: 2023-03-04
 category: Articles
 tags: [ Unity ]
 author: chris
-image: "/assets/images/posts/2023-03-04/2.png"
+image: "../assets/images/posts/2023-03-04/2.png"
 ---
 ## Intro 
 I love to make my games accessible to the most people possible, but accessibility features take time to implement so I am pretty sure that’s the reason most companies simply don’t do them, time equals money so...
