@@ -39,6 +39,7 @@ jobs:
           find . -type d -print
 
       - name: Install dependencies
+        working-directory: _src/blog
         run: pnpm install --frozen-lockfile
 
       - name: Setup Pages
@@ -46,6 +47,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build with Astro
+        working-directory: _src/blog
         run: |
           pnpm astro build
 #            --site "${{ steps.pages.outputs.origin }}" \
@@ -56,8 +58,8 @@ jobs:
           mkdir -p site
           rsync -av --exclude '_*/' ./ site/
           mkdir -p site/blog
-          cp -r dist/* site/blog/
-            
+          cp -r _src/blog/dist/* site/blog/
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
