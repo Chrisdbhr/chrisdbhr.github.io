@@ -68,7 +68,7 @@ jobs:
           mkdir -p site
           rsync -av --exclude '_*/' ./ site/
           mkdir -p site/blog
-          cp -r ${{ env.BUILD_PATH }}/dist/* site/blog/
+          cp -r ${{ env.BUILD_PATH }}/../../blog/* site/blog/
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
