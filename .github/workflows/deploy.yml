@@ -44,19 +44,23 @@ jobs:
           find . -type d -print
 
       - name: Install dependencies
-        working-directory: _src/blog
+        working-directory: ${{ env.BUILD_PATH }}
         run: pnpm install --frozen-lockfile
 
+      - name: Install missing icon sets
+        working-directory: ${{ env.BUILD_PATH }}
+        run: pnpm add -D @iconify-json/line-md && pnpm astro sync
+          
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
 
       - name: Run Astro Check
-        working-directory: _src/blog
+        working-directory: ${{ env.BUILD_PATH }}
         run: pnpm astro check
         
       - name: Build with Astro
-        working-directory: _src/blog
+        working-directory: ${{ env.BUILD_PATH }}
         run: pnpm astro build
         
       - name: Preparar artefato com blog e arquivos da raiz (excluindo _*)
@@ -64,7 +68,7 @@ jobs:
           mkdir -p site
           rsync -av --exclude '_*/' ./ site/
           mkdir -p site/blog
-          cp -r _src/blog/dist/* site/blog/
+          cp -r ${{ env.BUILD_PATH }}/dist/* site/blog/
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
