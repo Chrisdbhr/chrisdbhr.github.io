@@ -69,7 +69,6 @@ jobs:
           run_install: false # Disable auto-install
 
       - name: Install dependencies
-        working-directory: ${{ env.BUILD_PATH }}
         run: pnpm install --frozen-lockfile
 
       - name: Setup Pages
