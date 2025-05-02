@@ -19,16 +19,13 @@ env:
 
 jobs:
   check:
-    strategy:
-      matrix:
-        node: [ 22, 23 ]
     runs-on: ubuntu-latest
-    name: Astro Check for Node.js ${{ matrix.node }}
+    name: Astro Check for Node.js
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
-          node-version: ${{ matrix.node }} # Use LTS
+          node-version: 23
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,12 +49,12 @@ jobs:
       matrix:
         node: [ 22, 23 ]
     runs-on: ubuntu-latest
-    name: Astro Build for Node.js ${{ matrix.node }} # Corrected job name
+    name: Astro Build for Node.js
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 23
           
       - name: Checkout
         uses: actions/checkout@v4
