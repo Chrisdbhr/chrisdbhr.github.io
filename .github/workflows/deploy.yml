@@ -1,4 +1,4 @@
-name: Deploy Astro site to Pages
+name: Deploy Hugo site to Pages
 
 on:
   push:
@@ -14,75 +14,58 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
-env: 
-  BUILD_PATH: "_src/blog"
+env:
+  HUGO_BUILD_DIR: "_blog"
+  PUBLISH_DIR: "site"    
 
-jobs:  
+jobs:
   build:
     runs-on: ubuntu-latest
-    name: Astro Build for Node.js
+    name: Build Hugo site
+
     steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
-        with:
-          node-version: 23
-          
-      - name: Checkout
+      - name: Checkout repo + submodules
         uses: actions/checkout@v4
-        with: 
-          submodules: 'true'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
         with:
-          version: 10
-          run_install: false # Disable auto-install
+          submodules: 'recursive'
 
-      # Log all folders in directory recursive:
-      - name: List all folders
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: List project structure
+        run: find . -maxdepth 2 -type d
+
+      - name: Build Hugo
+        run: hugo --source="${{ env.HUGO_BUILD_DIR }}" --destination="${{ env.PUBLISH_DIR }}/blog" --minify
+
+      - name: Prepare publish directory
         run: |
-          find . -type d -print
+          # Cria pasta de publicação
+          mkdir -p "${{ env.PUBLISH_DIR }}"
+          # Copia os arquivos da raiz (exceto pastas começando com "_")
+          rsync -av --exclude '_*/' --exclude '.git/' ./ "${{ env.PUBLISH_DIR }}/"
+          # Move o build do Hugo para /blog
+          mv "${{ env.PUBLISH_DIR }}/blog" "${{ env.PUBLISH_DIR }}/blog/"
 
-      - name: Install dependencies
-        working-directory: ${{ env.BUILD_PATH }}
-        run: pnpm install --frozen-lockfile
-
-      - name: Install missing icon sets
-        working-directory: ${{ env.BUILD_PATH }}
-        run: pnpm add -D @iconify-json/line-md && pnpm astro sync
-          
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
 
-      - name: Run Astro Check
-        working-directory: ${{ env.BUILD_PATH }}
-        run: pnpm astro check
-        
-      - name: Build with Astro
-        working-directory: ${{ env.BUILD_PATH }}
-        run: pnpm astro build
-        
-      - name: Preparar artefato com blog e arquivos da raiz (excluindo _*)
-        run: |
-          mkdir -p site
-          rsync -av --exclude '_*/' ./ site/
-          mkdir -p site/blog
-          cp -r ${{ env.BUILD_PATH }}/../../blog/* site/blog/
-      
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: ${{ env.PUBLISH_DIR }}
 
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
-    name: Deploy
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
