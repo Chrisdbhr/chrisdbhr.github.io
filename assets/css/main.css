@@ -2702,6 +2702,7 @@ input, select, textarea {
 		padding: 8em 4em 4em 4em;
 		width: calc(100% - 35%);
 		background-color: #383838;
+		overflow-x: hidden;
 	}
 
 		#main > section {
