@@ -5,53 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download Chris Jogos Launcher</title>
     <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+        body, html {
+            height: 100%;
             margin: 0;
             padding: 0;
-            text-align: center;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
         }
+
+        #bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            background-size: cover;
+            filter: brightness(0.5);
+        }
+
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            color: #ffffff;
             padding: 20px;
         }
-        .game-section {
-            padding: 60px 20px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            text-align: left;
-        }
-        .game-section:last-of-type {
-            border-bottom: none;
-        }
-        .game-media {
-            max-width: 50%;
-            height: auto;
-            border-radius: 10px;
-            margin-right: 20px;
-        }
-        .game-description {
-            flex: 1;
-        }
+
         h1 {
             font-size: 36px;
             margin-bottom: 20px;
         }
-        h2 {
-            font-size: 28px;
-        }
+
         p {
             font-size: 18px;
             line-height: 1.6;
+            max-width: 600px;
+            margin-bottom: 40px;
         }
-        .download-section {
-            padding: 60px 20px;
-            background-color: #1a1a1a;
-        }
+
         .download-button {
             display: inline-block;
             padding: 15px 30px;
@@ -62,56 +59,36 @@
             border-radius: 5px;
             transition: background-color 0.3s;
         }
+
         .download-button:hover {
             background-color: #45a049;
+        }
+
+        .home-link {
+            position: absolute;
+            bottom: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .home-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <video autoplay muted loop id="bg-video">
+        <source src="assets/videos/trailer-sabsario.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos em HTML5.
+    </video>
+
     <div class="container">
-        <h1>Conheça meus jogos</h1>
-        <p>Abaixo você pode ver mais sobre cada um dos jogos que desenvolvi. Todos eles, incluindo a versão de playtest gratuita de Resultarias, estão disponíveis no meu launcher.</p>
-
-        <div class="game-section">
-            <iframe loading="lazy" width="50%" height="250" src="https://www.youtube.com/embed/N1ZlZhGMzRs?playlist=N1ZlZhGMzRs&loop=1&rel=0&autoplay=1&controls=0&showinfo=0&mute=1" class="game-media"></iframe>
-            <div class="game-description">
-                <h2>Resultarias</h2>
-                <p>Aventura surrealista narrada através da exploração de sonhos! O jogo apresenta múltiplos mundos, personagens, itens que podem ser coletados no mundo dos sonhos e usados para vários propósitos, mas principalmente ajudando na exploração e avanço na narrativa.</p>
-            </div>
-        </div>
-
-        <div class="game-section">
-            <video class="game-media" poster="assets/images/mashnikov/eldenevilsabsdietwice.webp" playsinline autoplay muted loop>
-                <source src="assets/videos/trailer-sabsario.mp4" type="video/mp4">
-            </video>
-            <div class="game-description">
-                <h2>Elden Evil: Sabs Die Twice</h2>
-                <p>Depois que Nosferaty atirou friamente em sua namorada Li, Sabs busca respostas sobre o que aconteceu em uma ilha em Assaré-CE. Um jogo no estilo "souls-like" com muitos memes, batalhas intensas contra chefes e reviravoltas na história.</p>
-            </div>
-        </div>
-
-        <div class="game-section">
-            <img class="game-media" alt="Nannersario" src="assets/images/mashnikov/mashnikov.webp"/>
-            <div class="game-description">
-                <h2>Assassin's Nanner: Zero Dawn</h2>
-                <p>Nanner perde o contato com Mashnikov e deve escapar com sua amiga de infância Naomi durante o evento em Ourinhos. Um jogo focado na narrativa com múltiplas cenas e dublagem profissional.</p>
-            </div>
-        </div>
-
-        <div class="game-section">
-            <img class="game-media" alt="Mashnikov" src="assets/images/mashnikov/mashnikov.webp"/>
-            <div class="game-description">
-                <h2>MASHNIKOV</h2>
-                <p>O mundo está sendo dominado por streamers que querem criar um exército de espectadores zumbis. O soldado Mashnikov é convocado para erradicar o epicentro da epidemia em Ourinhos-SP.</p>
-            </div>
-        </div>
-
+        <h1>Baixe o Launcher da Chris Jogos</h1>
+        <p>Acesso unificado a todos os meus jogos, incluindo a versão de playtest gratuita de Resultarias, atualizações e novidades em primeira mão.</p>
+        <a href="https://public.enigmaticcomma.com/launcher/setup/chrisjogoslauncher-win-Setup.exe" class="download-button">Baixar o Launcher</a>
     </div>
 
-    <div class="download-section">
-        <h2>Gostou? Baixe o launcher para jogar!</h2>
-        <p>Tenha acesso a todos os jogos, atualizações e novidades em um só lugar.</p>
-        <a href="COLOQUE_SEU_LINK_DE_DOWNLOAD_AQUI" class="download-button">Baixar o Launcher</a>
-    </div>
+    <a href="/" class="home-link">Voltar para a página inicial</a>
 </body>
 </html>
