@@ -11,37 +11,24 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             text-align: center;
         }
         .container {
             max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
         }
-        .download-button {
-            display: inline-block;
-            padding: 15px 30px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-            border-radius: 5px;
-            margin-bottom: 40px;
-            transition: background-color 0.3s;
-        }
-        .download-button:hover {
-            background-color: #45a049;
-        }
         .game-section {
-            margin-top: 20px;
+            padding: 60px 20px;
+            border-bottom: 1px solid #333;
             display: flex;
             align-items: center;
             text-align: left;
         }
-        .game-gif {
+        .game-section:last-of-type {
+            border-bottom: none;
+        }
+        .game-media {
             max-width: 50%;
             height: auto;
             border-radius: 10px;
@@ -61,21 +48,70 @@
             font-size: 18px;
             line-height: 1.6;
         }
+        .download-section {
+            padding: 60px 20px;
+            background-color: #1a1a1a;
+        }
+        .download-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .download-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Baixe o Launcher da Chris Jogos</h1>
-        <p>Através do launcher, você terá acesso a todos os meus jogos, incluindo a versão de playtest gratuita de Resultarias.</p>
-        <a href="https://public.enigmaticcomma.com/launcher/setup/chrisjogoslauncher-win-Setup.exe" class="download-button">Baixar o Launcher</a>
+        <h1>Conheça meus jogos</h1>
+        <p>Abaixo você pode ver mais sobre cada um dos jogos que desenvolvi. Todos eles, incluindo a versão de playtest gratuita de Resultarias, estão disponíveis no meu launcher.</p>
 
         <div class="game-section">
-            <img src="assets/images/resultarias/resultarias.gif" alt="Resultarias Gameplay" class="game-gif">
+            <iframe loading="lazy" width="50%" height="250" src="https://www.youtube.com/embed/N1ZlZhGMzRs?playlist=N1ZlZhGMzRs&loop=1&rel=0&autoplay=1&controls=0&showinfo=0&mute=1" class="game-media"></iframe>
             <div class="game-description">
                 <h2>Resultarias</h2>
-                <p>Explore um mundo de sonhos e traumas em Resultarias. Suas escolhas moldam a narrativa, levando a múltiplos finais. Baixe o launcher para experimentar a versão de playtest gratuita.</p>
+                <p>Aventura surrealista narrada através da exploração de sonhos! O jogo apresenta múltiplos mundos, personagens, itens que podem ser coletados no mundo dos sonhos e usados para vários propósitos, mas principalmente ajudando na exploração e avanço na narrativa.</p>
             </div>
         </div>
+
+        <div class="game-section">
+            <video class="game-media" poster="assets/images/mashnikov/eldenevilsabsdietwice.webp" playsinline autoplay muted loop>
+                <source src="assets/videos/trailer-sabsario.mp4" type="video/mp4">
+            </video>
+            <div class="game-description">
+                <h2>Elden Evil: Sabs Die Twice</h2>
+                <p>Depois que Nosferaty atirou friamente em sua namorada Li, Sabs busca respostas sobre o que aconteceu em uma ilha em Assaré-CE. Um jogo no estilo "souls-like" com muitos memes, batalhas intensas contra chefes e reviravoltas na história.</p>
+            </div>
+        </div>
+
+        <div class="game-section">
+            <img class="game-media" alt="Nannersario" src="assets/images/mashnikov/mashnikov.webp"/>
+            <div class="game-description">
+                <h2>Assassin's Nanner: Zero Dawn</h2>
+                <p>Nanner perde o contato com Mashnikov e deve escapar com sua amiga de infância Naomi durante o evento em Ourinhos. Um jogo focado na narrativa com múltiplas cenas e dublagem profissional.</p>
+            </div>
+        </div>
+
+        <div class="game-section">
+            <img class="game-media" alt="Mashnikov" src="assets/images/mashnikov/mashnikov.webp"/>
+            <div class="game-description">
+                <h2>MASHNIKOV</h2>
+                <p>O mundo está sendo dominado por streamers que querem criar um exército de espectadores zumbis. O soldado Mashnikov é convocado para erradicar o epicentro da epidemia em Ourinhos-SP.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="download-section">
+        <h2>Gostou? Baixe o launcher para jogar!</h2>
+        <p>Tenha acesso a todos os jogos, atualizações e novidades em um só lugar.</p>
+        <a href="COLOQUE_SEU_LINK_DE_DOWNLOAD_AQUI" class="download-button">Baixar o Launcher</a>
     </div>
 </body>
 </html>
