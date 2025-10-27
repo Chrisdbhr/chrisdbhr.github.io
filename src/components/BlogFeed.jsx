@@ -42,7 +42,7 @@ function BlogFeed() {
         const items = data.querySelectorAll("item");
 
         // Mudei para 3 posts para caber melhor no grid
-        const feedPosts = Array.from(items).slice(0, 3).map((item) => {
+        const feedPosts = Array.from(items).slice(0, 4).map((item) => {
           const imageUrl = getPostImage(item);
           
           // Corrige URLs relativas (ex: /p/meu-post/img.jpg)

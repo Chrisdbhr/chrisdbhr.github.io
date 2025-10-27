@@ -491,7 +491,7 @@ img {
 
 .blog-post-content h4 {
   color: var(--color-light);
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 10px;
   line-height: 1.4;
   display: -webkit-box;
@@ -1223,4 +1223,10 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 /* Exemplo: Mudar cor de links dentro do Disqus */
 #disqus_thread a {
   /* color: var(--color-purple) !important; */ /* Pode ou não funcionar */
+}
+
+/* Oculta links de privacidade do footer do Disqus */
+#disqus_thread .disqus-footer__item.privacy,
+#disqus_thread .disqus-footer__item.do-not-sell {
+  display: none !important;
 }
