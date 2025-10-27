@@ -1,4 +1,4 @@
-name: Deploy Vite Portfolio and Hugo Blog to Pages
+name: Deploy Vite Portfolio to Pages
 
 on:
   push:
@@ -15,53 +15,36 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HUGO_SOURCE_DIR: "_blog" # Source directory for Hugo content
-  VITE_OUTPUT_DIR: "dist"  # Default Vite output directory
-  PUBLISH_DIR: "site"      # Final directory to deploy
+  VITE_OUTPUT_DIR: "dist"
+  PUBLISH_DIR: "site" # Temporary dir before upload artifact (can be same as VITE_OUTPUT_DIR if preferred)
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build Vite Portfolio and Hugo Blog
+    name: Build Vite Portfolio
 
     steps:
-      - name: Checkout repo + submodules
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          submodules: 'recursive' # Keep this if your Hugo blog uses submodules
+          submodules: 'recursive'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Or the version specified in your project/engine requirements
-          cache: 'npm' # Cache npm dependencies
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install Vite Dependencies
         run: npm install
 
       - name: Build Vite Portfolio
-        run: npm run build # This assumes your build script is 'build' in package.json
+        run: npm run build # Output goes to VITE_OUTPUT_DIR ('dist')
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: 'latest'
-          extended: true
-
-      - name: Build Hugo Blog into subfolder
-        run: hugo --source "${{ env.HUGO_SOURCE_DIR }}" --destination "${{ env.PUBLISH_DIR }}/blog" --minify
-
-      # This step now only copies the Vite build output. Hugo builds directly into the target dir.
       - name: Prepare publish directory
         run: |
-          # Ensure publish dir exists (Hugo might have created it)
           mkdir -p "${{ env.PUBLISH_DIR }}"
-          # Copy Vite build output to the root of the publish directory
-          # Using rsync ensures dotfiles (if any) are also copied
           rsync -av --delete "${{ env.VITE_OUTPUT_DIR }}/" "${{ env.PUBLISH_DIR }}/"
-
-      - name: List final publish directory structure (for debugging)
-        run: ls -R "${{ env.PUBLISH_DIR }}"
 
       - name: Setup Pages
         id: pages
@@ -77,10 +60,9 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      # Use the output from the Setup Pages step in the build job
-      url: ${{ needs.build.outputs.page_url }} # Correctly reference output from needs context
+      url: ${{ needs.build.outputs.page_url }}
 
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment # Add an ID for potential future use
+        id: deployment
         uses: actions/deploy-pages@v4
