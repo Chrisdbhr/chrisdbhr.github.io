@@ -45,13 +45,6 @@ jobs:
         run: |
           mkdir -p "${{ env.PUBLISH_DIR }}"
           rsync -av --delete "${{ env.VITE_OUTPUT_DIR }}/" "${{ env.PUBLISH_DIR }}/"
-          cp discord.html "${{ env.PUBLISH_DIR }}/" || echo "discord.html not found, skipping."
-          cp discordlink.html "${{ env.PUBLISH_DIR }}/" || echo "discordlink.html not found, skipping."
-          cp download.html "${{ env.PUBLISH_DIR }}/" || echo "download.html not found, skipping."
-          cp monitoria.html "${{ env.PUBLISH_DIR }}/" || echo "monitoria.html not found, skipping."
-          cp terms.html "${{ env.PUBLISH_DIR }}/" || echo "terms.html not found, skipping."
-          cp test.html "${{ env.PUBLISH_DIR }}/" || echo "test.html not found, skipping."
-          cp privacy.html "${{ env.PUBLISH_DIR }}/" || echo "privacy.html not found, skipping."
 
       - name: Setup Pages
         id: pages
