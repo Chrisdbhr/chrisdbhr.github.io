@@ -79,7 +79,7 @@ function HomePage() {
       
       <div className="home-section">
         <div className="home-section-header">
-          <h2>Meus Jogos ({totalGameCount})</h2>
+          <h2>Meus Jogos e Projetos ({totalGameCount})</h2>
           {!loading && totalEngineStats.length > 0 && (
             <div className="engine-stats-total">
               {totalEngineStats.map(([engine, count]) => (

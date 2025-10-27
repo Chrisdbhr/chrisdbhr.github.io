@@ -343,9 +343,7 @@ img {
 
 .home-section h2,
 .home-section h3 {
-  color: var(--color-light);
   margin-bottom: 20px;
-  border-bottom: 1px solid var(--color-darkest);
   padding-bottom: 10px;
   font-weight: 600;
 }
@@ -807,18 +805,10 @@ img {
 
 /* --- 3. Estilo do Grupo por Ano (Home Page) --- */
 .year-group {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 .year-group:last-child {
   margin-bottom: 0;
-}
-.year-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: var(--color-light);
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #333;
 }
 
 /* --- 4. Estilo da Sinopse no Card --- */
@@ -844,10 +834,8 @@ img {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  /* Remove margem do h2/h3 para o header controlar */
-  border-bottom: 1px solid var(--color-dark);
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-darkest);
+  margin-bottom: 10px;
 }
 .home-section-header h2,
 .home-section-header h3 {
@@ -1120,17 +1108,6 @@ img {
   transform: scale(1.03);
 }
 
-/* Na home-section, o h3 já é estilizado.
-   Vamos garantir que o h3 do Discord se alinhe com o ContactForm */
-.discord-home-widget h3 {
-    color: var(--color-light);
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--color-darkest);
-    padding-bottom: 10px;
-    font-weight: 600;
-}
-
-
 /* --- Responsividade da Grid Contato --- */
 @media (max-width: 900px) {
   /* A regra de .page-layout (coluna única) já deve
@@ -1154,4 +1131,50 @@ img {
   text-transform: uppercase;
   font-size: 0.8rem;
   font-weight: 700;
+}
+
+/* Estilo Base (aplicado a ambos) */
+.year-title,
+.upcoming-title {
+  font-family: 'Inter', sans-serif; /* Muda a fonte */
+  font-size: 1.1rem; /* Reduz o tamanho */
+  font-weight: 700; /* Mais peso para destaque */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0; /* Remove margens padrão */
+  padding: 0; /* Remove paddings padrão */
+  border: none; /* Garante que não haja borda */
+}
+
+/* Estilo Específico para o Separador de Ano */
+.year-title {
+  color: var(--color-grey); /* Fundo escuro */
+  padding: 6px 15px; /* Padding interno */
+  border-radius: 4px;
+  display: inline-block; /* Para o background funcionar */
+  margin-bottom: 15px; /* Espaço abaixo do título antes da grid */
+}
+
+/* Ajuste para o header que contém o ano (para remover espaço extra) */
+.year-group .home-section-header {
+  padding-bottom: 0; /* Remove padding inferior do header do ano */
+  /* O margin-bottom do .year-title cuidará do espaço */
+}
+
+/* Estilo Específico para "Próximos Lançamentos" (mais simples) */
+.upcoming-title {
+  margin-bottom: 15px; /* Espaço abaixo do título */
+}
+
+/* Ajuste para o header de "Próximos" (alinhar com o título) */
+.upcoming-title.year-title { /* Seleciona o h3 que tem ambas as classes */
+   margin-bottom: 0; /* O header já dará espaço */
+}
+section.year-group:has(h3.upcoming-title) > .home-section-header {
+   padding-bottom: 10px; /* Mantém padding no header de 'Próximos' */
+   margin-bottom: 10px; /* Mantém margem no header de 'Próximos' */
+}
+section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
+   margin-bottom: 0; /* Título dentro do header não precisa de margem */
+   border: none;
 }
