@@ -250,6 +250,9 @@ function GameDetailPage() {
            </div>
         </aside>
       </div>
+      
+      <div id="disqus_thread" style={{ marginTop: '2rem' }}></div>
+
     </div>
   )
 }
