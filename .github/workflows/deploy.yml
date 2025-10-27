@@ -45,7 +45,7 @@ jobs:
         run: |
           mkdir -p "${{ env.PUBLISH_DIR }}"
           rsync -av --delete "${{ env.VITE_OUTPUT_DIR }}/" "${{ env.PUBLISH_DIR }}/"
-          cp curriculo.html discord.html discordlink.html download.html monitoria.html privacy.html terms.html test.html "${{ env.PUBLISH_DIR }}/"
+          find . -maxdepth 1 -type f \( -name 'discord.html' -o -name 'terms.html' -o -name 'test.html' -o -name 'download.html' -o -name 'discordlink.html' -o -name 'privacy.html' -o -name 'curriculo.html' \) -exec cp {} "${{ env.PUBLISH_DIR }}/" \;
 
       - name: Setup Pages
         id: pages
