@@ -17,7 +17,6 @@ function GameDetailPage() {
       
       setLoading(true);
       try {
-        // Query já foi atualizada no mockData.js
         const response = await fetch(`${baseURL}/items/games/${gameId}?${fieldsQuery}`);
         const data = await response.json();
         setGame(data.data); 
@@ -32,6 +31,88 @@ function GameDetailPage() {
     fetchGame();
   }, [gameId]);
 
+  // --- HOOK 2: Disqus Comments (Revised) ---
+  useEffect(() => {
+    // Check if data is ready
+    if (!game || loading) return; // Wait until game is loaded
+
+    // --- Define config function ---
+    const configureDisqus = () => {
+      const translation = game.translations.find(t => t.language === 'pt-BR') || game.translations[0];
+      // Define config for Disqus within this scope
+      window.disqus_config = function () {
+        this.page.url = window.location.href;
+        this.page.identifier = `game_${gameId}`;
+        this.page.title = translation.title || game.id;
+      };
+    };
+
+    // --- Function to load/reset Disqus ---
+    const loadDisqus = () => {
+      // Ensure the target div exists
+      if (!document.getElementById('disqus_thread')) {
+          console.warn("Disqus container 'disqus_thread' not found.");
+          return;
+      }
+
+      // Configure before resetting or loading
+      configureDisqus();
+
+      if (window.DISQUS) {
+        // If Disqus is already loaded, reset it
+        // Use a timeout to ensure reset happens after potential DOM updates
+        setTimeout(() => {
+            window.DISQUS.reset({
+              reload: true,
+              // config function is now global via window.disqus_config
+            });
+            console.log("Disqus reset executed.");
+        }, 0); // 0ms timeout pushes to end of event loop
+      } else {
+        // If Disqus script isn't loaded yet, load it
+        const script = document.createElement('script');
+        script.src = `https://chrisdbhr.disqus.com/embed.js`; // Use your actual shortname
+        script.setAttribute('data-timestamp', +new Date());
+        script.id = 'disqus-embed-script';
+        script.async = true; // Load asynchronously
+
+        // Use setTimeout to ensure body exists before appending
+        setTimeout(() => {
+          if (document.body) {
+            document.body.appendChild(script);
+            console.log("Disqus script appended.");
+          } else {
+            console.error("Disqus script could not be appended: document.body not found even after timeout.");
+          }
+        }, 0); // 0ms timeout
+      }
+    };
+
+    // --- Execute loading ---
+    loadDisqus();
+
+    // --- Cleanup function ---
+    return () => {
+      // Attempt to remove the script when dependencies change or component unmounts
+      // This helps prevent duplicate script loading issues
+      const scriptToRemove = document.getElementById('disqus-embed-script');
+      if (scriptToRemove && scriptToRemove.parentNode) {
+         // Check parentNode exists before trying removeChild
+         try {
+            scriptToRemove.parentNode.removeChild(scriptToRemove);
+            console.log("Disqus script removed on cleanup.");
+         } catch (e) {
+             console.warn("Could not remove Disqus script during cleanup:", e);
+         }
+      }
+      // Reset the global config variable if needed
+      // window.disqus_config = undefined;
+      // Note: DISQUS.reset handles most SPA cleanup, but removing the script adds robustness
+    };
+
+  }, [game, gameId, loading]);
+
+  // --- Conditional Returns (NOW AFTER ALL HOOKS) ---
   if (loading) {
     return <div className="page-content"><h2>Carregando...</h2></div>;
   }
@@ -58,8 +139,7 @@ function GameDetailPage() {
       if (videoUrl.hostname.includes('youtube.com')) {
         return `https://www.youtube.com/embed/${videoUrl.searchParams.get('v')}`;
       }
-      // Adicionar outros (Vimeo, etc) aqui se precisar
-      return url; // Retorna a URL original se não for YouTube
+      return url; 
     } catch (e) {
       return url;
     }
@@ -174,4 +254,4 @@ function GameDetailPage() {
   )
 }
 
-export default GameDetailPage
+export default GameDetailPage;

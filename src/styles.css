@@ -1178,3 +1178,49 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
    margin-bottom: 0; /* Título dentro do header não precisa de margem */
    border: none;
 }
+
+/* --- Estilos para Disqus --- */
+.disqus-container {
+  background-color: var(--color-dark); /* Fundo igual aos cards */
+  padding: 25px;
+  border-radius: var(--border-radius);
+  margin-top: 40px; /* Espaço acima dos comentários */
+}
+
+/* Tentativa de esconder elementos dentro do Iframe do Disqus */
+/* Pode ser necessário ajustar após inspecionar o Disqus carregado */
+#disqus_thread iframe {
+  /* Estilos para o iframe em si, se necessário */
+  border-radius: var(--border-radius); 
+}
+
+/* --- Regras para TENTAR esconder elementos DENTRO do iframe (podem não funcionar dependendo das permissões do iframe ou mudanças do Disqus) --- */
+/* Estas regras precisarão ser testadas e ajustadas inspecionando o Disqus REAL no seu site */
+
+/* Esconder cabeçalho e opções de ordenação (Exemplo) */
+#disqus_thread .thread__header, 
+#disqus_thread .nav-secondary {
+  display: none !important; 
+}
+
+/* Esconder reações (Exemplo) */
+#disqus_thread .reactions {
+   display: none !important;
+}
+
+/* Esconder caixa de "Recomendado" / Discovery (Exemplo) */
+#disqus_thread #discovery-container,
+#disqus_thread .discovery {
+  display: none !important;
+}
+
+/* Esconder botões de Compartilhar (Exemplo) */
+#disqus_thread .post-sharing {
+    display: none !important;
+}
+
+/* Ajustar cores se possível (Disqus tem temas, mas CSS pode sobrescrever) */
+/* Exemplo: Mudar cor de links dentro do Disqus */
+#disqus_thread a {
+  /* color: var(--color-purple) !important; */ /* Pode ou não funcionar */
+}
