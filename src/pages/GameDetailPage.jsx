@@ -183,6 +183,9 @@ function GameDetailPage() {
               {translation.synopsis}
             </ReactMarkdown>
           </div>
+
+          <div id="disqus_thread" style={{ marginTop: '2rem' }}></div>
+
         </div>
         
         <aside className="game-detail-sidebar">
@@ -250,9 +253,7 @@ function GameDetailPage() {
            </div>
         </aside>
       </div>
-      
-      <div id="disqus_thread" style={{ marginTop: '2rem' }}></div>
-
+    
     </div>
   )
 }

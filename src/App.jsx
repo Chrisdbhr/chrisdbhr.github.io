@@ -3,6 +3,8 @@ import { Routes, Route, Link } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import GameDetailPage from './pages/GameDetailPage'
 import ProfileSidebar from './components/ProfileSidebar'
+import BlogListPage from './pages/BlogListPage'
+import BlogPostPage from './pages/BlogPostPage'
 
 function App() {
   return (
@@ -10,7 +12,7 @@ function App() {
       <header className="main-header">
         <Link to="/" className="site-title-link">
           <h1>ChrisJogos</h1>
-          <span>Portfólio de Projetos</span>
+          <span>Portfólio de Projetos & Meu Blog</span>
         </Link>
       </header>
       
@@ -21,6 +23,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/game/:gameId" element={<GameDetailPage />} />
+            <Route path="/blog" element={<BlogListPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
           </Routes>
         </main>
       </div>

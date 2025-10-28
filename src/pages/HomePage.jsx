@@ -78,6 +78,10 @@ function HomePage() {
       <LauncherCTA />
       
       <div className="home-section">
+        <BlogFeed />
+      </div>
+
+      <div className="home-section">
         <div className="home-section-header">
           <h2>Meus Jogos e Projetos ({totalGameCount})</h2>
           {!loading && totalEngineStats.length > 0 && (
@@ -128,10 +132,6 @@ function HomePage() {
             </section>
           );
         })}
-      </div>
-      
-      <div className="home-section">
-        <BlogFeed />
       </div>
 
       <div className="home-contact-layout">

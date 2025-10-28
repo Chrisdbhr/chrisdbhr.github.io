@@ -2,22 +2,21 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com"
-// Esta é a URL correta para buscar a LISTA de posts
-const API_URL = `${DIRECTUS_URL}/items/blog_posts?fields=id,title,date_published,cover_image.id&filter[status][_eq]=published&sort=-date_published&limit=4`
+const API_URL = `${DIRECTUS_URL}/items/blog_posts?fields=id,title,date_published,cover_image.id&filter[status][_eq]=published&sort=-date_published`
 
-function BlogFeed() {
+function BlogListPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(API_URL); // <-- Busca a lista
+        const response = await fetch(API_URL);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
         
-        const feedPosts = data.data.map((item) => {
+        const allPosts = data.data.map((item) => {
           let imageUrl = null;
           if (item.cover_image) {
             imageUrl = `${DIRECTUS_URL}/assets/${item.cover_image.id}`;
@@ -25,12 +24,12 @@ function BlogFeed() {
 
           return {
             title: item.title || "Sem título",
-            link: `/blog/${item.id}`, // <-- Link interno
+            link: `/blog/${item.id}`,
             pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('pt-BR'),
             imageUrl: imageUrl,
           };
         });
-        setPosts(feedPosts);
+        setPosts(allPosts);
       } catch (error) {
         console.error("Erro ao buscar posts do blog:", error);
       } finally {
@@ -42,13 +41,14 @@ function BlogFeed() {
   }, []);
 
   return (
-    <div className="blog-feed-container">
-      <h3>Últimas do Blog</h3>
+    <div className="blog-list-page">
+      <h2>Blog</h2>
+      <p>Artigos e devlogs sobre meus projetos.</p>
+      
       {loading && <p>Carregando posts...</p>}
       
       <div className="blog-post-grid">
         {posts.map((post, index) => (
-          // Usando <Link> para navegação interna
           <Link 
             key={index} 
             to={post.link} 
@@ -68,12 +68,8 @@ function BlogFeed() {
           </Link>
         ))}
       </div>
-      
-      <Link to="/blog" className="button-secondary blog-view-all">
-        Ver todos os posts &rarr;
-      </Link>
     </div>
   )
 }
 
-export default BlogFeed
+export default BlogListPage
