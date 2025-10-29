@@ -2,14 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { getAssetUrl, getHashedColor } from '../mockData'
 import StarRating from './StarRating' // Importar o componente de estrelas
-
-const normalizeEngineName = (engine) => {
-  if (!engine) return 'Outro';
-  return engine
-    .replace(/[0-9]/g, '')
-    .replace(/Engine/gi, '')
-    .trim();
-};
+import { normalizeEngineName } from '../utils/textUtils';
 
 function GameCard({ game }) {
   const translation = game.translations.find(t => t.language === 'pt-BR') || game.translations[0] || { title: 'Título não disponível' }

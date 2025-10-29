@@ -5,16 +5,25 @@ import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
 import StarRating from '../components/StarRating'
+import InteractiveStarRating from '../components/InteractiveStarRating'
+import CommentSection from '../components/CommentSection'
+
+const DIRECTUS_URL = "https://cms.chrisjogos.com";
 
 function GameDetailPage() {
   const { gameId } = useParams()
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // State para a nota média (agora 0-5)
+  const [avgRating, setAvgRating] = useState(0);
+  const [ratingCount, setRatingCount] = useState(0);
+
   useEffect(() => {
+    if (!gameId) return;
+    
+    // --- 1. Busca os dados do Jogo ---
     const fetchGame = async () => {
-      if (!gameId) return;
-      
       setLoading(true);
       try {
         const response = await fetch(`${baseURL}/items/games/${gameId}?${fieldsQuery}`);
@@ -23,96 +32,42 @@ function GameDetailPage() {
       } catch (error) {
         console.error("Erro ao buscar o jogo:", error);
         setGame(null);
-      } finally {
-        setLoading(false);
+      }
+    };
+    
+    // --- 2. Busca a média de notas (0-5) ---
+    const fetchAvgRating = async () => {
+      const filter = `filter[related_game][id][_eq]=${gameId}`;
+      const aggregate = `aggregate[avg]=rating_value&aggregate[count]=id`;
+      
+      try {
+        const response = await fetch(`${DIRECTUS_URL}/items/ratings?${filter}&${aggregate}`);
+        const data = await response.json();
+        
+        if (data.data && data.data[0]) {
+          const stats = data.data[0];
+          setAvgRating(stats.avg.rating_value || 0); // Salva a nota média 0-5
+          setRatingCount(stats.count.id || 0);
+        }
+      } catch (error) {
+         console.warn("Não foi possível carregar a nota média:", error);
       }
     };
 
-    fetchGame();
+    // Roda ambas as buscas
+    const loadAllData = async () => {
+      setLoading(true);
+      await Promise.all([
+        fetchGame(),
+        fetchAvgRating()
+      ]);
+      setLoading(false);
+    }
+    
+    loadAllData();
+
   }, [gameId]);
 
-  // --- HOOK 2: Disqus Comments (Revised) ---
-  useEffect(() => {
-    // Check if data is ready
-    if (!game || loading) return; // Wait until game is loaded
-
-    // --- Define config function ---
-    const configureDisqus = () => {
-      const translation = game.translations.find(t => t.language === 'pt-BR') || game.translations[0];
-      // Define config for Disqus within this scope
-      window.disqus_config = function () {
-        this.page.url = window.location.href;
-        this.page.identifier = `game_${gameId}`;
-        this.page.title = translation.title || game.id;
-      };
-    };
-
-    // --- Function to load/reset Disqus ---
-    const loadDisqus = () => {
-      // Ensure the target div exists
-      if (!document.getElementById('disqus_thread')) {
-          console.warn("Disqus container 'disqus_thread' not found.");
-          return;
-      }
-
-      // Configure before resetting or loading
-      configureDisqus();
-
-      if (window.DISQUS) {
-        // If Disqus is already loaded, reset it
-        // Use a timeout to ensure reset happens after potential DOM updates
-        setTimeout(() => {
-            window.DISQUS.reset({
-              reload: true,
-              // config function is now global via window.disqus_config
-            });
-            console.log("Disqus reset executed.");
-        }, 0); // 0ms timeout pushes to end of event loop
-      } else {
-        // If Disqus script isn't loaded yet, load it
-        const script = document.createElement('script');
-        script.src = `https://chrisdbhr.disqus.com/embed.js`; // Use your actual shortname
-        script.setAttribute('data-timestamp', +new Date());
-        script.id = 'disqus-embed-script';
-        script.async = true; // Load asynchronously
-
-        // Use setTimeout to ensure body exists before appending
-        setTimeout(() => {
-          if (document.body) {
-            document.body.appendChild(script);
-            console.log("Disqus script appended.");
-          } else {
-            console.error("Disqus script could not be appended: document.body not found even after timeout.");
-          }
-        }, 0); // 0ms timeout
-      }
-    };
-
-    // --- Execute loading ---
-    loadDisqus();
-
-    // --- Cleanup function ---
-    return () => {
-      // Attempt to remove the script when dependencies change or component unmounts
-      // This helps prevent duplicate script loading issues
-      const scriptToRemove = document.getElementById('disqus-embed-script');
-      if (scriptToRemove && scriptToRemove.parentNode) {
-         // Check parentNode exists before trying removeChild
-         try {
-            scriptToRemove.parentNode.removeChild(scriptToRemove);
-            console.log("Disqus script removed on cleanup.");
-         } catch (e) {
-             console.warn("Could not remove Disqus script during cleanup:", e);
-         }
-      }
-      // Reset the global config variable if needed
-      // window.disqus_config = undefined;
-      // Note: DISQUS.reset handles most SPA cleanup, but removing the script adds robustness
-    };
-
-  }, [game, gameId, loading]);
-
-  // --- Conditional Returns (NOW AFTER ALL HOOKS) ---
   if (loading) {
     return <div className="page-content"><h2>Carregando...</h2></div>;
   }
@@ -130,8 +85,6 @@ function GameDetailPage() {
 
   const translation = game.translations.find(t => t.language === 'pt-BR') || game.translations[0];
 
-  // --- FUNÇÃO HELPER PARA TRAILER ---
-  // Converte 'watch?v=ID' para 'embed/ID'
   const getEmbedUrl = (url) => {
     if (!url) return null;
     try {
@@ -172,7 +125,6 @@ function GameDetailPage() {
             <ScreenshotGallery screenshots={game.screenshots} />
           )}
 
-          {/* Galeria vira secundária se o trailer existir */}
           {trailerEmbedUrl && game.screenshots.length > 0 && (
             <ScreenshotGallery screenshots={game.screenshots} />
           )}
@@ -183,9 +135,6 @@ function GameDetailPage() {
               {translation.synopsis}
             </ReactMarkdown>
           </div>
-
-          <div id="disqus_thread" style={{ marginTop: '2rem' }}></div>
-
         </div>
         
         <aside className="game-detail-sidebar">
@@ -226,9 +175,12 @@ function GameDetailPage() {
              <p><strong>Tempo de Jogo:</strong> {translation.playtime}</p>
              
              <div className="detail-rating-container">
-                <strong>Nota:</strong>
-                <StarRating rating={game.rating} />
+                <strong>Nota Média:</strong>
+                <StarRating rating={avgRating} /> {/* Passa a nota 0-5 */}
              </div>
+             <p style={{marginTop: '-0.5rem', fontSize: '0.9rem', color: 'var(--color-text-secondary)'}}>
+               ({(avgRating || 0).toFixed(1)} de 5) - {ratingCount} {ratingCount === 1 ? 'avaliação' : 'avaliações'}
+             </p>
 
              {translation.rating_quote && (
                 <blockquote className="rating-quote">
@@ -237,6 +189,10 @@ function GameDetailPage() {
              )}
           </div>
           
+          <div className="sidebar-info-box">
+            <InteractiveStarRating gameId={game.id} />
+          </div>
+
            <div className="sidebar-info-box">
              <h4>Tags</h4>
              <div className="game-detail-tags">
@@ -252,8 +208,12 @@ function GameDetailPage() {
              </div>
            </div>
         </aside>
+
+      <CommentSection relation={{ related_game: game.id }} />
+
       </div>
-    
+      
+
     </div>
   )
 }

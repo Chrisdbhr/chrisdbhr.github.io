@@ -52,3 +52,12 @@ export function extractToc(markdown) {
   }
   return headings;
 }
+
+export const normalizeEngineName = (engine) => {
+  if (!engine) return 'Outro';
+  
+  return engine
+    .replace(/[0-9.-]/g, '')
+    .replace(/Engine/gi, '')
+    .trim();
+};

@@ -3,12 +3,11 @@ import { useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
-import DisqusEmbed from '../components/DisqusEmbed'
 import TableOfContents from '../components/TableOfContents'
 import { getReadingTime, extractToc } from '../utils/textUtils'
+import CommentSection from '../components/CommentSection' 
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com"
-const DISQUS_SHORTNAME = "chrisdbhr"; 
 
 function BlogPostPage() {
   const { slug } = useParams();
@@ -59,12 +58,6 @@ function BlogPostPage() {
     
   const pubDate = new Date(post.date_published || Date.now()).toLocaleDateString('pt-BR');
 
-  const disqusConfig = {
-    url: window.location.href,
-    identifier: post.id,
-    title: post.title,
-  };
-
   return (
     <div className="blog-post-layout">
       <article className="blog-post-detail">
@@ -91,20 +84,16 @@ function BlogPostPage() {
         <div className="blog-post-body">
           <ReactMarkdown
             rehypePlugins={[
-              rehypeRaw, // Necessário para o widget da Steam
-              rehypeSlug // Necessário para o TOC
+              rehypeRaw, 
+              rehypeSlug 
             ]}
           >
             {post.content}
           </ReactMarkdown>
         </div>
         
-        <footer className="blog-post-comments">
-          <DisqusEmbed
-            shortname={DISQUS_SHORTNAME}
-            config={disqusConfig}
-          />
-        </footer>
+        <CommentSection relation={{ related_post: post.id }} />
+
       </article>
 
       <aside className="blog-post-sidebar-container">

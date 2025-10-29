@@ -5,14 +5,7 @@ import ContactForm from '../components/ContactForm'
 import { baseURL, fieldsQuery } from '../mockData'
 import LauncherCTA from '../components/LauncherCTA'
 import DiscordCTA from '../components/DiscordCTA'
-
-const normalizeEngineName = (engine) => {
-  if (!engine) return 'Outro';
-  return engine
-    .replace(/[0-9]/g, '')
-    .replace(/Engine/gi, '')
-    .trim();
-};
+import { normalizeEngineName } from '../utils/textUtils';
 
 const getEngineStats = (games) => {
   const stats = games.reduce((acc, game) => {

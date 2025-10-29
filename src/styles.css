@@ -1458,3 +1458,267 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   border-top: 1px solid var(--color-border);
   padding-top: 2rem;
 }
+
+/* --- Estilos da Seção de Comentários --- */
+.comment-section {
+  margin-top: 3rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 2rem;
+}
+
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+.comment-message {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+.comment-message.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #c62828;
+}
+.comment-message.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
+}
+
+.comment-list .comment-item {
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.5rem 0;
+}
+.comment-list .comment-item:last-child {
+  border-bottom: 0;
+}
+
+.comment-item strong {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.comment-item span {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+.comment-item p {
+  margin: 0.2rem 0 0 0;
+}
+
+/* --- Estilos de Autenticação --- */
+.auth-page {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+.auth-page h2 {
+  text-align: center;
+  margin-top: 0;
+}
+.auth-page p {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+.auth-page .button-primary {
+  width: 100%;
+}
+
+/* --- Estilos dos Componentes de Estrela --- */
+.star-rating {
+  display: flex;
+  align-items: center;
+  color: #f7b731; /* Cor dourada para estrelas */
+  font-size: 1.1rem;
+}
+.star-rating.static svg {
+  margin-right: 2px;
+}
+
+.star-rating-widget h4 {
+  margin-bottom: 0.5rem;
+}
+.star-rating-widget.interactive {
+  color: #f7b731;
+}
+.star-rating-widget .stars-container {
+  font-size: 1.5rem;
+  display: flex;
+  cursor: pointer;
+}
+.star-rating-widget .star-icon {
+  margin-right: 4px;
+  transition: transform 0.1s ease;
+}
+.star-rating-widget .star-icon:hover {
+  transform: scale(1.2);
+}
+.star-rating-widget .rating-display-text {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  height: 1.2em; /* Reserva espaço para não pular layout */
+  margin-top: 0.5rem;
+}
+
+/* --- Estilos do Cabeçalho --- */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem; /* Ajuste o padding conforme seu layout */
+  background-color: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-title-link {
+  text-decoration: none;
+}
+
+/* --- Estilos do Widget de Autenticação --- */
+.user-auth-widget {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Espaço entre os botões */
+}
+
+.user-auth-widget span {
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+/* Botões pequenos para o cabeçalho */
+.button-small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+/* Estiliza as páginas de Login e Registro */
+.auth-page {
+  max-width: 450px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: var(--color-dark); /* Variável correta */
+  border: 1px solid #333; /* Fallback */
+  border-radius: var(--border-radius);
+}
+.auth-page h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  color: var(--color-light);
+  border: none;
+  padding: 0;
+}
+.auth-page p {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--color-grey);
+}
+.auth-page .button-primary {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Estilo unificado para TODOS os grupos de formulário */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: var(--color-light);
+  margin-bottom: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Estilo unificado para TODOS os inputs e textareas */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #333; /* Fallback */
+  border-radius: var(--border-radius);
+  background-color: var(--color-darkest); /* Variável correta */
+  color: var(--color-light); /* Variável correta */
+  font-size: 1rem;
+  font-family: 'Crimson Pro', serif;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-purple);
+  box-shadow: 0 0 0 3px rgba(145, 70, 255, 0.3);
+}
+
+/* Corrige o formulário de comentário */
+.comment-form {
+  background-color: var(--color-dark); /* Variável correta */
+  border: 1px solid #333; /* Fallback */
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.comment-form h4 {
+  margin: 0 0 1.5rem 0;
+  font-weight: 600;
+}
+
+/* Remove regras duplicadas do formulário de contato */
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+  padding: 0.75rem 1rem; /* Padroniza o padding */
+}
+
+/* Mensagens de Erro/Sucesso */
+.comment-message {
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+}
+.comment-message.error {
+  background-color: #5c1f1f;
+  color: #ffacac;
+  border: 1px solid #c62828;
+}
+.comment-message.success {
+  background-color: #1e4620;
+  color: #b9f6ca;
+  border: 1px solid #2e7d32;
+}

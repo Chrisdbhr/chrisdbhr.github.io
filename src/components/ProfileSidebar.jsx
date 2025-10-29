@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router-dom';
 import { 
   FaGithub, FaSteam, FaEnvelope, 
   FaLinkedin, FaInstagram, FaYoutube, FaTiktok
@@ -9,13 +9,15 @@ const gravatarUrl = "https://www.gravatar.com/avatar/bc67d0d8223c77034223d024d9f
 function ProfileSidebar() {
   return (
     <aside className="profile-sidebar">
-      <img src={gravatarUrl} alt="Foto de Perfil" className="profile-avatar" />
+      <Link to="/"> 
+        <img src={gravatarUrl} alt="Foto de Perfil" className="profile-avatar" />
+      </Link>
       <h2 className="profile-name">Christopher Ravailhe</h2>
       <p className="profile-bio">
         Senior C# Developer & QA Tests Automation. Unity Specialist over 9 years of experience. Worked on +25 games for PC, Console & Mobile.
       </p>
 
-    <div className="profile-brand-block">
+      <div className="profile-brand-block">
         <h4>Minha Marca</h4>
         <a href="https://enigmaticcomma.com" target="_blank" rel="noopener noreferrer" className="profile-brand-card">
           <img src="/logo.png" alt="Enigmatic Comma Logo" className="brand-logo" />

@@ -1,10 +1,12 @@
-import React from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import GameDetailPage from './pages/GameDetailPage'
 import ProfileSidebar from './components/ProfileSidebar'
 import BlogListPage from './pages/BlogListPage'
 import BlogPostPage from './pages/BlogPostPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import UserAuthWidget from './components/UserAuthWidget'
 
 function App() {
   return (
@@ -12,8 +14,11 @@ function App() {
       <header className="main-header">
         <Link to="/" className="site-title-link">
           <h1>ChrisJogos</h1>
-          <span>Portfólio de Projetos & Meu Blog</span>
+          <span>Portfólio de Projetos & Blog</span>
         </Link>
+        
+        <UserAuthWidget /> 
+        
       </header>
       
       <div className="page-layout">
@@ -25,6 +30,8 @@ function App() {
             <Route path="/game/:gameId" element={<GameDetailPage />} />
             <Route path="/blog" element={<BlogListPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
         </main>
       </div>
