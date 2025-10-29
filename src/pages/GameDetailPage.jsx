@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { baseURL, fieldsQuery, getHashedColor } from '../mockData'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
@@ -14,6 +14,8 @@ function GameDetailPage() {
   const { gameId } = useParams()
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   // State para a nota média (agora 0-5)
   const [avgRating, setAvgRating] = useState(0);
@@ -46,7 +48,7 @@ function GameDetailPage() {
         
         if (data.data && data.data[0]) {
           const stats = data.data[0];
-          setAvgRating(stats.avg.rating_value || 0); // Salva a nota média 0-5
+          setAvgRating(parseFloat(stats.avg.rating_value) || 0); // Salva a nota média 0-5
           setRatingCount(stats.count.id || 0);
         }
       } catch (error) {
@@ -102,9 +104,9 @@ function GameDetailPage() {
 
   return (
     <div className="page-content game-detail-page fade-in">
-      <Link to="/" className="button-back">
+      <button onClick={() => navigate(-1)} className="button-back">
         &larr; Voltar
-      </Link>
+      </button>
 
       <h2 className="game-title">{translation.title}</h2>
       

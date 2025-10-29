@@ -23,7 +23,8 @@ function LoginPage() {
   return (
     <div className="auth-page">
       <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+        <h2>Login na Enigma Net</h2>
+        <p>Acesse sua conta para avaliar os jogos, comentar e futuramente sincronizar conquistas e cloud saves!</p>
         {error && <p className="comment-message error">{error}</p>}
         <div className="form-group">
           <label>Email</label>

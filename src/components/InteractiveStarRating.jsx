@@ -1,134 +1,197 @@
 import React, { useState, useEffect } from 'react';
-import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { FaRegStar, FaStar } from "react-icons/fa";
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com";
 
 function InteractiveStarRating({ gameId }) {
-  const { user, token, loading: authLoading } = useAuth();
+  const { user, token } = useAuth();
   
-  const [savedRating, setSavedRating] = useState(null); // Sua nota salva (1-5)
-  const [hoverRating, setHoverRating] = useState(null); // Onde o mouse está (1-5)
-  const [userRatingId, setUserRatingId] = useState(null); // O ID da sua avaliação
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentRating, setCurrentRating] = useState(0); 
+  const [hoverRating, setHoverRating] = useState(0);
+  const [existingRatingId, setExistingRatingId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
-  const displayRating = hoverRating || savedRating;
-  
-  // 1. Busca a avaliação *deste* usuário para *este* jogo
+  // 1. EFEITO DE CARREGAMENTO: Buscar a avaliação existente
   useEffect(() => {
-    if (authLoading || !user) {
-      setIsLoading(false);
+    if (!gameId || !user || !user.id || !token) {
+      setCurrentRating(0);
+      setExistingRatingId(null);
       return;
     }
 
     const fetchUserRating = async () => {
       setIsLoading(true);
-      const filter = `filter[owner][id][_eq]=${user.id}&filter[related_game][id][_eq]=${gameId}`;
-      const fields = 'id,rating_value';
+      setError(null); // Limpa erros antigos ao recarregar
+      
+      const filter = `filter[related_game][_eq]=${gameId}&filter[user_created][_eq]=${user.id}`;
+      const fields = "fields=id,rating_value";
       
       try {
         const response = await fetch(`${DIRECTUS_URL}/items/ratings?${filter}&${fields}`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { 'Authorization': `Bearer ${token}` }
         });
+        
+        // Se o token for inválido, o !response.ok será pego abaixo
+        if (!response.ok) throw new Error("Não foi possível buscar sua nota.");
+
         const data = await response.json();
         
         if (data.data && data.data.length > 0) {
-          setUserRatingId(data.data[0].id);
-          setSavedRating(data.data[0].rating_value);
+          const userRating = data.data[0];
+          setCurrentRating(userRating.rating_value);
+          setExistingRatingId(userRating.id);
         } else {
-          setSavedRating(null);
-          setUserRatingId(null);
+          setCurrentRating(0);
+          setExistingRatingId(null);
         }
       } catch (err) {
-        console.warn("Erro ao buscar nota do usuário:", err.message);
+        console.error("Erro ao buscar avaliação:", err);
+        // Não mostre o erro de "buscar" se o usuário deslogar, etc.
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchUserRating();
-  }, [user, gameId, token, authLoading]);
+  }, [gameId, user, token]);
 
-  // 2. Envia a avaliação (Cria NOVO ou Atualiza EXISTENTE)
-  const submitRating = async (ratingValue) => {
-    if (isSubmitting || !user) return;
-    setIsSubmitting(true);
+  // 2. FUNÇÃO DE ENVIO (POST ou PATCH)
+  const handleSubmitRating = async (ratingValue) => {
+    if (isLoading) return;
+
+    setIsLoading(true);
     setError(null);
-
-    const isUpdating = !!userRatingId;
-    const url = isUpdating 
-      ? `${DIRECTUS_URL}/items/ratings/${userRatingId}`
-      : `${DIRECTUS_URL}/items/ratings`;
-      
-    const method = isUpdating ? 'PATCH' : 'POST';
-
-    const body = {
-      rating_value: ratingValue,
-      related_game: gameId
-      // 'owner' é definido pelo token
-    };
+    setSuccessMessage(null);
 
     try {
-      const response = await fetch(url, {
+      let response;
+      const payload = {
+        rating_value: ratingValue,
+        related_game: gameId,
+      };
+
+      let url = `${DIRECTUS_URL}/items/ratings`;
+      let method = 'POST';
+
+      if (existingRatingId) {
+        // --- ATUALIZAR (PATCH) ---
+        url = `${DIRECTUS_URL}/items/ratings/${existingRatingId}?fields=id,rating_value`;
+        method = 'PATCH';
+      } else {
+        // --- CRIAR (POST) ---
+        url = `${DIRECTUS_URL}/items/ratings?fields=id,rating_value`;
+        method = 'POST';
+      }
+
+      response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(method === 'POST' ? payload : { rating_value: ratingValue })
       });
-      
-      const data = await response.json();
-      if (!data.data) throw new Error("Falha ao salvar nota.");
 
-      setSavedRating(data.data.rating_value);
-      setUserRatingId(data.data.id); 
+      // --- CORREÇÃO DE ERRO ---
+      if (!response.ok) {
+        let errorMessage = `Falha ao salvar: ${response.statusText}`;
+        try {
+          // Tenta ler o JSON de erro, se houver
+          const errData = await response.json();
+          errorMessage = errData.errors?.[0]?.message || errorMessage;
+        } catch (e) {
+          // Captura o erro 'Unexpected end of JSON' se a resposta de erro
+          // (ex: 401) estiver vazia.
+          console.error("A resposta de ERRO estava vazia:", e);
+          errorMessage = `Erro ${response.status}. Verifique se você está logado.`;
+        }
+        throw new Error(errorMessage);
+      }
       
+      // --- CORREÇÃO DE SUCESSO ---
+      // Verificamos o corpo ANTES de tentar ler o JSON
+      const responseClone = response.clone();
+      const responseText = await responseClone.text();
+
+      if (responseText) {
+        // O corpo tem conteúdo, podemos ler o JSON
+        const savedData = await response.json();
+        setCurrentRating(savedData.data.rating_value);
+        setExistingRatingId(savedData.data.id);
+        setSuccessMessage("Sua nota foi salva!");
+      } else {
+        // O corpo está VAZIO, mesmo sendo sucesso.
+        // Isso é 99% de certeza um problema de permissão de LEITURA no Directus.
+        setCurrentRating(ratingValue); // Atualiza o visual
+        setSuccessMessage("Nota salva!"); // Dá o feedback
+        
+        // Deixa um aviso técnico para você
+        const permError = "A nota foi salva, mas o Directus retornou um corpo vazio. Verifique as permissões de LEITURA (Read) para a role na coleção 'ratings'.";
+        console.warn(permError);
+        setError(permError); // Mostra o erro real
+      }
+
     } catch (err) {
+      console.error("Erro ao salvar avaliação:", err);
       setError(err.message);
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
-  if (authLoading || isLoading) return <p>Carregando avaliação...</p>;
-
+  // 3. RENDERIZAÇÃO
   if (!user) {
     return (
       <div className="star-rating-widget">
-        <p><Link to="/login">Faça login</Link> para avaliar.</p>
+        <h4>Avalie este jogo</h4>
+        <p className="rating-display-text">
+          <a href="/login">Faça login</a> para deixar sua nota.
+        </p>
       </div>
     );
   }
 
+  const stars = [1, 2, 3, 4, 5];
+  const displayText = {
+    0: "Deixe sua nota",
+    1: "Muito Ruim",
+    2: "Ruim",
+    3: "Ok",
+    4: "Bom",
+    5: "Excelente!"
+  };
+
   return (
     <div className="star-rating-widget interactive">
-      <h4>Sua Avaliação</h4>
-      <div className="stars-container" onMouseLeave={() => setHoverRating(null)}>
-        {[1, 2, 3, 4, 5].map((starValue) => {
-          let icon = displayRating >= starValue ? <FaStar /> : <FaRegStar />;
+      <h4>{existingRatingId ? "Mude sua nota" : "Deixe sua nota"}</h4>
+      <div 
+        className="stars-container" 
+        onMouseLeave={() => setHoverRating(0)}
+        style={{ opacity: isLoading ? 0.5 : 1 }}
+      >
+        {stars.map((starValue) => {
+          const ratingToShow = hoverRating || currentRating;
+          const StarIcon = starValue <= ratingToShow ? FaStar : FaRegStar;
 
           return (
-            <span
+            <StarIcon
               key={starValue}
               className="star-icon"
-              onMouseOver={() => setHoverRating(starValue)}
-              onClick={() => submitRating(starValue)}
-            >
-              {icon}
-            </span>
+              onClick={() => handleSubmitRating(starValue)}
+              onMouseEnter={() => setHoverRating(starValue)}
+            />
           );
         })}
       </div>
-      {displayRating && (
-        <p className="rating-display-text">
-          {isSubmitting ? "Salvando..." : `Sua nota: ${displayRating} / 5`}
-        </p>
-      )}
+      <p className="rating-display-text">
+        {displayText[hoverRating || currentRating]}
+      </p>
+
       {error && <p className="comment-message error">{error}</p>}
+      {successMessage && <p className="comment-message success">{successMessage}</p>}
     </div>
   );
 }

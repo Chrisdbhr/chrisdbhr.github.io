@@ -1524,27 +1524,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   margin: 0.2rem 0 0 0;
 }
 
-/* --- Estilos de Autenticação --- */
-.auth-page {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-}
-.auth-page h2 {
-  text-align: center;
-  margin-top: 0;
-}
-.auth-page p {
-  text-align: center;
-  margin-top: 1.5rem;
-}
-.auth-page .button-primary {
-  width: 100%;
-}
-
 /* --- Estilos dos Componentes de Estrela --- */
 .star-rating {
   display: flex;
@@ -1626,7 +1605,7 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .auth-page h2 {
   text-align: center;
   margin-top: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
   color: var(--color-light);
   border: none;
@@ -1634,7 +1613,8 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 }
 .auth-page p {
   text-align: center;
-  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  margin-top: 0.5rem;
   color: var(--color-grey);
 }
 .auth-page .button-primary {
@@ -1721,4 +1701,23 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   background-color: #1e4620;
   color: #b9f6ca;
   border: 1px solid #2e7d32;
+}
+
+.button-back {
+  /* --- ADICIONE ESTAS LINHAS --- */
+  background: none;     /* Remove o fundo cinza do botão */
+  border: none;         /* Remove a borda do botão */
+  padding: 0;           /* Remove o padding interno do botão */
+  font-family: inherit; /* Faz o botão usar a fonte do site */
+  cursor: pointer;      /* Mostra a "mãozinha" */
+
+  /* --- Suas linhas originais --- */
+  display: inline-block;
+  color: var(--color-grey);
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.button-back:hover {
+  color: var(--color-light);
 }

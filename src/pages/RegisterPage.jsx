@@ -24,7 +24,8 @@ function RegisterPage() {
   return (
     <div className="auth-page">
       <form onSubmit={handleSubmit}>
-        <h2>Registrar</h2>
+        <h2>Criar Conta na Enigma Net</h2>
+        <p>Crie sua conta para participar da comunidade.</p>
         {error && <p className="comment-message error">{error}</p>}
         
         <div className="form-group">

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+// 1. Importe o useLoaderData para receber os dados
+import { useLoaderData } from 'react-router-dom' 
 import GameCard from '../components/GameCard'
 import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
@@ -7,6 +9,8 @@ import LauncherCTA from '../components/LauncherCTA'
 import DiscordCTA from '../components/DiscordCTA'
 import { normalizeEngineName } from '../utils/textUtils';
 
+// --- FUNÇÕES HELPER ---
+// (Coloquei as funções que estavam no topo do seu arquivo aqui)
 const getEngineStats = (games) => {
   const stats = games.reduce((acc, game) => {
     const engineName = normalizeEngineName(game.engine);
@@ -16,55 +20,58 @@ const getEngineStats = (games) => {
   return Object.entries(stats).sort((a, b) => a[0].localeCompare(b[0]));
 };
 
-function HomePage() {
-  const [totalGames, setTotalGames] = useState([]);
-  const [unreleasedGames, setUnreleasedGames] = useState([]);
-  const [groupedReleasedGames, setGroupedReleasedGames] = useState({});
-  const [loading, setLoading] = useState(true);
+// 2. EXPORTE O SEU LOADER (que o main.jsx importa)
+export async function loader() {
+  const response = await fetch(`${baseURL}/items/games?${fieldsQuery}`);
+  const data = await response.json();
+  const totalGames = data.data;
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const response = await fetch(`${baseURL}/items/games?${fieldsQuery}`);
-        const data = await response.json();
-        
-        setTotalGames(data.data);
-        
-        const now = new Date();
-        
-        const futureGames = data.data
-          .filter(g => new Date(g.release_date) > now)
-          .sort((a, b) => new Date(a.release_date) - new Date(b.release_date)); 
+  // Toda a lógica que estava no seu useEffect/useState agora vive aqui
+  const now = new Date();
+  
+  const unreleasedGames = totalGames
+    .filter(g => new Date(g.release_date) > now)
+    .sort((a, b) => new Date(a.release_date) - new Date(b.release_date)); 
 
-        setUnreleasedGames(futureGames);
+  const pastGames = totalGames
+    .filter(g => new Date(g.release_date) <= now)
+    .sort((a, b) => new Date(b.release_date) - new Date(a.release_date)); 
 
-        const pastGames = data.data
-          .filter(g => new Date(g.release_date) <= now)
-          .sort((a, b) => new Date(b.release_date) - new Date(a.release_date)); 
-
-        const grouped = pastGames.reduce((acc, game) => {
-          const year = new Date(game.release_date).getFullYear();
-          if (!acc[year]) acc[year] = [];
-          acc[year].push(game);
-          return acc;
-        }, {});
-        
-        setGroupedReleasedGames(grouped);
-
-      } catch (error) {
-        console.error("Erro ao buscar os jogos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchGames();
-  }, []);
-
+  const groupedReleasedGames = pastGames.reduce((acc, game) => {
+    const year = new Date(game.release_date).getFullYear();
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(game);
+    return acc;
+  }, {});
+  
   const totalGameCount = totalGames.length;
   const totalEngineStats = getEngineStats(totalGames);
-  const sortedYears = Object.keys(groupedReleasedGames).sort((a, b) => b - a); 
+  const sortedYears = Object.keys(groupedReleasedGames).sort((a, b) => b - a);
+  
+  // O loader retorna um objeto com tudo que a página precisa
+  return { 
+    totalGames, 
+    unreleasedGames, 
+    groupedReleasedGames, 
+    totalGameCount, 
+    totalEngineStats, 
+    sortedYears 
+  };
+}
 
+// --- COMPONENTE PRINCIPAL ---
+function HomePage() {
+  // 3. Pegue os dados do loader. Sem loading, sem useEffect!
+  const {
+    totalGameCount,
+    totalEngineStats,
+    unreleasedGames,
+    groupedReleasedGames,
+    sortedYears
+  } = useLoaderData();
+
+  // 4. A página agora renderiza imediatamente com os dados.
+  //    (Removi o 'loading' e 'totalGames' do topo)
   return (
     <div className="page-content fade-in">
       
@@ -77,7 +84,7 @@ function HomePage() {
       <div className="home-section">
         <div className="home-section-header">
           <h2>Meus Jogos e Projetos ({totalGameCount})</h2>
-          {!loading && totalEngineStats.length > 0 && (
+          {totalEngineStats.length > 0 && (
             <div className="engine-stats-total">
               {totalEngineStats.map(([engine, count]) => (
                 <span key={engine} className="engine-stat-item">
@@ -88,9 +95,9 @@ function HomePage() {
           )}
         </div>
         
-        {loading && <p>Carregando jogos...</p>}
+        {/* O 'loading' se foi, o roteador cuida disso */}
 
-        {!loading && unreleasedGames.length > 0 && (
+        {unreleasedGames.length > 0 && (
           <section className="year-group">
             <h3 className="year-title upcoming-title">Próximos Lançamentos</h3>
             <div className="game-grid">
@@ -101,7 +108,7 @@ function HomePage() {
           </section>
         )}
         
-        {!loading && sortedYears.map((year) => {
+        {sortedYears.map((year) => {
           const yearGames = groupedReleasedGames[year];
           const yearEngineStats = getEngineStats(yearGames);
           return (

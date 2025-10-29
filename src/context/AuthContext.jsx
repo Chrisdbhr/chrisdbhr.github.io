@@ -37,28 +37,36 @@ function translateDirectusError(error) {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('auth_token'));
-  const [loading, setLoading] = useState(true);
+  
+  // O estado de 'loading' é necessário, mas não deve bloquear os children
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     if (token) {
       // Tenta buscar os dados do usuário com o token salvo
-      // ✨ CORREÇÃO 1: Adicionado ?fields=... para pedir nome e email
-      fetch(`${DIRECTUS_URL}/users/me?fields=first_name,email`, {
+      fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email`, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          // Se o token for inválido (ex: 401), força o logout
+          throw new Error("Token inválido");
+        }
+        return res.json();
+      })
       .then(data => {
         if (data.data) {
-          console.log("DADOS DO USUÁRIO RECEBIDOS:", userData.data);
           setUser(data.data);
         } else {
           // Token inválido/expirado
           setToken(null);
+          setUser(null);
           localStorage.removeItem('auth_token');
         }
       })
       .catch(() => {
         setToken(null);
+        setUser(null);
         localStorage.removeItem('auth_token');
       })
       .finally(() => setLoading(false));
@@ -82,13 +90,14 @@ export function AuthProvider({ children }) {
       localStorage.setItem('auth_token', new_token);
       
       // Busca os dados do usuário
-      // ✨ CORREÇÃO 2: Adicionado ?fields=... para pedir nome e email
-      const userResponse = await fetch(`${DIRECTUS_URL}/users/me?fields=first_name,email`, {
+      const userResponse = await fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email`, {
         headers: { Authorization: `Bearer ${new_token}` }
       });
       const userData = await userResponse.json();
-      console.log("DADOS DO USUÁRIO RECEBIDOS:", userData.data);
-      setUser(userData.data);
+      
+      if (userData.data) {
+        setUser(userData.data);
+      }
       return true;
     }
     
@@ -97,6 +106,8 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (email, password, first_name) => {
+    // NOTA: Esse ID é o seu ID de "Public" ou "Usuário" no Directus. 
+    // Se mudar lá, precisa mudar aqui.
     const DEFAULT_ROLE_ID = "4370253b-b47a-42a1-9a70-f0ec1cda7af6"; 
 
     const response = await fetch(`${DIRECTUS_URL}/users`, {
@@ -129,15 +140,21 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     token,
-    loading,
+    loading, // O 'loading' ainda pode ser útil para o UserAuthWidget
     login,
     register,
     logout
   };
 
+  //
+  // --- A CORREÇÃO FINAL ESTÁ AQUI ---
+  //
+  // O 'children' (que é o <RouterProvider />) DEVE ser renderizado
+  // IMEDIATAMENTE e INCONDICIONALMENTE para o ScrollRestoration funcionar.
+  //
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }
