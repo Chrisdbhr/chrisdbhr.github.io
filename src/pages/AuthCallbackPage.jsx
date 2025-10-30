@@ -1,30 +1,54 @@
 import React, { useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+const DIRECTUS_URL = "https://cms.chrisjogos.com";
+
+/**
+ * Atualiza o perfil do usuário (função "dispare e esqueça")
+ * Agora confia no cookie de sessão, não precisa mais de token.
+ */
+const updateUserData = (user) => {
+  if (user.description) {
+    return;
+  }
+  
+  const userData = {
+    language: navigator.language,
+    platform: navigator.platform,
+    userAgent: navigator.userAgent
+  };
+  const description = `Language: ${userData.language} | Platform: ${userData.platform} | UserAgent: ${userData.userAgent}`;
+
+  fetch(`${DIRECTUS_URL}/users/me`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ description: description })
+  }).catch(err => {
+    console.error("Falha ao atualizar dados do usuário:", err);
+  });
+};
+
+
 function AuthCallbackPage() {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { loginWithToken } = useAuth();
+  // Renomeamos para 'fetchUser' para clareza
+  const { fetchUser } = useAuth(); 
 
   useEffect(() => {
-    // 1. Pega o token que o Directus (agora) envia na URL
-    const token = searchParams.get('access_token');
-    
-    if (token) {
-      // 2. Usa a função do AuthContext para salvar o token e buscar o usuário
-      loginWithToken(token).then(() => {
-        // 3. Redireciona para a Home após logar
-        navigate('/');
-      });
-    } else {
-      // Se não houver token (ex: erro do Google), volta pra home
-      console.error("Callback de autenticação sem token.");
-      navigate('/');
-    }
-  }, [searchParams, loginWithToken, navigate]);
+    // Assim que a página carrega, o cookie do Google já foi definido.
+    // Nós apenas pedimos ao AuthContext para buscar os dados do usuário.
+    fetchUser().then((user) => {
+      if (user) {
+        // Se o usuário foi buscado, coletamos os dados extras
+        updateUserData(user);
+      }
+      // Logado ou não, mandamos para a home
+      navigate('/'); 
+    });
+  }, [fetchUser, navigate]);
 
-  // Mostra um "Carregando..." enquanto o processo ocorre
   return (
     <div className="auth-page">
       <h2>Autenticando...</h2>
