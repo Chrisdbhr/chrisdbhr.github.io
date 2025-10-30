@@ -19,7 +19,6 @@ import BlogListPage, { loader as blogListPageLoader } from './pages/BlogListPage
 import BlogPostPage from './pages/BlogPostPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
-import AuthCallbackPage from './pages/AuthCallbackPage.jsx';
 
 function ErrorBoundary() {
   let error = useRouteError();
@@ -43,13 +42,25 @@ const router = createBrowserRouter([
     ),
     errorElement: <ErrorBoundary />,
     children: [
-      { index: true, element: <HomePage />, loader: homePageLoader }, 
-      { path: "game/:gameId", element: <GameDetailPage /> },
-      { path: "blog", element: <BlogListPage />, loader: blogListPageLoader },
+      // CORREÇÃO: Anexa os loaders às rotas
+      { 
+        index: true, 
+        element: <HomePage />, 
+        loader: homePageLoader // Loader da Home
+      }, 
+      { 
+        path: "game/:gameId", 
+        element: <GameDetailPage /> 
+        // A página de detalhes continua buscando por si mesma, o que é bom
+      },
+      { 
+        path: "blog", 
+        element: <BlogListPage />, 
+        loader: blogListPageLoader // Loader da Blog List
+      },
       { path: "blog/:slug", element: <BlogPostPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
-      { path: "auth/callback", element: <AuthCallbackPage /> } 
     ]
   },
 ]);

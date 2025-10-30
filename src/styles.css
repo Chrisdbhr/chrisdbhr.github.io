@@ -1721,36 +1721,3 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .button-back:hover {
   color: var(--color-light);
 }
-
-/* Estilo para o botão do Google */
-.button-google {
-  display: flex !important; /* Força o flex */
-  align-items: center;
-  justify-content: center;
-  background-color: #4285F4 !important;
-  color: #fff !important;
-  width: 100%;
-}
-.button-google:hover {
-  background-color: #357ae8 !important;
-}
-
-/* Divisor "ou" */
-.auth-divider {
-  text-align: center;
-  margin: 1.5rem 0 !important;
-  color: var(--color-grey);
-  position: relative;
-}
-.auth-divider::before,
-.auth-divider::after {
-  content: '';
-  display: block;
-  width: 40%;
-  height: 1px;
-  background-color: #333;
-  position: absolute;
-  top: 50%;
-}
-.auth-divider::before { left: 0; }
-.auth-divider::after { right: 0; }

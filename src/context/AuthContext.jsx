@@ -16,97 +16,103 @@ function translateDirectusError(error) {
   const code = error.extensions?.code;
   const field = error.extensions?.field;
 
+  // Erros de Registro (Register)
   if (field === 'password' && (code === 'INVALID_FORMAT' || code === 'FAILED_VALIDATION')) {
     return "Senha inválida. Sua senha deve ter pelo menos 8 caracteres.";
   }
   if (code === 'RECORD_NOT_UNIQUE' && field === 'email') {
     return "Este email já está cadastrado. Tente fazer login.";
   }
+  
+  // Erros de Login
   if (code === 'INVALID_CREDENTIALS') {
     return "Email ou senha incorretos.";
   }
 
+  // Fallback para qualquer outro erro
   console.error("Erro do Directus não traduzido:", error);
   return error.message || "Ocorreu um erro. Tente novamente.";
 }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem('auth_token'));
+  
+  // O estado de 'loading' é necessário, mas não deve bloquear os children
+  const [loading, setLoading] = useState(true); 
 
-  /**
-   * Nova função que busca o usuário confiando no cookie de sessão.
-   * Ela será usada no login, no registro e no carregamento da página.
-   */
-  const fetchUser = async () => {
-    try {
-      const response = await fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email,description`, {
-        // A MÁGICA: Envia o cookie de sessão junto com a requisição
-        credentials: 'include' 
-      });
-
-      if (!response.ok) throw new Error("Sessão não encontrada ou expirada.");
-      
-      const data = await response.json();
-      if (data.data) {
-        setUser(data.data);
-        return data.data; // Retorna o usuário
-      } else {
-        throw new Error("Não foi possível buscar os dados do usuário.");
-      }
-    } catch (error) {
-      setUser(null);
-      return null;
-    }
-  };
-
-  /**
-   * Tenta buscar o usuário ao carregar o app.
-   * Se o cookie de sessão ainda for válido, o usuário será logado.
-   */
   useEffect(() => {
-    fetchUser().finally(() => setLoading(false));
-  }, []);
+    if (token) {
+      // Tenta buscar os dados do usuário com o token salvo
+      fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        if (!res.ok) {
+          // Se o token for inválido (ex: 401), força o logout
+          throw new Error("Token inválido");
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data.data) {
+          setUser(data.data);
+        } else {
+          // Token inválido/expirado
+          setToken(null);
+          setUser(null);
+          localStorage.removeItem('auth_token');
+        }
+      })
+      .catch(() => {
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem('auth_token');
+      })
+      .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [token]);
 
   const login = async (email, password) => {
     const response = await fetch(`${DIRECTUS_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password, mode: 'json' })
     });
     
-    // Se a resposta NÃO foi OK (ex: 401 Invalid Credentials)
-    if (!response.ok) {
-      const data = await response.json();
-      const firstError = data.errors?.[0];
-      throw new Error(translateDirectusError(firstError));
-    }
-
-    // Se a resposta foi OK (ex: 204 No Content), o cookie foi definido.
-    // Não tente ler response.json() de uma resposta vazia.
+    const data = await response.json();
     
-    // Agora buscamos os dados do usuário.
-    const user = await fetchUser(); 
-    
-    // Se o fetchUser retornou um usuário, sucesso.
-    if (user) {
+    if (data.data && data.data.access_token) {
+      const new_token = data.data.access_token;
+      setToken(new_token);
+      localStorage.setItem('auth_token', new_token);
+      
+      // Busca os dados do usuário
+      const userResponse = await fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email`, {
+        headers: { Authorization: `Bearer ${new_token}` }
+      });
+      const userData = await userResponse.json();
+      
+      if (userData.data) {
+        setUser(userData.data);
+      }
       return true;
     }
-
-    // Se o usuário é nulo, o fetchUser falhou (o 401 que você está vendo).
-    // Isso é causado pelo problema de CORS.
-    throw new Error("Login bem-sucedido, mas falha ao buscar dados do usuário. Verifique o CORS do servidor.");
+    
+    const firstError = data.errors?.[0];
+    throw new Error(translateDirectusError(firstError));
   };
-  
+
   const register = async (email, password, first_name) => {
-    // ATENÇÃO: Verifique se este ID é o mesmo do seu docker-compose!
+    // NOTA: Esse ID é o seu ID de "Public" ou "Usuário" no Directus. 
+    // Se mudar lá, precisa mudar aqui.
     const DEFAULT_ROLE_ID = "4370253b-b47a-42a1-9a70-f0ec1cda7af6"; 
 
     const response = await fetch(`${DIRECTUS_URL}/users`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      // Não precisa de 'credentials' aqui, pois é um endpoint público
       body: JSON.stringify({
         first_name: first_name,
         email: email,
@@ -116,7 +122,7 @@ export function AuthProvider({ children }) {
     });
     
     if (response.ok) {
-      // Se registrou, faz o login para criar a sessão
+      // Sucesso, agora faz login
       return await login(email, password);
     } else {
       const errorData = await response.json();
@@ -125,24 +131,27 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = async () => {
-    // Invalida a sessão no servidor
-    await fetch(`${DIRECTUS_URL}/auth/logout`, {
-      method: 'POST',
-      credentials: 'include'
-    });
+  const logout = () => {
     setUser(null);
+    setToken(null);
+    localStorage.removeItem('auth_token');
   };
 
   const value = {
     user,
-    loading,
+    token,
+    loading, // O 'loading' ainda pode ser útil para o UserAuthWidget
     login,
     register,
-    logout,
-    fetchUser
+    logout
   };
 
+  //
+  // --- A CORREÇÃO FINAL ESTÁ AQUI ---
+  //
+  // O 'children' (que é o <RouterProvider />) DEVE ser renderizado
+  // IMEDIATAMENTE e INCONDICIONALMENTE para o ScrollRestoration funcionar.
+  //
   return (
     <AuthContext.Provider value={value}>
       {children}
