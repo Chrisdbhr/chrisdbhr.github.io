@@ -16,20 +16,16 @@ function translateDirectusError(error) {
   const code = error.extensions?.code;
   const field = error.extensions?.field;
 
-  // Erros de Registro (Register)
   if (field === 'password' && (code === 'INVALID_FORMAT' || code === 'FAILED_VALIDATION')) {
     return "Senha inválida. Sua senha deve ter pelo menos 8 caracteres.";
   }
   if (code === 'RECORD_NOT_UNIQUE' && field === 'email') {
     return "Este email já está cadastrado. Tente fazer login.";
   }
-  
-  // Erros de Login
   if (code === 'INVALID_CREDENTIALS') {
     return "Email ou senha incorretos.";
   }
 
-  // Fallback para qualquer outro erro
   console.error("Erro do Directus não traduzido:", error);
   return error.message || "Ocorreu um erro. Tente novamente.";
 }
@@ -42,7 +38,6 @@ export function AuthProvider({ children }) {
   // Função helper para buscar dados do usuário com um token
   const fetchUserWithToken = async (token) => {
     try {
-      // Pedimos 'id', 'first_name', 'email'
       const response = await fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -55,20 +50,22 @@ export function AuthProvider({ children }) {
         throw new Error("Não foi possível buscar os dados do usuário.");
       }
     } catch (error) {
-      // Se falhar, limpa tudo
       setUser(null);
       setToken(null);
       localStorage.removeItem('auth_token');
     }
   };
 
+  // Ao carregar, verifica se há um token no localStorage e busca o usuário
   useEffect(() => {
     if (token) {
       fetchUserWithToken(token).finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
-  }, [token]); // 'token' não é mais dependência para evitar loop
+    // Roda apenas uma vez na montagem, com base no token inicial
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
+  }, []); 
 
   const login = async (email, password) => {
     const response = await fetch(`${DIRECTUS_URL}/auth/login`, {
@@ -81,11 +78,9 @@ export function AuthProvider({ children }) {
     
     if (data.data && data.data.access_token) {
       const new_token = data.data.access_token;
-      // Salva o token e deixa o useEffect buscar o usuário
       setToken(new_token);
       localStorage.setItem('auth_token', new_token);
-      // Busca o usuário imediatamente
-      await fetchUserWithToken(new_token);
+      await fetchUserWithToken(new_token); // Busca o usuário imediatamente
       return true;
     }
     
@@ -93,7 +88,7 @@ export function AuthProvider({ children }) {
     throw new Error(translateDirectusError(firstError));
   };
 
-  // Esta função é chamada pela nossa página de callback
+  // Função chamada pela AuthCallbackPage
   const loginWithToken = async (newToken) => {
     if (newToken) {
       setLoading(true);
@@ -121,7 +116,7 @@ export function AuthProvider({ children }) {
     if (response.ok) {
       return await login(email, password);
     } else {
-      const errorData = await response.json();
+  	  const errorData = await response.json();
       const firstError = errorData.errors?.[0];
       throw new Error(translateDirectusError(firstError));
     }
@@ -132,7 +127,7 @@ export function AuthProvider({ children }) {
     setToken(null);
     localStorage.removeItem('auth_token');
   };
-
+  
   const value = {
     user,
     token,
@@ -140,12 +135,12 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
-    loginWithToken // <-- Adicionada ao contexto
+    loginWithToken // <-- Essencial para o OAuth
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && children} 
     </AuthContext.Provider>
   );
 }

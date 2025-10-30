@@ -8,12 +8,13 @@ function AuthCallbackPage() {
   const { loginWithToken } = useAuth();
 
   useEffect(() => {
+    // 1. Pega o token que o Directus (agora) envia na URL
     const token = searchParams.get('access_token');
     
     if (token) {
-      // Usamos a nova função do AuthContext
+      // 2. Usa a função do AuthContext para salvar o token e buscar o usuário
       loginWithToken(token).then(() => {
-        // Redireciona para a Home após logar
+        // 3. Redireciona para a Home após logar
         navigate('/');
       });
     } else {
