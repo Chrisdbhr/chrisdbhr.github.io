@@ -26,7 +26,7 @@ function ErrorBoundary() {
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
       <h2>Oops! Algo deu errado.</h2>
-      <p>{error.message || "Ocorreu um erro inesperado."}</p>
+      <p>{error.message || "Parece que o Chris subiu algo pra testar em produção e quebrou tudo kkkk"}</p>
     </div>
   );
 }
