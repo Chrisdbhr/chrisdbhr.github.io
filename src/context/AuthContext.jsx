@@ -37,43 +37,38 @@ function translateDirectusError(error) {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('auth_token'));
-  
-  // O estado de 'loading' é necessário, mas não deve bloquear os children
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+
+  // Função helper para buscar dados do usuário com um token
+  const fetchUserWithToken = async (token) => {
+    try {
+      // Pedimos 'id', 'first_name', 'email'
+      const response = await fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error("Token inválido");
+      
+      const data = await response.json();
+      if (data.data) {
+        setUser(data.data);
+      } else {
+        throw new Error("Não foi possível buscar os dados do usuário.");
+      }
+    } catch (error) {
+      // Se falhar, limpa tudo
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem('auth_token');
+    }
+  };
 
   useEffect(() => {
     if (token) {
-      // Tenta buscar os dados do usuário com o token salvo
-      fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(res => {
-        if (!res.ok) {
-          // Se o token for inválido (ex: 401), força o logout
-          throw new Error("Token inválido");
-        }
-        return res.json();
-      })
-      .then(data => {
-        if (data.data) {
-          setUser(data.data);
-        } else {
-          // Token inválido/expirado
-          setToken(null);
-          setUser(null);
-          localStorage.removeItem('auth_token');
-        }
-      })
-      .catch(() => {
-        setToken(null);
-        setUser(null);
-        localStorage.removeItem('auth_token');
-      })
-      .finally(() => setLoading(false));
+      fetchUserWithToken(token).finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
-  }, [token]);
+  }, [token]); // 'token' não é mais dependência para evitar loop
 
   const login = async (email, password) => {
     const response = await fetch(`${DIRECTUS_URL}/auth/login`, {
@@ -86,18 +81,11 @@ export function AuthProvider({ children }) {
     
     if (data.data && data.data.access_token) {
       const new_token = data.data.access_token;
+      // Salva o token e deixa o useEffect buscar o usuário
       setToken(new_token);
       localStorage.setItem('auth_token', new_token);
-      
-      // Busca os dados do usuário
-      const userResponse = await fetch(`${DIRECTUS_URL}/users/me?fields=id,first_name,email`, {
-        headers: { Authorization: `Bearer ${new_token}` }
-      });
-      const userData = await userResponse.json();
-      
-      if (userData.data) {
-        setUser(userData.data);
-      }
+      // Busca o usuário imediatamente
+      await fetchUserWithToken(new_token);
       return true;
     }
     
@@ -105,9 +93,18 @@ export function AuthProvider({ children }) {
     throw new Error(translateDirectusError(firstError));
   };
 
+  // Esta função é chamada pela nossa página de callback
+  const loginWithToken = async (newToken) => {
+    if (newToken) {
+      setLoading(true);
+      setToken(newToken);
+      localStorage.setItem('auth_token', newToken);
+      await fetchUserWithToken(newToken);
+      setLoading(false);
+    }
+  };
+
   const register = async (email, password, first_name) => {
-    // NOTA: Esse ID é o seu ID de "Public" ou "Usuário" no Directus. 
-    // Se mudar lá, precisa mudar aqui.
     const DEFAULT_ROLE_ID = "4370253b-b47a-42a1-9a70-f0ec1cda7af6"; 
 
     const response = await fetch(`${DIRECTUS_URL}/users`, {
@@ -122,7 +119,6 @@ export function AuthProvider({ children }) {
     });
     
     if (response.ok) {
-      // Sucesso, agora faz login
       return await login(email, password);
     } else {
       const errorData = await response.json();
@@ -140,18 +136,13 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     token,
-    loading, // O 'loading' ainda pode ser útil para o UserAuthWidget
+    loading,
     login,
     register,
-    logout
+    logout,
+    loginWithToken // <-- Adicionada ao contexto
   };
 
-  //
-  // --- A CORREÇÃO FINAL ESTÁ AQUI ---
-  //
-  // O 'children' (que é o <RouterProvider />) DEVE ser renderizado
-  // IMEDIATAMENTE e INCONDICIONALMENTE para o ScrollRestoration funcionar.
-  //
   return (
     <AuthContext.Provider value={value}>
       {children}
