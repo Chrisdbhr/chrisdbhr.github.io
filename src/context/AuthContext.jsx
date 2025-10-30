@@ -69,29 +69,36 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    // 1. Faz o login (sem mode=json)
     const response = await fetch(`${DIRECTUS_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      // credentials: 'include' é necessário para o Directus *definir* o cookie
       credentials: 'include',
-      body: JSON.stringify({ email, password }) // removido mode: 'json'
+      body: JSON.stringify({ email, password })
     });
     
-    const data = await response.json();
+    // Se a resposta NÃO foi OK (ex: 401 Invalid Credentials)
+    if (!response.ok) {
+      const data = await response.json();
+      const firstError = data.errors?.[0];
+      throw new Error(translateDirectusError(firstError));
+    }
+
+    // Se a resposta foi OK (ex: 204 No Content), o cookie foi definido.
+    // Não tente ler response.json() de uma resposta vazia.
     
-    if (response.ok) {
-      // 2. Se o login deu certo, o cookie foi definido.
-      // Agora buscamos os dados do usuário.
-      await fetchUser(); 
+    // Agora buscamos os dados do usuário.
+    const user = await fetchUser(); 
+    
+    // Se o fetchUser retornou um usuário, sucesso.
+    if (user) {
       return true;
     }
-    
-    // Se falhou, traduz o erro
-    const firstError = data.errors?.[0];
-    throw new Error(translateDirectusError(firstError));
-  };
 
+    // Se o usuário é nulo, o fetchUser falhou (o 401 que você está vendo).
+    // Isso é causado pelo problema de CORS.
+    throw new Error("Login bem-sucedido, mas falha ao buscar dados do usuário. Verifique o CORS do servidor.");
+  };
+  
   const register = async (email, password, first_name) => {
     // ATENÇÃO: Verifique se este ID é o mesmo do seu docker-compose!
     const DEFAULT_ROLE_ID = "4370253b-b47a-42a1-9a70-f0ec1cda7af6"; 
