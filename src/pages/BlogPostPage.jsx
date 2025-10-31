@@ -44,11 +44,21 @@ function BlogPostPage() {
   }, [slug]);
 
   if (loading) {
-    return <p>Carregando post...</p>;
+    return (
+      <>
+        <title>Carregando Post... - ChrisJogos</title>
+        <p>Carregando post...</p>
+      </>
+    );
   }
-
+  
   if (!post) {
-    return <p>Post não encontrado.</p>;
+    return (
+      <>
+        <title>Post Não Encontrado - ChrisJogos</title>
+        <p>Post não encontrado.</p>
+      </>
+    );
   }
 
   const imageUrl = post.cover_image 
@@ -57,8 +67,28 @@ function BlogPostPage() {
     
   const pubDate = new Date(post.date_published || Date.now()).toLocaleDateString('pt-BR');
 
+  const description = post.content
+    ? post.content.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
+    : "Leia este post no blog ChrisJogos.";
+
   return (
     <div className="blog-post-layout">
+      
+      <title>{`${post.title} - ChrisJogos`}</title>
+      <meta name="description" content={description} />
+      
+      {/* Open Graph (para Discord, Facebook, etc.) */}
+      <meta property="og:title" content={post.title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:type" content="article" />
+      {imageUrl && <meta property="og:image" content={imageUrl} />}
+      
+      {/* Twitter Cards (para o Twitter) */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={post.title} />
+      <meta name="twitter:description" content={description} />
+      {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+
       <article className="blog-post-detail">
         <header className="blog-post-header">
           <h1>{post.title}</h1>

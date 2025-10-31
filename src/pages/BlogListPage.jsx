@@ -36,32 +36,39 @@ function BlogListPage() {
   const posts = useLoaderData();
 
   return (
-    <div className="blog-list-page">
-      <h2>Blog</h2>
-      <p>Artigos e devlogs sobre meus projetos.</p>
+    <>
+      <title>Blog - ChrisJogos</title>
+      <meta name="description" content="Artigos e devlogs sobre meus projetos de jogos." />
+      <meta property="og:title" content="Blog - ChrisJogos" />
+      <meta property="og:description" content="Artigos e devlogs sobre meus projetos de jogos." />
       
-      <div className="blog-post-grid">
-        {posts.map((post, index) => (
-          <Link 
-            key={index} 
-            to={post.link} 
-            className="blog-post-card"
-          >
-            <div className="blog-post-image-container">
-              {post.imageUrl ? (
-                <img src={post.imageUrl} alt={`Capa de ${post.title}`} />
-              ) : (
-                <div className="blog-post-image-placeholder"></div>
-              )}
-            </div>
-            <div className="blog-post-content">
-              <h4>{post.title}</h4>
-              <span className="blog-post-date">{post.pubDate}</span>
-            </div>
-          </Link>
-        ))}
+      <div className="blog-list-page">
+        <h2>Blog</h2>
+        <p>Artigos e devlogs sobre meus projetos.</p>
+        
+        <div className="blog-post-grid">
+          {posts.map((post, index) => (
+            <Link 
+              key={index} 
+              to={post.link} 
+              className="blog-post-card"
+            >
+              <div className="blog-post-image-container">
+                {post.imageUrl ? (
+                  <img src={post.imageUrl} alt={`Capa de ${post.title}`} />
+                ) : (
+                  <div className="blog-post-image-placeholder"></div>
+                )}
+              </div>
+              <div className="blog-post-content">
+                <h4>{post.title}</h4>
+                <span className="blog-post-date">{post.pubDate}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
