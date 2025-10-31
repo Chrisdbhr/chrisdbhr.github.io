@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { getAssetUrl, getHashedColor } from '../mockData'
-import StarRating from './StarRating' // Importar o componente de estrelas
 import { normalizeEngineName } from '../utils/textUtils';
 
 function GameCard({ game }) {
@@ -34,8 +33,6 @@ function GameCard({ game }) {
           <div className="game-card-image-placeholder">Sem Imagem</div>
         )}
         
-        {/* A TAG FOI REMOVIDA DAQUI */}
-        
         {isUnreleased && (
           <div className="unreleased-banner">Em Breve</div>
         )}
@@ -53,7 +50,9 @@ function GameCard({ game }) {
             <span 
               key={tag.tags_id} 
               className="game-tag"
-              style={{ backgroundColor: getHashedColor(tag.tags_id) }}
+              style={{ 
+                backgroundColor: getHashedColor(tag.tags_id),
+              }}
             >
               {tag.tags_id}
             </span>
@@ -63,14 +62,15 @@ function GameCard({ game }) {
         {/* --- FOOTER ATUALIZADO --- */}
         <div className="game-card-footer">
           <div className="game-card-footer-left">
-            {/* TAG MOVIDA PARA CÁ */}
             <span 
-              className="game-tag"
-              style={{ backgroundColor: getHashedColor(projectType) }}
+              className="game-tag-outline"
+              style={{ 
+                borderColor: getHashedColor(projectType),
+                color: getHashedColor(projectType) 
+              }}
             >
               {projectType}
             </span>
-            <StarRating rating={game.rating} />
           </div>
           
           {game.engine && (

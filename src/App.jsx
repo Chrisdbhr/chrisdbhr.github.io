@@ -1,6 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
 import ProfileSidebar from './components/ProfileSidebar';
-import UserAuthWidget from './components/UserAuthWidget';
 
 function App() {
   return (
@@ -10,7 +9,6 @@ function App() {
           <h1>ChrisJogos</h1>
           <span>Portfólio de Projetos & Blog</span>
         </Link>
-        <UserAuthWidget />
       </header>
 
       <div className="page-layout">

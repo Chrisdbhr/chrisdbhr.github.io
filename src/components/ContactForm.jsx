@@ -1,35 +1,44 @@
-import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext'; // Importe o Auth
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com";
 
 function ContactForm() {
-  const { user, token } = useAuth(); // Use o Auth
+  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
+  // Efeito para buscar o email salvo no localStorage
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('contactEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!message || !user) return;
+    if (!message || !email) {
+      setError("Por favor, preencha o email e a mensagem.");
+      return;
+    }
 
     setSubmitting(true);
     setError(null);
     setSuccess(null);
 
     const body = {
+      email: email,
       message: message,
-      // 'owner' será pego pelo token
     };
 
     try {
+      // API pública, sem token de autorização
       const response = await fetch(`${DIRECTUS_URL}/items/contact_messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(body),
       });
@@ -39,7 +48,8 @@ function ContactForm() {
       }
       
       setSuccess("Mensagem enviada com sucesso! Responderei assim que possível.");
-      setMessage('');
+      setMessage(''); // Limpa a mensagem
+      localStorage.setItem('contactEmail', email); // Salva o email
       
     } catch (err) {
       setError(err.message);
@@ -51,34 +61,39 @@ function ContactForm() {
   return (
     <div className="contact-form-container">
       <h3>Fale Comigo</h3>
+      <p>Envie sua mensagem diretamente para mim. Responderei no email fornecido assim que possível.</p>
 
-      {user ? (
-        <form onSubmit={handleSubmit} className="contact-form">
-          <p>Enviando como <strong>{user.first_name}</strong> ({user.email}).</p>
+      <form onSubmit={handleSubmit} className="contact-form">
+        {error && <p className="comment-message error">{error}</p>}
+        {success && <p className="comment-message success">{success}</p>}
 
-          {error && <p className="comment-message error">{error}</p>}
-          {success && <p className="comment-message success">{success}</p>}
-
-          <div className="form-group">
-            <label htmlFor="message">Sua Mensagem</label>
-            <textarea
-              id="message"
-              rows="6"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              disabled={submitting}
-              required
-            ></textarea>
-          </div>
-          <button type="submit" className="button-primary" disabled={submitting}>
-            {submitting ? "Enviando..." : "Enviar Mensagem"}
-          </button>
-        </form>
-      ) : (
-        <div className="comment-form" style={{ textAlign: 'center' }}>
-          <p>Você precisa <Link to="/login">fazer login</Link> para enviar uma mensagem.</p>
+        <div className="form-group">
+          <label htmlFor="email">Seu Email</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={submitting}
+            required
+          />
         </div>
-      )}
+
+        <div className="form-group">
+          <label htmlFor="message">Sua Mensagem</label>
+          <textarea
+            id="message"
+            rows="6"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            disabled={submitting}
+            required
+          ></textarea>
+        </div>
+        <button type="submit" className="button-primary" disabled={submitting}>
+          {submitting ? "Enviando..." : "Enviar Mensagem"}
+        </button>
+      </form>
     </div>
   );
 }

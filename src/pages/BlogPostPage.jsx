@@ -5,7 +5,6 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import TableOfContents from '../components/TableOfContents'
 import { getReadingTime, extractToc } from '../utils/textUtils'
-import CommentSection from '../components/CommentSection' 
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com"
 
@@ -92,8 +91,6 @@ function BlogPostPage() {
           </ReactMarkdown>
         </div>
         
-        <CommentSection relation={{ related_post: post.id }} />
-
       </article>
 
       <aside className="blog-post-sidebar-container">

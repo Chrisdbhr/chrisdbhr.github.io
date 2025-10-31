@@ -549,10 +549,19 @@ img {
 /* --- Responsividade (Ajustes) --- */
 @media (max-width: 900px) {
   .page-layout {
-    grid-template-columns: 1fr; /* Coluna única */
+    /* Mude para flex para poder reordenar */
+    display: flex;
+    flex-direction: column;
   }
+  
+  .main-content-area {
+    order: 1; /* Conteúdo principal vem primeiro */
+  }
+
   .profile-sidebar {
+    order: 2; /* Sidebar de perfil vem por último */
     position: static; /* Remove o sticky */
+    margin-top: 30px; /* Espaço acima da sidebar no mobile */
     margin-bottom: 30px;
   }
 }
@@ -564,14 +573,21 @@ img {
   .game-detail-sidebar {
     grid-row: 1; /* Move a sidebar para cima */
     margin-bottom: 20px;
-    position: sticky;
-    top: 20px;
+    position: static; /* <-- CORREÇÃO: Remove o "pin" no mobile */
   }
   
   .blog-post-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
+  }
+
+  /* Esconde o bloco de download principal na pág. de Jogo */
+  .game-detail-sidebar > .steam-widget-container,
+  .game-detail-sidebar > .button-primary.button-download,
+  .game-detail-sidebar > .download-fallback,
+  .game-detail-sidebar > .button-primary.button-disabled {
+    display: none;
   }
 }
 
@@ -617,6 +633,17 @@ img {
   font-weight: 500;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   text-transform: uppercase;
+}
+
+.game-tag-outline {
+  padding: 2px 8px; /* Padding ajustado */
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  background-color: transparent;
+  border: 2px solid; /* A cor da borda/texto virá do style inline */
 }
 
 /* --- Estilo dos Ícones Sociais (Novo) --- */
@@ -780,26 +807,6 @@ img {
 
 .site-title-link:hover span {
   color: var(--color-light);
-}
-
-/* --- 2. Estilo do Rating (Estrelas) --- */
-.star-rating {
-  display: flex;
-  gap: 2px;
-}
-.star-icon {
-  font-size: 1.2rem;
-}
-.detail-rating-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-  color: var(--color-grey);
-}
-.detail-rating-container strong {
-  color: var(--color-light);
-  font-weight: 500;
 }
 
 /* --- 3. Estilo do Grupo por Ano (Home Page) --- */
@@ -1053,6 +1060,7 @@ img {
     grid-template-columns: 1fr; /* Coluna única */
     text-align: center;
     gap: 20px;
+    display: none;
   }
   .launcher-cta-icon {
     margin: 0 auto;
@@ -1176,58 +1184,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header {
 section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
    margin-bottom: 0; /* Título dentro do header não precisa de margem */
    border: none;
-}
-
-/* --- Estilos para Disqus --- */
-.disqus-container {
-  background-color: var(--color-dark); /* Fundo igual aos cards */
-  padding: 25px;
-  border-radius: var(--border-radius);
-  margin-top: 40px; /* Espaço acima dos comentários */
-}
-
-/* Tentativa de esconder elementos dentro do Iframe do Disqus */
-/* Pode ser necessário ajustar após inspecionar o Disqus carregado */
-#disqus_thread iframe {
-  /* Estilos para o iframe em si, se necessário */
-  border-radius: var(--border-radius); 
-}
-
-/* --- Regras para TENTAR esconder elementos DENTRO do iframe (podem não funcionar dependendo das permissões do iframe ou mudanças do Disqus) --- */
-/* Estas regras precisarão ser testadas e ajustadas inspecionando o Disqus REAL no seu site */
-
-/* Esconder cabeçalho e opções de ordenação (Exemplo) */
-#disqus_thread .thread__header, 
-#disqus_thread .nav-secondary {
-  display: none !important; 
-}
-
-/* Esconder reações (Exemplo) */
-#disqus_thread .reactions {
-   display: none !important;
-}
-
-/* Esconder caixa de "Recomendado" / Discovery (Exemplo) */
-#disqus_thread #discovery-container,
-#disqus_thread .discovery {
-  display: none !important;
-}
-
-/* Esconder botões de Compartilhar (Exemplo) */
-#disqus_thread .post-sharing {
-    display: none !important;
-}
-
-/* Ajustar cores se possível (Disqus tem temas, mas CSS pode sobrescrever) */
-/* Exemplo: Mudar cor de links dentro do Disqus */
-#disqus_thread a {
-  /* color: var(--color-purple) !important; */ /* Pode ou não funcionar */
-}
-
-/* Oculta links de privacidade do footer do Disqus */
-#disqus_thread .disqus-footer__item.privacy,
-#disqus_thread .disqus-footer__item.do-not-sell {
-  display: none !important;
 }
 
 /* --- Estilos do Blog --- */
@@ -1459,14 +1415,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   padding-top: 2rem;
 }
 
-/* --- Estilos da Seção de Comentários --- */
-.comment-section {
-  margin-top: 3rem;
-  border-top: 1px solid var(--color-border);
-  padding-top: 2rem;
-}
-
-
 .form-group {
   margin-bottom: 1rem;
 }
@@ -1488,138 +1436,8 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   font-size: 1rem;
 }
 
-.comment-message {
-  padding: 1rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-}
-.comment-message.error {
-  background-color: #ffebee;
-  color: #c62828;
-  border: 1px solid #c62828;
-}
-.comment-message.success {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #2e7d32;
-}
-
-.comment-list .comment-item {
-  border-bottom: 1px solid var(--color-border);
-  padding: 0.5rem 0;
-}
-.comment-list .comment-item:last-child {
-  border-bottom: 0;
-}
-
-.comment-item strong {
-  font-weight: 600;
-  margin-right: 0.5rem;
-}
-.comment-item span {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-}
-.comment-item p {
-  margin: 0.2rem 0 0 0;
-}
-
-/* --- Estilos dos Componentes de Estrela --- */
-.star-rating {
-  display: flex;
-  align-items: center;
-  color: #f7b731; /* Cor dourada para estrelas */
-  font-size: 1.1rem;
-}
-.star-rating.static svg {
-  margin-right: 2px;
-}
-
-.star-rating-widget h4 {
-  margin-bottom: 0.5rem;
-}
-.star-rating-widget.interactive {
-  color: #f7b731;
-}
-.star-rating-widget .stars-container {
-  font-size: 1.5rem;
-  display: flex;
-  cursor: pointer;
-}
-.star-rating-widget .star-icon {
-  margin-right: 4px;
-  transition: transform 0.1s ease;
-}
-.star-rating-widget .star-icon:hover {
-  transform: scale(1.2);
-}
-.star-rating-widget .rating-display-text {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  height: 1.2em; /* Reserva espaço para não pular layout */
-  margin-top: 0.5rem;
-}
-
-/* --- Estilos do Cabeçalho --- */
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem; /* Ajuste o padding conforme seu layout */
-  background-color: var(--color-bg-secondary);
-  border-bottom: 1px solid var(--color-border);
-}
-
 .site-title-link {
   text-decoration: none;
-}
-
-/* --- Estilos do Widget de Autenticação --- */
-.user-auth-widget {
-  display: flex;
-  align-items: center;
-  gap: 1rem; /* Espaço entre os botões */
-}
-
-.user-auth-widget span {
-  font-weight: 500;
-  margin-right: 0.5rem;
-}
-
-/* Botões pequenos para o cabeçalho */
-.button-small {
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
-  line-height: 1.2;
-}
-
-/* Estiliza as páginas de Login e Registro */
-.auth-page {
-  max-width: 450px;
-  margin: 2rem auto;
-  padding: 2.5rem;
-  background-color: var(--color-dark); /* Variável correta */
-  border: 1px solid #333; /* Fallback */
-  border-radius: var(--border-radius);
-}
-.auth-page h2 {
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--color-light);
-  border: none;
-  padding: 0;
-}
-.auth-page p {
-  text-align: center;
-  margin-bottom: 2rem;
-  margin-top: 0.5rem;
-  color: var(--color-grey);
-}
-.auth-page .button-primary {
-  width: 100%;
-  margin-top: 1rem;
 }
 
 /* Estilo unificado para TODOS os grupos de formulário */
@@ -1661,46 +1479,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   outline: none;
   border-color: var(--color-purple);
   box-shadow: 0 0 0 3px rgba(145, 70, 255, 0.3);
-}
-
-/* Corrige o formulário de comentário */
-.comment-form {
-  background-color: var(--color-dark); /* Variável correta */
-  border: 1px solid #333; /* Fallback */
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.comment-form h4 {
-  margin: 0 0 1.5rem 0;
-  font-weight: 600;
-}
-
-/* Remove regras duplicadas do formulário de contato */
-.contact-form input[type="text"],
-.contact-form input[type="email"],
-.contact-form textarea {
-  padding: 0.75rem 1rem; /* Padroniza o padding */
-}
-
-/* Mensagens de Erro/Sucesso */
-.comment-message {
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  margin-bottom: 1rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-}
-.comment-message.error {
-  background-color: #5c1f1f;
-  color: #ffacac;
-  border: 1px solid #c62828;
-}
-.comment-message.success {
-  background-color: #1e4620;
-  color: #b9f6ca;
-  border: 1px solid #2e7d32;
 }
 
 .button-back {

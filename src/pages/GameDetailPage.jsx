@@ -4,9 +4,6 @@ import { baseURL, fieldsQuery, getHashedColor } from '../mockData'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
-import StarRating from '../components/StarRating'
-import InteractiveStarRating from '../components/InteractiveStarRating'
-import CommentSection from '../components/CommentSection'
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com";
 
@@ -16,10 +13,6 @@ function GameDetailPage() {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-
-  // State para a nota média (agora 0-5)
-  const [avgRating, setAvgRating] = useState(0);
-  const [ratingCount, setRatingCount] = useState(0);
 
   useEffect(() => {
     if (!gameId) return;
@@ -36,33 +29,10 @@ function GameDetailPage() {
         setGame(null);
       }
     };
-    
-    // --- 2. Busca a média de notas (0-5) ---
-    const fetchAvgRating = async () => {
-      const filter = `filter[related_game][id][_eq]=${gameId}`;
-      const aggregate = `aggregate[avg]=rating_value&aggregate[count]=id`;
-      
-      try {
-        const response = await fetch(`${DIRECTUS_URL}/items/ratings?${filter}&${aggregate}`);
-        const data = await response.json();
-        
-        if (data.data && data.data[0]) {
-          const stats = data.data[0];
-          setAvgRating(parseFloat(stats.avg.rating_value) || 0); // Salva a nota média 0-5
-          setRatingCount(stats.count.id || 0);
-        }
-      } catch (error) {
-         console.warn("Não foi possível carregar a nota média:", error);
-      }
-    };
 
-    // Roda ambas as buscas
     const loadAllData = async () => {
       setLoading(true);
-      await Promise.all([
-        fetchGame(),
-        fetchAvgRating()
-      ]);
+      await fetchGame();
       setLoading(false);
     }
     
@@ -104,10 +74,9 @@ function GameDetailPage() {
 
   return (
     <div className="page-content game-detail-page fade-in">
-      <button onClick={() => navigate(-1)} className="button-back">
+      <button onClick={() => navigate('/')} className="button-back">
         &larr; Voltar
       </button>
-
       <h2 className="game-title">{translation.title}</h2>
       
       <div className="game-detail-layout">
@@ -175,24 +144,12 @@ function GameDetailPage() {
              <p><strong>Motor:</strong> {game.engine}</p>
              <p><strong>Lançamento:</strong> {new Date(game.release_date).toLocaleDateString('pt-BR')}</p>
              <p><strong>Tempo de Jogo:</strong> {translation.playtime}</p>
-             
-             <div className="detail-rating-container">
-                <strong>Nota Média:</strong>
-                <StarRating rating={avgRating} /> {/* Passa a nota 0-5 */}
-             </div>
-             <p style={{marginTop: '-0.5rem', fontSize: '0.9rem', color: 'var(--color-text-secondary)'}}>
-               ({(avgRating || 0).toFixed(1)} de 5) - {ratingCount} {ratingCount === 1 ? 'avaliação' : 'avaliações'}
-             </p>
 
              {translation.rating_quote && (
                 <blockquote className="rating-quote">
                   "{translation.rating_quote}"
                 </blockquote>
              )}
-          </div>
-          
-          <div className="sidebar-info-box">
-            <InteractiveStarRating gameId={game.id} />
           </div>
 
            <div className="sidebar-info-box">
@@ -202,7 +159,9 @@ function GameDetailPage() {
                  <span 
                    key={tag.tags_id} 
                    className="game-tag"
-                   style={{ backgroundColor: getHashedColor(tag.tags_id) }}
+                   style={{ 
+                     background: getHashedColor(tag.tags_id),
+                   }}
                  >
                    {tag.tags_id}
                  </span>
@@ -210,8 +169,6 @@ function GameDetailPage() {
              </div>
            </div>
         </aside>
-
-      <CommentSection relation={{ related_game: game.id }} />
 
       </div>
       
