@@ -1499,3 +1499,40 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .button-back:hover {
   color: var(--color-light);
 }
+
+/* --- Container de Vídeo Responsivo (YouTube/Vimeo/etc.) --- */
+.video-container {
+    /* 1. Cria um contexto de posicionamento para o iframe */
+    position: relative;
+    
+    /* 2. Define o aspect ratio 16:9 (altura / largura)
+          (9 / 16) * 100% = 56.25% */
+    padding-bottom: 56.25%; /* Altura é 56.25% da largura */
+    
+    /* 3. Garante que o container use a largura total */
+    width: 100%;
+    
+    /* 4. Esconde qualquer overflow (como barras de controle do iframe) */
+    overflow: hidden;
+
+    /* 5. Estilo visual para integrar ao blog */
+    background-color: var(--color-darkest);
+    border-radius: var(--border-radius);
+    margin: 25px 0; /* Espaçamento acima e abaixo do container */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Sombra sutil */
+}
+
+.video-container iframe {
+    /* 1. Posiciona o iframe para cobrir o container */
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    /* 2. Garante que o iframe ocupe 100% da área definida pelo padding-bottom */
+    width: 100%;
+    height: 100%;
+    margin: 0; 
+    
+    /* 3. Remove a borda padrão que alguns iframes podem ter */
+    border: 0;
+}
