@@ -16,14 +16,14 @@ function GameDetailPage() {
 
   useEffect(() => {
     if (!gameId) return;
-    
+
     // --- 1. Busca os dados do Jogo ---
     const fetchGame = async () => {
       setLoading(true);
       try {
         const response = await fetch(`${baseURL}/items/games/${gameId}?${fieldsQuery}`);
         const data = await response.json();
-        setGame(data.data); 
+        setGame(data.data);
       } catch (error) {
         console.error("Erro ao buscar o jogo:", error);
         setGame(null);
@@ -35,7 +35,7 @@ function GameDetailPage() {
       await fetchGame();
       setLoading(false);
     }
-    
+
     loadAllData();
 
   }, [gameId]);
@@ -64,12 +64,12 @@ function GameDetailPage() {
       if (videoUrl.hostname.includes('youtube.com')) {
         return `https://www.youtube.com/embed/${videoUrl.searchParams.get('v')}`;
       }
-      return url; 
+      return url;
     } catch (e) {
       return url;
     }
   }
-  
+
   const trailerEmbedUrl = getEmbedUrl(game.trailer_url);
 
   return (
@@ -78,17 +78,17 @@ function GameDetailPage() {
         &larr; Voltar
       </button>
       <h2 className="game-title">{translation.title}</h2>
-      
+
       <div className="game-detail-layout">
         <div className="game-detail-main">
-          
+
           {trailerEmbedUrl ? (
             <div className="trailer-container">
-              <iframe 
+              <iframe
                 src={trailerEmbedUrl}
-                title="Trailer" 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                title="Trailer"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen>
               </iframe>
             </div>
@@ -106,73 +106,132 @@ function GameDetailPage() {
               {translation.synopsis}
             </ReactMarkdown>
           </div>
+
         </div>
-        
+
         <aside className="game-detail-sidebar">
-          
+
           {game.steam_id ? (
+            // 1. Se tem Steam ID, mostra o widget
             <div className="steam-widget-container">
-              <iframe 
-                src={`https://store.steampowered.com/widget/${game.steam_id}/`} 
-                frameBorder="0" 
-                width="100%" 
+              <iframe
+                src={`https://store.steampowered.com/widget/${game.steam_id}/`}
+                frameBorder="0"
+                width="100%"
                 height="190"
                 title="Steam Widget"
               ></iframe>
             </div>
           ) : game.executable_path ? (
+            // 2. Senão, se tem executável, mostra o botão de download
             <DownloadButton game={game} />
           ) : (
-            <button className="button-primary button-disabled" disabled>
-              Em breve
-            </button>
+            // 3. Senão, checamos as outras opções:
+            //    Se NÃO tem web, NEM Google, NEM Apple, E NEM GITHUB...
+            (!game.web_version_url && !game.google_play_url && !game.app_store_url && !game.github_url) ? (
+              // ...então o jogo está realmente "Em breve"
+              <button className="button-primary button-disabled" disabled>
+                Em breve
+              </button>
+            ) : (
+              // ...se TIVER qualquer um desses outros links, não mostramos nada aqui,
+              // pois os links já vão aparecer nos blocos abaixo.
+              null
+            )
           )}
 
-          {game.web_version_url && (
-            <a 
-              href={game.web_version_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button-secondary button-web"
-            >
-              Jogar Agora (Web)
-            </a>
-          )}
+          {/* 4. LINKS ADICIONADOS DE VOLTA (com base no turno anterior) */}
+          <div className="game-links">
+            {/* Link de Jogar Online */}
+            {game.web_version_url && (
+              <a
+                href={game.web_version_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="button-primary button-play-web"
+              >
+                <i className="fas fa-play"></i> Jogue Agora (Online)
+              </a>
+            )}
 
-          <div className="sidebar-info-box">
-             <h4>Detalhes</h4>
-             <p><strong>Motor:</strong> {game.engine}</p>
-             <p><strong>Lançamento:</strong> {new Date(game.release_date).toLocaleDateString('pt-BR')}</p>
-             <p><strong>Tempo de Jogo:</strong> {translation.playtime}</p>
-
-             {translation.rating_quote && (
-                <blockquote className="rating-quote">
-                  "{translation.rating_quote}"
-                </blockquote>
-             )}
+            {/* Link do Código Fonte (GitHub) */}
+            {game.github_url && (
+              <a
+                href={game.github_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="button-secondary button-github"
+              >
+                <i className="fab fa-github"></i> Código Fonte
+              </a>
+            )}
           </div>
 
-           <div className="sidebar-info-box">
-             <h4>Tags</h4>
-             <div className="game-detail-tags">
-               {game.tags.map((tag) => (
-                 <span 
-                   key={tag.tags_id} 
-                   className="game-tag"
-                   style={{ 
-                     background: getHashedColor(tag.tags_id),
-                   }}
-                 >
-                   {tag.tags_id}
-                 </span>
-               ))}
-             </div>
-           </div>
+          {/* Links das Lojas de Aplicativo */}
+          {(game.google_play_url || game.app_store_url) && (
+            <div className="sidebar-info-box">
+              <div className="game-store-links">
+                {game.google_play_url && (
+                  <a
+                    href={game.google_play_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button-secondary button-googleplay"
+                  >
+                    <i className="fab fa-google-play"></i> Google Play
+                  </a>
+                )}
+                {game.app_store_url && (
+                  <a
+                    href={game.app_store_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button-secondary button-appstore"
+                  >
+                    <i className="fab fa-apple"></i> App Store
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* O restante dos seus blocos de Detalhes e Tags */}
+          <div className="sidebar-info-box">
+            <h4>Detalhes</h4>
+            <p><strong>Motor:</strong> {game.engine}</p>
+            {game.release_date && ( // Corrigido: game.release_date em vez de translation
+              <p><strong>Lançamento:</strong> {new Date(game.release_date).toLocaleDateString('pt-BR')}</p>
+            )}
+            {translation.playtime && (
+              <p><strong>Tempo de Jogo:</strong> {translation.playtime}</p>
+            )}
+
+            {translation.rating_quote && (
+              <blockquote className="rating-quote">
+                "{translation.rating_quote}"
+              </blockquote>
+            )}
+          </div>
+
+          <div className="sidebar-info-box">
+            <h4>Tags</h4>
+            <div className="game-detail-tags">
+              {game.tags.map((tag) => (
+                <span
+                  key={tag.tags_id}
+                  className="game-tag"
+                  style={{
+                    background: getHashedColor(tag.tags_id),
+                  }}
+                >
+                  {tag.tags_id}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </aside>
-
       </div>
-      
-
     </div>
   )
 }

@@ -1536,3 +1536,30 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
     /* 3. Remove a borda padrão que alguns iframes podem ter */
     border: 0;
 }
+
+/* --- Estilo do Bloco de README (GameDetailPage) --- */
+.github-readme-box {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-dark);
+}
+
+.github-readme-box h3 {
+   /* Estilo igual ao da "Sinopse" */
+  color: var(--color-light);
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-dark);
+  padding-bottom: 10px;
+  font-weight: 600;
+}
+
+/* O componente GithubReadme reutiliza a classe .game-synopsis,
+   então ele já terá a formatação correta de markdown. */
+
+.github-readme-box .comment-message.error {
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid #ff6b6b;
+  padding: 15px;
+  border-radius: var(--border-radius);
+}

@@ -74,7 +74,7 @@ function GameCard({ game }) {
           </div>
           
           {game.engine && (
-            <span className="engine-name">{engineName}</span>
+            <span className="engine-name">{game.engine}</span>
           )}
         </div>
       </div>
