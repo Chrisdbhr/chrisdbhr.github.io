@@ -6,7 +6,6 @@ import {
   ScrollRestoration,
   useRouteError,
 } from "react-router-dom";
-import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // Componentes
 import App from './App.jsx';
