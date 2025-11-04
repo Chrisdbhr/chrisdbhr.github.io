@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { getAssetUrl, getHashedColor } from '../mockData'
+import { getAssetUrl, getHashedColor } from '../utils'
 import { normalizeEngineName } from '../utils/textUtils';
 
 function GameCard({ game }) {

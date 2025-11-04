@@ -4,7 +4,7 @@ import { useLoaderData } from 'react-router-dom'
 import GameCard from '../components/GameCard'
 import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
-import { baseURL, fieldsQuery } from '../mockData'
+import { baseURL, fieldsQuery } from '../utils'
 import LauncherCTA from '../components/LauncherCTA'
 import DiscordCTA from '../components/DiscordCTA'
 import { normalizeEngineName } from '../utils/textUtils';

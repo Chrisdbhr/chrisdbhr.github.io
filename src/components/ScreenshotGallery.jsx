@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { getAssetUrl } from '../mockData'
+import { getAssetUrl } from '../utils'
 
 function ScreenshotGallery({ screenshots }) {
   // Ordena por prioridade (maior primeiro)

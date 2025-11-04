@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { baseURL, fieldsQuery, getHashedColor } from '../mockData'
+import { baseURL, fieldsQuery, getHashedColor } from '../utils'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
