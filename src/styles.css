@@ -1,13 +1,13 @@
-/* --- NOVA PALETA: Enigmatic Comma (Preto, Roxo, Verde) --- */
+/* --- PALETA: Enigmatic Comma (Preto, Roxo, Verde) --- */
 :root {
   --color-darkest: #141414; /* Preto (Fundo) */
   --color-dark: #1F1F1F;    /* Cinza (Cards e Sidebar) */
-  --color-purple: #9146FF;  /* Roxo Twitch (Acento) */
-  --color-green: #00F09C;   /* Verde Neon (Botões) */
+  --color-purple: #764fa2;  /* Roxo (Acento) */
+  --color-green: #65cc9a;   /* Verde (Botões) */
   --color-light: #FFFFFF;   /* Texto */
   --color-grey: #a0a0a0;    /* Texto secundário */
   --border-radius: 6px;
-  --transition-speed: 0.3s;
+  --transition-speed: 0.2s;
   --main-margin-bottom: 20px;
 }
 
@@ -17,7 +17,6 @@
   padding: 0;
 }
 
-/* --- FONTE ATUALIZADA --- */
 body {
   font-family: 'Crimson Pro', serif; /* Fonte Principal */
   background-color: var(--color-darkest);
@@ -1482,14 +1481,11 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 }
 
 .button-back {
-  /* --- ADICIONE ESTAS LINHAS --- */
   background: none;     /* Remove o fundo cinza do botão */
   border: none;         /* Remove a borda do botão */
   padding: 0;           /* Remove o padding interno do botão */
   font-family: inherit; /* Faz o botão usar a fonte do site */
   cursor: pointer;      /* Mostra a "mãozinha" */
-
-  /* --- Suas linhas originais --- */
   display: inline-block;
   color: var(--color-grey);
   margin-bottom: 20px;
