@@ -1,6 +1,12 @@
 export const baseURL = "https://cms.chrisjogos.com";
 
-export const fieldsQuery = "fields=*,translations.*,tags.tags_id,tags_translations.*,screenshots.file,screenshots.type,screenshots.priority,card_image.id,genres.genres_id,steam_id,trailer_url,web_version_url";
+const baseQuery = "fields=*,translations.*,tags.tags_id,tags_translations.*,screenshots.file,screenshots.type,screenshots.priority,card_image.id,genres.genres_id,steam_id,trailer_url,web_version_url";
+
+const filter = import.meta.env.DEV
+  ? "filter[status][_in]=published,draft"
+  : "filter[status][_eq]=published";
+
+export const fieldsQuery = `${baseQuery}&${filter}`;
 
 export const getAssetUrl = (id) => {
   if (!id) return null;
