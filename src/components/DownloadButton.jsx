@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 // IMPORTANTE: Mude para a URL real do instalador do seu launcher
 const LAUNCHER_INSTALLER_URL = "https://launcher.chrisjogos.com";
 
-function DownloadButton({ game }) {
+function DownloadButton({ project }) {
   const [showInstallerLink, setShowInstallerLink] = useState(false);
   const timeoutRef = useRef(null);
 
@@ -16,7 +16,7 @@ function DownloadButton({ game }) {
 
     // 2. Tenta abrir o protocolo
     // Ex: chrisjogos://install/Resultarias
-    window.location.href = `chrisjogos://install/${game.id}`;
+    window.location.href = `chrisjogos://install/${project.id}`;
   };
   
   // 3. Detecta se o protocolo ABRIU (focando fora da página)
@@ -61,7 +61,7 @@ function DownloadButton({ game }) {
       className="button-primary button-download"
     >
       Jogar via Launcher
-      {game.latest_version && <span>Versão {game.latest_version}</span>}
+      {project.latest_version && <span>Versão {project.latest_version}</span>}
     </button>
   )
 }

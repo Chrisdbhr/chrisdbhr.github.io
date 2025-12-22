@@ -5,28 +5,26 @@ import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
 
-const DIRECTUS_URL = "https://cms.chrisjogos.com";
-
 function GameDetailPage() {
-  const { gameId } = useParams()
-  const [game, setGame] = useState(null);
+  const { projectId } = useParams()
+  const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!gameId) return;
+    if (!projectId) return;
 
     // --- 1. Busca os dados do Jogo ---
     const fetchGame = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${baseURL}/items/games/${gameId}?${fieldsQuery}`);
+        const response = await fetch(`${baseURL}/items/projects/${projectId}?${fieldsQuery}`);
         const data = await response.json();
-        setGame(data.data);
+        setProject(data.data);
       } catch (error) {
         console.error("Erro ao buscar o jogo:", error);
-        setGame(null);
+        setProject(null);
       }
     };
 
@@ -38,13 +36,13 @@ function GameDetailPage() {
 
     loadAllData();
 
-  }, [gameId]);
+  }, [projectId]);
 
   if (loading) {
     return <div className="page-content"><h2>Carregando...</h2></div>;
   }
 
-  if (!game) {
+  if (!project) {
     return (
       <div className="page-content fade-in">
         <h2>Jogo não encontrado</h2>
@@ -55,7 +53,7 @@ function GameDetailPage() {
     )
   }
 
-  const translation = game.translations.find(t => t.language === 'pt-BR') || game.translations[0];
+  const translation = project.translations.find(t => t.language === 'pt-BR') || project.translations[0];
 
   const getEmbedUrl = (url) => {
     if (!url) return null;
@@ -70,7 +68,7 @@ function GameDetailPage() {
     }
   }
 
-  const trailerEmbedUrl = getEmbedUrl(game.trailer_url);
+  const trailerEmbedUrl = getEmbedUrl(project.trailer_url);
 
   return (
     <div className="page-content game-detail-page fade-in">
@@ -93,11 +91,11 @@ function GameDetailPage() {
               </iframe>
             </div>
           ) : (
-            <ScreenshotGallery screenshots={game.screenshots} />
+            <ScreenshotGallery screenshots={project.screenshots} />
           )}
 
-          {trailerEmbedUrl && game.screenshots.length > 0 && (
-            <ScreenshotGallery screenshots={game.screenshots} />
+          {trailerEmbedUrl && project.screenshots.length > 0 && (
+            <ScreenshotGallery screenshots={project.screenshots} />
           )}
 
           <h3>Sinopse</h3>
@@ -111,24 +109,24 @@ function GameDetailPage() {
 
         <aside className="game-detail-sidebar">
 
-          {game.steam_id ? (
+          {project.steam_id ? (
             // 1. Se tem Steam ID, mostra o widget
             <div className="steam-widget-container">
               <iframe
-                src={`https://store.steampowered.com/widget/${game.steam_id}/`}
+                src={`https://store.steampowered.com/widget/${project.steam_id}/`}
                 frameBorder="0"
                 width="100%"
                 height="190"
                 title="Steam Widget"
               ></iframe>
             </div>
-          ) : game.executable_path ? (
+          ) : project.executable_path ? (
             // 2. Senão, se tem executável, mostra o botão de download
-            <DownloadButton game={game} />
+            <DownloadButton project={project} />
           ) : (
             // 3. Senão, checamos as outras opções:
             //    Se NÃO tem web, NEM Google, NEM Apple, E NEM GITHUB...
-            (!game.web_version_url && !game.google_play_url && !game.app_store_url && !game.github_url) ? (
+            (!project.web_version_url && !project.google_play_url && !project.app_store_url && !project.github_url) ? (
               // ...então o jogo está realmente "Em breve"
               <button className="button-primary button-disabled" disabled>
                 Em breve
@@ -143,9 +141,9 @@ function GameDetailPage() {
           {/* 4. LINKS ADICIONADOS DE VOLTA (com base no turno anterior) */}
           <div className="game-links">
             {/* Link de Jogar Online */}
-            {game.web_version_url && (
+            {project.web_version_url && (
               <a
-                href={game.web_version_url}
+                href={project.web_version_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="button-primary button-play-web"
@@ -155,9 +153,9 @@ function GameDetailPage() {
             )}
 
             {/* Link do Código Fonte (GitHub) */}
-            {game.github_url && (
+            {project.github_url && (
               <a
-                href={game.github_url}
+                href={project.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="button-secondary button-github"
@@ -168,12 +166,12 @@ function GameDetailPage() {
           </div>
 
           {/* Links das Lojas de Aplicativo */}
-          {(game.google_play_url || game.app_store_url) && (
+          {(project.google_play_url || project.app_store_url) && (
             <div className="sidebar-info-box">
               <div className="game-store-links">
-                {game.google_play_url && (
+                {project.google_play_url && (
                   <a
-                    href={game.google_play_url}
+                    href={project.google_play_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="button-secondary button-googleplay"
@@ -181,9 +179,9 @@ function GameDetailPage() {
                     <i className="fab fa-google-play"></i> Google Play
                   </a>
                 )}
-                {game.app_store_url && (
+                {project.app_store_url && (
                   <a
-                    href={game.app_store_url}
+                    href={project.app_store_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="button-secondary button-appstore"
@@ -198,9 +196,9 @@ function GameDetailPage() {
           {/* O restante dos seus blocos de Detalhes e Tags */}
           <div className="sidebar-info-box">
             <h4>Detalhes</h4>
-            <p><strong>Motor:</strong> {game.engine}</p>
-            {game.release_date && ( // Corrigido: game.release_date em vez de translation
-              <p><strong>Lançamento:</strong> {new Date(game.release_date).toLocaleDateString('pt-BR')}</p>
+            <p><strong>Motor:</strong> {project.engine}</p>
+            {project.release_date && ( // Corrigido: game.release_date em vez de translation
+              <p><strong>Lançamento:</strong> {new Date(project.release_date).toLocaleDateString('pt-BR')}</p>
             )}
             {translation.playtime && (
               <p><strong>Tempo de Jogo:</strong> {translation.playtime}</p>
@@ -216,7 +214,7 @@ function GameDetailPage() {
           <div className="sidebar-info-box">
             <h4>Tags</h4>
             <div className="game-detail-tags">
-              {game.tags.map((tag) => (
+              {project.tags.map((tag) => (
                 <span
                   key={tag.tags_id}
                   className="game-tag"

@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { getAssetUrl, getHashedColor } from '../utils'
 import { normalizeEngineName } from '../utils/textUtils';
 
-function GameCard({ game }) {
-  const translation = game.translations.find(t => t.language === 'pt-BR') || game.translations[0] || { title: 'Título não disponível' }
-  const imageUrl = getAssetUrl(game.card_image?.id)
+function ProjectCard({ project }) {
+  const translation = project.translations.find(t => t.language === 'pt-BR') || project.translations[0] || { title: 'Título não disponível' }
+  const imageUrl = getAssetUrl(project.card_image?.id)
 
   let firstLineSynopsis = '';
   if (translation.synopsis) {
@@ -15,13 +15,13 @@ function GameCard({ game }) {
       .trim();
   }
 
-  const engineName = normalizeEngineName(game.engine);
-  const isUnreleased = new Date(game.release_date) > new Date();
+  const engineName = normalizeEngineName(project.engine);
+  const isUnreleased = new Date(project.release_date) > new Date();
   
-  const projectType = game.project_type || 'game';
+  const projectType = project.project_type || 'project';
 
   return (
-    <Link to={`/game/${game.id}`} className="game-card">
+    <Link to={`/project/${project.id}`} className="game-card">
       <div className="game-card-image-container">
         {imageUrl ? (
           <img
@@ -46,7 +46,7 @@ function GameCard({ game }) {
         )}
 
         <div className="game-card-tags">
-          {game.tags.slice(0, 3).map((tag) => (
+          {project.tags.slice(0, 3).map((tag) => (
             <span 
               key={tag.tags_id} 
               className="game-tag"
@@ -73,12 +73,12 @@ function GameCard({ game }) {
             </span>
           </div>
           
-          {game.engine && (
-            <span className="engine-name">{game.engine}</span>
+          {project.engine && (
+            <span className="engine-name">{project.engine}</span>
           )}
         </div>
       </div>
     </Link>
   )
 }
-export default GameCard
+export default ProjectCard

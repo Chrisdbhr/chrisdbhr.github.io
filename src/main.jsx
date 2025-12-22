@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         loader: homePageLoader 
       }, 
       { 
-        path: "game/:gameId", 
+        path: "project/:projectId", 
         element: <GameDetailPage /> 
       },
       { 

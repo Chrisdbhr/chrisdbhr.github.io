@@ -1,7 +1,7 @@
 import React from 'react'
 // 1. Importe o useLoaderData para receber os dados
 import { useLoaderData } from 'react-router-dom' 
-import GameCard from '../components/GameCard'
+import ProjectCard from '../components/ProjectCard'
 import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
 import { baseURL, fieldsQuery } from '../utils'
@@ -22,38 +22,38 @@ const getEngineStats = (games) => {
 
 // 2. EXPORTE O SEU LOADER (que o main.jsx importa)
 export async function loader() {
-  const response = await fetch(`${baseURL}/items/games?${fieldsQuery}`);
+  const response = await fetch(`${baseURL}/items/projects?${fieldsQuery}`);
   const data = await response.json();
-  const totalGames = data.data;
+  const totalProjects = data.data;
 
   // Toda a lógica que estava no seu useEffect/useState agora vive aqui
   const now = new Date();
   
-  const unreleasedGames = totalGames
+  const unreleasedProjects = totalProjects
     .filter(g => new Date(g.release_date) > now)
     .sort((a, b) => new Date(a.release_date) - new Date(b.release_date)); 
 
-  const pastGames = totalGames
+  const pastProjects = totalProjects
     .filter(g => new Date(g.release_date) <= now)
     .sort((a, b) => new Date(b.release_date) - new Date(a.release_date)); 
 
-  const groupedReleasedGames = pastGames.reduce((acc, game) => {
-    const year = new Date(game.release_date).getFullYear();
+  const groupedReleasedProjects = pastProjects.reduce((acc, project) => {
+    const year = new Date(project.release_date).getFullYear();
     if (!acc[year]) acc[year] = [];
-    acc[year].push(game);
+    acc[year].push(project);
     return acc;
   }, {});
   
-  const totalGameCount = totalGames.length;
-  const totalEngineStats = getEngineStats(totalGames);
-  const sortedYears = Object.keys(groupedReleasedGames).sort((a, b) => b - a);
+  const totalProjectsCount = totalProjects.length;
+  const totalEngineStats = getEngineStats(totalProjects);
+  const sortedYears = Object.keys(groupedReleasedProjects).sort((a, b) => b - a);
   
   // O loader retorna um objeto com tudo que a página precisa
   return { 
-    totalGames, 
-    unreleasedGames, 
-    groupedReleasedGames, 
-    totalGameCount, 
+    totalProjects, 
+    unreleasedProjects: unreleasedProjects, 
+    groupedReleasedProjects: groupedReleasedProjects, 
+    totalProjectsCount: totalProjectsCount, 
     totalEngineStats, 
     sortedYears 
   };
@@ -63,15 +63,14 @@ export async function loader() {
 function HomePage() {
   // 3. Pegue os dados do loader. Sem loading, sem useEffect!
   const {
-    totalGameCount,
+    totalProjectsCount,
     totalEngineStats,
-    unreleasedGames,
-    groupedReleasedGames,
+    unreleasedProjects,
+    groupedReleasedProjects,
     sortedYears
   } = useLoaderData();
 
   // 4. A página agora renderiza imediatamente com os dados.
-  //    (Removi o 'loading' e 'totalGames' do topo)
   return (
     <div className="page-content fade-in">
       
@@ -83,7 +82,7 @@ function HomePage() {
 
       <div className="home-section">
         <div className="home-section-header">
-          <h2>Meus Jogos e Projetos ({totalGameCount})</h2>
+          <h2>Meus Jogos e Projetos ({totalProjectsCount})</h2>
           {totalEngineStats.length > 0 && (
             <div className="engine-stats-total">
               {totalEngineStats.map(([engine, count]) => (
@@ -97,20 +96,20 @@ function HomePage() {
         
         {/* O 'loading' se foi, o roteador cuida disso */}
 
-        {unreleasedGames.length > 0 && (
+        {unreleasedProjects.length > 0 && (
           <section className="year-group">
             <h3 className="year-title upcoming-title">Próximos Lançamentos</h3>
             <div className="game-grid">
-              {unreleasedGames.map((game) => (
-                <GameCard key={game.id} game={game} />
+              {unreleasedProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
               ))}
             </div>
           </section>
         )}
         
         {sortedYears.map((year) => {
-          const yearGames = groupedReleasedGames[year];
-          const yearEngineStats = getEngineStats(yearGames);
+          const yearProjects = groupedReleasedProjects[year];
+          const yearEngineStats = getEngineStats(yearProjects);
           return (
             <section key={year} className="year-group">
               <div className="home-section-header">
@@ -125,8 +124,8 @@ function HomePage() {
               </div>
               
               <div className="game-grid">
-                {yearGames.map((game) => (
-                  <GameCard key={game.id} game={game} />
+                {yearProjects.map((project) => (
+                  <ProjectCard key={project.id} project={project} />
                 ))}
               </div>
             </section>
