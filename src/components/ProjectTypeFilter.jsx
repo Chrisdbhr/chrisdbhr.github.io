@@ -1,0 +1,33 @@
+import React from 'react';
+import { getHashedColor } from '../utils';
+
+function ProjectTypeFilter({ types, excludedTypes, onToggle }) {
+  if (types.length <= 1) return null;
+
+  return (
+    <div className="project-filter-container fade-in">
+      <h4>Filtrar por Tipo de Projeto:</h4>
+      <div className="filter-buttons">
+        {types.map((type) => {
+          const isExcluded = excludedTypes.includes(type);
+          const color = getHashedColor(type);
+
+          return (
+            <button
+              key={type}
+              className={`filter-button ${isExcluded ? 'excluded' : ''}`}
+              onClick={() => onToggle(type)}
+              style={{
+                '--filter-color': color, // Passando a cor via CSS Variable
+              }}
+            >
+              {type}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export default ProjectTypeFilter;

@@ -394,8 +394,15 @@ img {
 .contact-info p {
   font-size: 1rem;
   color: var(--color-grey);
-  line-height: 1.4;
+  margin-bottom: 5px;
 }
+
+.contact-info p strong {
+  color: var(--color-light);
+  margin-right: 5px;
+  font-weight: 500;
+}
+
 .contact-info a {
   color: var(--color-purple);
   word-break: break-all;
@@ -1204,7 +1211,7 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 }
 
 .blog-post-card {
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-darkest);
   border-radius: 8px;
   overflow: hidden;
   text-decoration: none;
@@ -1558,4 +1565,105 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   border: 1px solid #ff6b6b;
   padding: 15px;
   border-radius: var(--border-radius);
+}
+
+/* --- Novo Filtro de Tipo de Projeto (HomePage) --- */
+.project-filter-container {
+  margin-bottom: var(--main-margin-bottom);
+  padding: 15px 20px;
+  background-color: var(--color-dark);
+  border-radius: var(--border-radius);
+  border: 1px solid #333;
+}
+
+.project-filter-container h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-light);
+  margin-bottom: 10px;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-button {
+  --filter-color: var(--color-purple); /* Fallback */
+  
+  padding: 8px 15px;
+  border: 2px solid var(--filter-color);
+  background-color: transparent;
+  color: var(--filter-color);
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-button:hover {
+  background-color: rgba(118, 79, 162, 0.1); /* Um toque da cor */
+  transform: translateY(-1px);
+}
+
+.filter-button.excluded {
+  /* REQUISITO: Deselecionado, sem borda de cor, mais apagado */
+  border-color: var(--color-dark); /* Borda da cor do card */
+  color: var(--color-grey);
+  background-color: var(--color-darkest); 
+  opacity: 0.7;
+}
+
+.filter-button.excluded:hover {
+  background-color: #333;
+  color: var(--color-light);
+  border-color: var(--color-grey);
+  opacity: 1;
+  transform: none;
+}
+
+/* Estilo para a mensagem de itens ocultos (dentro do H2) */
+.hidden-count-message {
+  font-size: 1.1rem; /* Aumentado para melhor visibilidade ao lado do H2 */
+  color: var(--color-grey);
+  font-weight: 500;
+  text-transform: none;
+  border-bottom: none;
+  display: inline;
+}
+
+/* --- NOVO: Estilo para o Card de Projetos Ocultos --- */
+.game-card.hidden-projects-card {
+  background-color: var(--color-darkest);
+  border: 2px dashed var(--color-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 250px; 
+  transition: none;
+  cursor: default;
+}
+.game-card.hidden-projects-card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--color-purple);
+}
+.hidden-card-content h4 {
+  color: var(--color-light);
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  border: none;
+  padding: 0;
+  font-weight: 600;
+}
+.hidden-card-content p {
+  color: var(--color-grey);
+  font-size: 0.9rem;
+  line-height: 1.4;
 }

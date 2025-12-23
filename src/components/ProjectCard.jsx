@@ -18,6 +18,7 @@ function ProjectCard({ project }) {
   const engineName = normalizeEngineName(project.engine);
   const isUnreleased = new Date(project.release_date) > new Date();
   
+  // Se project_type for null, padroniza para 'project'
   const projectType = project.project_type || 'project';
 
   return (
