@@ -1646,12 +1646,12 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   justify-content: center;
   text-align: center;
   min-height: 250px; 
-  transition: none;
-  cursor: default;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  cursor: pointer;
 }
 .game-card.hidden-projects-card:hover {
-  transform: none;
-  box-shadow: none;
+  transform: scale(1.04);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   border-color: var(--color-purple);
 }
 .hidden-card-content h4 {

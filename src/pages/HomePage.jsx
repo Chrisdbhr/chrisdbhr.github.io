@@ -94,6 +94,13 @@ function HomePage() {
     });
   };
   
+  // NOVO: Função para remover uma lista específica de exclusões (o que o usuário clicou no card)
+  const handleRemoveExclusions = (typesToRemove) => {
+    if (typesToRemove && typesToRemove.length > 0) {
+      setExcludedTypes(prev => prev.filter(type => !typesToRemove.includes(type)));
+    }
+  };
+
   // 5. Função de filtro: Aplica a lógica de exclusão
   const filterProjects = (projects) => {
     if (excludedTypes.length === 0) return projects;
@@ -122,7 +129,23 @@ function HomePage() {
     totalVisibleProjects += filtered.length;
   });
 
+  // HELPER: Calcula quais tipos excluídos são relevantes para a lista de projetos fornecida
+  const getRelevantExcludedTypes = (initialProjects) => {
+      // Cria uma lista de projetos que deveriam estar lá, mas foram excluídos
+      const relevantTypes = new Set();
+      initialProjects.forEach(p => {
+          const type = p.project_type || 'project';
+          if (excludedTypes.includes(type)) {
+              relevantTypes.add(type);
+          }
+      });
+      return Array.from(relevantTypes).sort();
+  };
+
+
   const projectsHidden = totalProjectsCount - totalVisibleProjects;
+  const showHiddenCard = excludedTypes.length > 0;
+
 
   return (
     <div className="page-content fade-in">
@@ -170,31 +193,44 @@ function HomePage() {
         {(initialUnreleased.length > 0) && (
           <section className="year-group">
             <h3 className="year-title upcoming-title">Próximos Lançamentos</h3>
-            {initialUnreleased.length === filteredUnreleasedProjects.length && filteredUnreleasedProjects.length === 0 ? (
-                 <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
-                   Nenhum projeto futuro listado.
-                 </p>
-            ) : filteredUnreleasedProjects.length === 0 && initialUnreleased.length > 0 ? (
-                 <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
-                   Todos os {initialUnreleased.length} projetos futuros foram ocultos pelos filtros.
-                 </p>
+            
+            {/* Caso A: Todos ocultos */}
+            {filteredUnreleasedProjects.length === 0 && initialUnreleased.length > 0 ? (
+               <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
+                 Todos os {initialUnreleased.length} projetos futuros foram ocultos pelos filtros.
+               </p>
             ) : (
-              <div className="game-grid">
-                {filteredUnreleasedProjects.map((project) => (
-                  <ProjectCard key={project.id} project={project} />
-                ))}
+            // Caso B/C: Projetos visíveis
+            <div className="game-grid">
+              {filteredUnreleasedProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
 
-                {/* Card de Projetos Ocultos (Unreleased) */}
-                {initialUnreleased.length > filteredUnreleasedProjects.length && (
-                  <div className="game-card hidden-projects-card">
+              {/* Card de Projetos Ocultos (Unreleased) */}
+              {initialUnreleased.length > filteredUnreleasedProjects.length && showHiddenCard && (() => {
+                const projectsHiddenInUnreleased = initialUnreleased.length - filteredUnreleasedProjects.length;
+                const relevantExcludedTypes = getRelevantExcludedTypes(initialUnreleased);
+                const excludedTypesList = relevantExcludedTypes.join(', ');
+                
+                return (
+                  <div 
+                    className="game-card hidden-projects-card"
+                    onClick={() => handleRemoveExclusions(relevantExcludedTypes)}
+                  >
                     <div className="hidden-card-content">
-                      <h4>+{initialUnreleased.length - filteredUnreleasedProjects.length} Projetos Ocultos</h4>
-                      <p>Ajuste os filtros de tipo para visualizá-los.</p>
+                      <h4>+{projectsHiddenInUnreleased} Projetos Ocultos</h4>
+                      <p>
+                        Ocultos por: <strong>{excludedTypesList}</strong>.
+                      </p>
+                      <p style={{ marginTop: '10px', color: 'var(--color-purple)' }}>
+                         Clique para reexibir estes tipos.
+                      </p>
                     </div>
                   </div>
-                )}
-              </div>
-            )}
+                );
+              })()}
+            </div>
+          )}
           </section>
         )}
         
@@ -225,6 +261,11 @@ function HomePage() {
           if (filteredYearProjects.length === 0) return null; 
 
           const yearEngineStats = getEngineStats(filteredYearProjects);
+          
+          // Cálculo dos tipos relevantes para este grupo
+          const relevantExcludedTypes = getRelevantExcludedTypes(initialYearProjects);
+          const excludedTypesList = relevantExcludedTypes.join(', ');
+          
           return (
             <section key={year} className="year-group">
               <div className="home-section-header">
@@ -244,11 +285,19 @@ function HomePage() {
                 ))}
                 
                 {/* Card de Projetos Ocultos (Req 3, Caso B) */}
-                {projectsHiddenInYear > 0 && (
-                  <div className="game-card hidden-projects-card">
+                {projectsHiddenInYear > 0 && showHiddenCard && (
+                  <div 
+                    className="game-card hidden-projects-card"
+                    onClick={() => handleRemoveExclusions(relevantExcludedTypes)} // Use specific handler
+                  >
                     <div className="hidden-card-content">
                       <h4>+{projectsHiddenInYear} Projetos Ocultos</h4>
-                      <p>Ajuste os filtros de tipo para visualizá-los.</p>
+                      <p>
+                        Ocultos por: <strong>{excludedTypesList}</strong>.
+                      </p>
+                      <p style={{ marginTop: '10px', color: 'var(--color-purple)' }}>
+                         Clique para reexibir estes tipos.
+                      </p>
                     </div>
                   </div>
                 )}
