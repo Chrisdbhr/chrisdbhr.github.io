@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLoaderData } from 'react-router-dom'
+import { getAssetUrl } from '../utils' // <--- Importado
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com"
 const API_URL = `${DIRECTUS_URL}/items/blog_posts?fields=id,title,date_published,cover_image.id&filter[status][_eq]=published&sort=-date_published`
@@ -15,7 +16,8 @@ export async function loader() {
     const allPosts = data.data.map((item) => {
       let imageUrl = null;
       if (item.cover_image) {
-        imageUrl = `${DIRECTUS_URL}/assets/${item.cover_image.id}`;
+        // Usando getAssetUrl para otimizar cards do blog (400px de largura, 16:9)
+        imageUrl = getAssetUrl(item.cover_image.id, 400, 'height=225&fit=cover'); 
       }
 
       return {

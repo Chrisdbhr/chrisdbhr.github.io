@@ -5,7 +5,8 @@ import { normalizeEngineName } from '../utils/textUtils';
 
 function ProjectCard({ project }) {
   const translation = project.translations.find(t => t.language === 'pt-BR') || project.translations[0] || { title: 'Título não disponível' }
-  const imageUrl = getAssetUrl(project.card_image?.id)
+  // getAssetUrl() agora usa o padrão de 800px wide e webp
+  const imageUrl = getAssetUrl(project.card_image?.id) 
 
   let firstLineSynopsis = '';
   if (translation.synopsis) {

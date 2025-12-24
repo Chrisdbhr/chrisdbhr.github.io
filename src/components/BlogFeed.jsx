@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getAssetUrl } from '../utils' // <--- Importado
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com"
 // Esta é a URL correta para buscar a LISTA de posts
@@ -20,7 +21,8 @@ function BlogFeed() {
         const feedPosts = data.data.map((item) => {
           let imageUrl = null;
           if (item.cover_image) {
-            imageUrl = `${DIRECTUS_URL}/assets/${item.cover_image.id}`;
+            // Usando getAssetUrl para otimizar cards do blog (400px de largura, 16:9)
+            imageUrl = getAssetUrl(item.cover_image.id, 400, 'height=225&fit=cover');
           }
 
           return {

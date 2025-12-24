@@ -5,6 +5,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import TableOfContents from '../components/TableOfContents'
 import { getReadingTime, extractToc } from '../utils/textUtils'
+import { getAssetUrl } from '../utils' // <--- NEW IMPORT
 
 const DIRECTUS_URL = "https://cms.chrisjogos.com"
 
@@ -62,7 +63,7 @@ function BlogPostPage() {
   }
 
   const imageUrl = post.cover_image 
-    ? `${DIRECTUS_URL}/assets/${post.cover_image.id}` 
+    ? getAssetUrl(post.cover_image.id, 1000) // Otimizado para 1000px de largura
     : null;
     
   const pubDate = new Date(post.date_published || Date.now()).toLocaleDateString('pt-BR');

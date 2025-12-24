@@ -8,9 +8,24 @@ const filter = import.meta.env.DEV
 
 export const fieldsQuery = `${baseQuery}&${filter}`;
 
-export const getAssetUrl = (id) => {
+const DEFAULT_IMAGE_WIDTH = 800;
+
+/**
+ * Retorna a URL otimizada de um asset do Directus, aplicando WEBP e limite de largura por padrão.
+ * @param {string} id ID do asset.
+ * @param {number} [width=800] Largura máxima.
+ * @param {string} [options=''] Parâmetros adicionais (ex: 'height=120&fit=cover').
+ * @returns {string | null} URL otimizada.
+ */
+export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '') => {
   if (!id) return null;
-  return `${baseURL}/assets/${id}`;
+  
+  let params = `?format=webp&width=${width}`;
+  if (options) {
+    params += `&${options}`;
+  }
+  
+  return `${baseURL}/assets/${id}${params}`;
 };
 
 export function getHashedColor(tagString) {
