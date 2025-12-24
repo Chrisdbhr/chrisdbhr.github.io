@@ -5,9 +5,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import TableOfContents from '../components/TableOfContents'
 import { getReadingTime, extractToc } from '../utils/textUtils'
-import { getAssetUrl } from '../utils' // <--- NEW IMPORT
-
-const DIRECTUS_URL = "https://cms.chrisjogos.com"
+import { getAssetUrl, baseURL } from '../utils'
 
 function BlogPostPage() {
   const { slug } = useParams();
@@ -18,7 +16,7 @@ function BlogPostPage() {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const API_URL = `${DIRECTUS_URL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id`
+      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id`
       try {
         setLoading(true);
         const response = await fetch(API_URL);

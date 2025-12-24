@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLoaderData } from 'react-router-dom'
-import { getAssetUrl } from '../utils' // <--- Importado
+import { getAssetUrl, baseURL } from '../utils' // <--- baseURL importado
 
-const DIRECTUS_URL = "https://cms.chrisjogos.com"
-const API_URL = `${DIRECTUS_URL}/items/blog_posts?fields=id,title,date_published,cover_image.id&filter[status][_eq]=published&sort=-date_published`
+const API_URL = `${baseURL}/items/blog_posts?fields=id,title,date_published,cover_image.id&filter[status][_eq]=published&sort=-date_published`
 
 // 2. Exporte o loader
 export async function loader() {

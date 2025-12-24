@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getAssetUrl } from '../utils' // <--- Importado
+import { getAssetUrl, baseURL } from '../utils' // <--- baseURL importado
 
-const DIRECTUS_URL = "https://cms.chrisjogos.com"
-// Esta é a URL correta para buscar a LISTA de posts
-const API_URL = `${DIRECTUS_URL}/items/blog_posts?fields=id,title,date_published,cover_image.id&filter[status][_eq]=published&sort=-date_published&limit=4`
+const API_URL = `${baseURL}/items/blog_posts?fields=id,title,date_published,cover_image.id&filter[status][_eq]=published&sort=-date_published&limit=4`
 
 function BlogFeed() {
   const [posts, setPosts] = useState([]);
@@ -13,7 +11,7 @@ function BlogFeed() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(API_URL); // <-- Busca a lista
+        const response = await fetch(API_URL); // <-- Usa API_URL
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
