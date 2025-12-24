@@ -1,6 +1,6 @@
 export const baseURL = "https://cms.chrisjogos.com";
 
-const baseQuery = "fields=*,translations.*,tags.tags_id,tags_translations.*,screenshots.file,screenshots.type,screenshots.priority,card_image.id,genres.genres_id,steam_id,trailer_url,web_version_url";
+const baseQuery = "fields=*,translations.*,tags.tags_id,tags_translations.*,card_image.id,genres.genres_id,steam_id,trailer_url,web_version_url,screenshots.directus_files_id";
 
 const filter = import.meta.env.DEV
   ? "filter[status][_in]=published,draft"
