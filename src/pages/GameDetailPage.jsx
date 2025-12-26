@@ -98,7 +98,6 @@ function GameDetailPage() {
             <ScreenshotGallery screenshots={project.screenshots} />
           )}
 
-          <h3>Sinopse</h3>
           <div className="game-synopsis">
             <ReactMarkdown>
               {translation.synopsis}
@@ -196,8 +195,10 @@ function GameDetailPage() {
           {/* O restante dos seus blocos de Detalhes e Tags */}
           <div className="sidebar-info-box">
             <h4>Detalhes</h4>
-            <p><strong>Motor:</strong> {project.engine}</p>
-            {project.release_date && ( // Corrigido: game.release_date em vez de translation
+            {project.engine && (
+              <p><strong>Motor:</strong> {project.engine}</p>
+            )}
+            {project.release_date && (
               <p><strong>Lançamento:</strong> {new Date(project.release_date).toLocaleDateString('pt-BR')}</p>
             )}
             {translation.playtime && (
