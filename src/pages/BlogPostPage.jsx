@@ -16,7 +16,7 @@ function BlogPostPage() {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id`
+      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type`
       try {
         setLoading(true);
         const response = await fetch(API_URL);
@@ -61,7 +61,7 @@ function BlogPostPage() {
   }
 
   const imageUrl = post.cover_image 
-    ? getAssetUrl(post.cover_image.id, 1000) // Otimizado para 1000px de largura
+    ? getAssetUrl(post.cover_image.id, 1000, '', post.cover_image.type) // Otimizado para 1000px de largura
     : null;
     
   const pubDate = new Date(post.date_published || Date.now()).toLocaleDateString('pt-BR');

@@ -1,6 +1,6 @@
 export const baseURL = "https://cms.chrisjogos.com";
 
-const baseQuery = "fields=*,translations.*,tags.tags_id,tags_translations.*,card_image.id,genres.genres_id,steam_id,trailer_url,web_version_url,screenshots.directus_files_id";
+const baseQuery = "fields=*,translations.*,tags.tags_id,tags_translations.*,card_image.id,card_image.type,genres.genres_id,steam_id,trailer_url,web_version_url,screenshots.directus_files_id.id,screenshots.directus_files_id.type";
 
 const filter = import.meta.env.DEV
   ? "filter[status][_in]=published,draft"
@@ -15,10 +15,16 @@ const DEFAULT_IMAGE_WIDTH = 800;
  * @param {string} id ID do asset.
  * @param {number} [width=800] Largura máxima.
  * @param {string} [options=''] Parâmetros adicionais (ex: 'height=120&fit=cover').
+ * @param {string} [mimeType=''] O MIME type do arquivo (ex: 'image/gif').
  * @returns {string | null} URL otimizada.
  */
-export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '') => {
+export const getAssetUrl = (id, width = DEFAULT_IMAGE_WIDTH, options = '', mimeType = '') => {
   if (!id) return null;
+  
+  // Se for GIF, retorna a URL original sem otimização
+  if (mimeType.toLowerCase() === 'image/gif') {
+    return `${baseURL}/assets/${id}`;
+  }
   
   let params = `?format=webp&width=${width}`;
   if (options) {
