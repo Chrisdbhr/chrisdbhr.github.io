@@ -7,7 +7,7 @@ function App() {
       <header className="main-header">
         <Link to="/" className="site-title-link">
           <h1>ChrisJogos</h1>
-          <span>Portfólio de Projetos & Blog</span>
+          <span>Projects Portfolio & Blog</span>
         </Link>
       </header>
 
@@ -20,7 +20,7 @@ function App() {
       </div>
 
       <footer className="main-footer">
-        <p>© 2025 Enigmatic Comma. Todos os direitos reservados.</p>
+        <p>© 2025 Enigmatic Comma. All rights reserved.</p>
       </footer>
     </div>
   );

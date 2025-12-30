@@ -3,8 +3,22 @@ import { Link } from 'react-router-dom'
 import { getAssetUrl, getHashedColor } from '../utils'
 import { normalizeEngineName } from '../utils/textUtils';
 
+// Helper function to find the preferred English translation
+const getPreferredTranslation = (translations) => {
+  if (!translations || translations.length === 0) return {};
+  const enTranslation = translations.find(t => t.language.startsWith('en'));
+  if (enTranslation) return enTranslation;
+  const ptTranslation = translations.find(t => t.language.startsWith('pt'));
+  if (ptTranslation) return ptTranslation;
+  return translations[0] || {};
+}
+
+
 function ProjectCard({ project }) {
-  const translation = project.translations.find(t => t.language === 'pt-BR') || project.translations[0] || { title: 'Título não disponível' }
+  // Use preferred translation helper
+  const translation = getPreferredTranslation(project.translations);
+  const title = translation.title || 'Title Not Available'; 
+  
   // getAssetUrl() agora usa o padrão de 800px wide e webp
   const imageUrl = getAssetUrl(project.card_image?.id) 
 
@@ -28,20 +42,20 @@ function ProjectCard({ project }) {
         {imageUrl ? (
           <img
             src={imageUrl}
-            alt={`Capa de ${translation.title}`}
+            alt={`Cover image of ${title}`}
             className="game-card-image"
           />
         ) : (
-          <div className="game-card-image-placeholder">Sem Imagem</div>
+          <div className="game-card-image-placeholder">No Image</div>
         )}
         
         {isUnreleased && (
-          <div className="unreleased-banner">Em Breve</div>
+          <div className="unreleased-banner">Coming Soon</div>
         )}
       </div>
 
       <div className="game-card-content">
-        <h3>{translation.title}</h3>
+        <h3>{title}</h3>
         
         {firstLineSynopsis && (
           <p className="game-card-synopsis">{firstLineSynopsis}</p>

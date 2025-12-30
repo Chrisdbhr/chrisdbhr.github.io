@@ -7,7 +7,7 @@ function TableOfContents({ items }) {
 
   return (
     <nav className="toc-sidebar">
-      <h4>Neste Artigo</h4>
+      <h4>In This Article</h4>
       <ul>
         {items.map((item) => (
           <li key={item.id} className={`toc-item-level-${item.level}`}>

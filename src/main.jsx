@@ -22,10 +22,10 @@ function ErrorBoundary() {
   console.error(error);
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h2>Oops! Algo deu errado.</h2>
+      <h2>Oops! Something went wrong.</h2>
       <p>{error.message}</p>
       <br/>
-      <p>{"Parece que o Chris subiu algo pra testar em produção e quebrou tudo kkkk"}</p>
+      <p>{"It seems Chris broke everything while testing production code, lol."}</p>
     </div>
   );
 }
@@ -72,7 +72,7 @@ const InitialFallback = () => {
       backgroundColor: '#141414', 
       color: '#FFFFFF'           
     }}>
-      Carregando Portfólio...
+      Loading Portfolio...
     </div>
   );
 }

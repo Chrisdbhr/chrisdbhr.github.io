@@ -6,7 +6,7 @@ function ProjectTypeFilter({ types, excludedTypes, onToggle }) {
 
   return (
     <div className="project-filter-container fade-in">
-      <h4>Filtrar por Tipo de Projeto:</h4>
+      <h4>Filter by Project Type:</h4>
       <div className="filter-buttons">
         {types.map((type) => {
           const isExcluded = excludedTypes.includes(type);

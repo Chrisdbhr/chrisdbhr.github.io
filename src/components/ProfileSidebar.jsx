@@ -10,7 +10,7 @@ function ProfileSidebar() {
   return (
     <aside className="profile-sidebar">
       <Link to="/"> 
-        <img src={gravatarUrl} alt="Foto de Perfil" className="profile-avatar" />
+        <img src={gravatarUrl} alt="Profile Picture" className="profile-avatar" />
       </Link>
       <h2 className="profile-name">Christopher Ravailhe</h2>
       <p className="profile-bio">
@@ -18,12 +18,12 @@ function ProfileSidebar() {
       </p>
 
       <div className="profile-brand-block">
-        <h4>Minha Marca</h4>
+        <h4>My Brand</h4>
         <a href="https://enigmaticcomma.com" target="_blank" rel="noopener noreferrer" className="profile-brand-card">
           <img src="/logo.png" alt="Enigmatic Comma Logo" className="brand-logo" />
           <div className="brand-card-content">
             <h5>Enigmatic Comma</h5>
-            <p>Selo de desenvolvimento para meus projetos e jogos comerciais.</p>
+            <p>Development label for my commercial projects and games.</p>
           </div>
         </a>
       </div>
@@ -50,9 +50,9 @@ function ProfileSidebar() {
       </div>
 
       <div className="contact-info">
-        <h3>Contato</h3>
+        <h3>Contact</h3>
         <p>
-          Interessado em colaborar ou bater um papo?
+          Interested in collaboration or just chatting?
           <br />
           <a href="mailto:contato@chrisjogos.com">
             <FaEnvelope style={{ marginRight: '8px', verticalAlign: 'middle' }} />

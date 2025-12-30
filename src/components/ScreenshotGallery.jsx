@@ -18,7 +18,7 @@ function ScreenshotGallery({ screenshots }) {
   );
 
   if (screenshots.length === 0) {
-    return <div className="screenshot-gallery-placeholder">Sem screenshots disponíveis.</div>
+    return <div className="screenshot-gallery-placeholder">No screenshots available.</div>
   }
   
   // O arquivo ID do screenshot atualmente selecionado

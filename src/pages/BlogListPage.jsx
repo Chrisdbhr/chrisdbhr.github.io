@@ -20,7 +20,7 @@ export async function loader() {
       }
 
       return {
-        title: item.title || "Sem título",
+        title: item.title || "No Title", // Translated
         link: `/blog/${item.id}`, // Link ainda é usado para o <Link>
         pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('pt-BR'),
         imageUrl: imageUrl,
@@ -28,7 +28,7 @@ export async function loader() {
     });
     return allPosts; // Retorna a lista de posts
   } catch (error) {
-    console.error("Erro ao buscar posts do blog:", error);
+    console.error("Error fetching blog posts:", error); // Translated
     return []; // Retorna array vazio em caso de erro
   }
 }
@@ -39,13 +39,13 @@ function BlogListPage() {
   return (
     <>
       <title>Blog - ChrisJogos</title>
-      <meta name="description" content="Artigos e devlogs sobre meus projetos de jogos." />
+      <meta name="description" content="Articles and devlogs about my game projects." />
       <meta property="og:title" content="Blog - ChrisJogos" />
-      <meta property="og:description" content="Artigos e devlogs sobre meus projetos de jogos." />
+      <meta property="og:description" content="Articles and devlogs about my game projects." />
       
       <div className="blog-list-page">
         <h2>Blog</h2>
-        <p>Artigos e devlogs sobre meus projetos.</p>
+        <p>Articles and devlogs about my projects.</p>
         
         <div className="blog-post-grid">
           {posts.map((post, index) => (
@@ -56,7 +56,7 @@ function BlogListPage() {
             >
               <div className="blog-post-image-container">
                 {post.imageUrl ? (
-                  <img src={post.imageUrl} alt={`Capa de ${post.title}`} />
+                  <img src={post.imageUrl} alt={`Cover image of ${post.title}`} />
                 ) : (
                   <div className="blog-post-image-placeholder"></div>
                 )}

@@ -5,6 +5,18 @@ import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
 
+// Helper function to find the preferred English translation
+const getPreferredTranslation = (translations) => {
+  if (!translations || translations.length === 0) return {};
+  const enTranslation = translations.find(t => t.language.startsWith('en'));
+  if (enTranslation) return enTranslation;
+  // Fallback to Portuguese or the first item
+  const ptTranslation = translations.find(t => t.language.startsWith('pt'));
+  if (ptTranslation) return ptTranslation;
+  return translations[0] || {};
+}
+
+
 function GameDetailPage() {
   const { projectId } = useParams()
   const [project, setProject] = useState(null);
@@ -23,7 +35,7 @@ function GameDetailPage() {
         const data = await response.json();
         setProject(data.data);
       } catch (error) {
-        console.error("Erro ao buscar o jogo:", error);
+        console.error("Error fetching game:", error);
         setProject(null);
       }
     };
@@ -39,21 +51,21 @@ function GameDetailPage() {
   }, [projectId]);
 
   if (loading) {
-    return <div className="page-content"><h2>Carregando...</h2></div>;
+    return <div className="page-content"><h2>Loading...</h2></div>;
   }
 
   if (!project) {
     return (
       <div className="page-content fade-in">
-        <h2>Jogo não encontrado</h2>
+        <h2>Game Not Found</h2>
         <Link to="/" className="button-primary">
-          &larr; Voltar para a Home
+          &larr; Go back to Home
         </Link>
       </div>
     )
   }
 
-  const translation = project.translations.find(t => t.language === 'pt-BR') || project.translations[0];
+  const translation = getPreferredTranslation(project.translations);
 
   const getEmbedUrl = (url) => {
     if (!url) return null;
@@ -73,7 +85,7 @@ function GameDetailPage() {
   return (
     <div className="page-content game-detail-page fade-in">
       <button onClick={() => navigate('/')} className="button-back">
-        &larr; Voltar
+        &larr; Go Back
       </button>
       <h2 className="game-title">{translation.title}</h2>
 
@@ -128,7 +140,7 @@ function GameDetailPage() {
             (!project.web_version_url && !project.google_play_url && !project.app_store_url && !project.github_url) ? (
               // ...então o jogo está realmente "Em breve"
               <button className="button-primary button-disabled" disabled>
-                Em breve
+                Coming Soon
               </button>
             ) : (
               // ...se TIVER qualquer um desses outros links, não mostramos nada aqui,
@@ -145,9 +157,9 @@ function GameDetailPage() {
                 href={project.web_version_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="button-primary button-play-web"
+                className="button-secondary button-web"
               >
-                <i className="fas fa-play"></i> Jogue Agora (Online)
+                <i className="fas fa-play"></i> Play Now (Web)
               </a>
             )}
 
@@ -159,7 +171,7 @@ function GameDetailPage() {
                 rel="noopener noreferrer"
                 className="button-secondary button-github"
               >
-                <i className="fab fa-github"></i> Código Fonte
+                <i className="fab fa-github"></i> Source Code
               </a>
             )}
           </div>
@@ -194,15 +206,15 @@ function GameDetailPage() {
 
           {/* O restante dos seus blocos de Detalhes e Tags */}
           <div className="sidebar-info-box">
-            <h4>Detalhes</h4>
+            <h4>Details</h4>
             {project.engine && (
-              <p><strong>Motor:</strong> {project.engine}</p>
+              <p><strong>Engine:</strong> {project.engine}</p>
             )}
             {project.release_date && (
-              <p><strong>Lançamento:</strong> {new Date(project.release_date).toLocaleDateString('pt-BR')}</p>
+              <p><strong>Release Date:</strong> {new Date(project.release_date).toLocaleDateString('en-US')}</p>
             )}
             {translation.playtime && (
-              <p><strong>Tempo de Jogo:</strong> {translation.playtime}</p>
+              <p><strong>Playtime:</strong> {translation.playtime}</p>
             )}
 
             {translation.rating_quote && (

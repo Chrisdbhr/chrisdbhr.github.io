@@ -29,9 +29,9 @@ function ContactForm() {
   if (state.succeeded && !hasError) {
     return (
       <div className="contact-form-container">
-        <h3>Fale Comigo</h3>
+        <h3>Contact Me</h3>
         <p className="comment-message success">
-          Mensagem enviada com sucesso! Responderei assim que possível.
+          Message sent successfully! I will reply as soon as possible.
         </p>
       </div>
     );
@@ -39,19 +39,19 @@ function ContactForm() {
 
   return (
     <div className="contact-form-container">
-      <h3>Fale Comigo</h3>
-      <p>Envie sua mensagem diretamente para mim. Responderei no email fornecido assim que possível.</p>
+      <h3>Contact Me</h3>
+      <p>Send your message directly to me. I will reply to the provided email as soon as possible.</p>
 
       <form onSubmit={handleSubmit} className="contact-form">
         
         {hasError && (
             <p className="comment-message error">
-                Falha ao enviar sua mensagem. Tente novamente.
+                Failed to send your message. Please try again.
             </p>
         )}
 
         <div className="form-group">
-          <label htmlFor="email">Seu Email</label>
+          <label htmlFor="email">Your Email</label>
           <input
             type="email"
             id="email"
@@ -64,7 +64,7 @@ function ContactForm() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="message">Sua Mensagem</label>
+          <label htmlFor="message">Your Message</label>
           <textarea
             id="message"
             name="message" 
@@ -76,7 +76,7 @@ function ContactForm() {
           ></textarea>
         </div>
         <button type="submit" className="button-primary" disabled={state.submitting}>
-          {state.submitting ? "Enviando..." : "Enviar Mensagem"}
+          {state.submitting ? "Sending..." : "Send Message"}
         </button>
       </form>
     </div>

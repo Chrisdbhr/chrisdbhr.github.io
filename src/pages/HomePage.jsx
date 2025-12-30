@@ -168,11 +168,11 @@ function HomePage() {
       <div className="home-section">
         <div className="home-section-header">
           <h2>
-            Meus Jogos e Projetos ({totalVisibleProjects}{totalVisibleProjects !== totalProjectsCount ? `/${totalProjectsCount}` : ''})
+            My Games and Projects ({totalVisibleProjects}{totalVisibleProjects !== totalProjectsCount ? `/${totalProjectsCount}` : ''})
             {/* Mensagem de projetos ocultos integrada (Req 2) */}
             {projectsHidden > 0 && (
               <span className="hidden-count-message" style={{ marginLeft: '15px' }}>
-                (+{projectsHidden} ocultos)
+                (+{projectsHidden} hidden)
               </span>
             )}
           </h2>
@@ -192,12 +192,12 @@ function HomePage() {
         {/* Seção Próximos Lançamentos */}
         {(initialUnreleased.length > 0) && (
           <section className="year-group">
-            <h3 className="year-title upcoming-title">Próximos Lançamentos</h3>
+            <h3 className="year-title upcoming-title">Upcoming Releases</h3>
             
             {/* Caso A: Todos ocultos */}
             {filteredUnreleasedProjects.length === 0 && initialUnreleased.length > 0 ? (
                <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
-                 Todos os {initialUnreleased.length} projetos futuros foram ocultos pelos filtros.
+                 All {initialUnreleased.length} upcoming projects have been hidden by filters.
                </p>
             ) : (
             // Caso B/C: Projetos visíveis
@@ -218,12 +218,12 @@ function HomePage() {
                     onClick={() => handleRemoveExclusions(relevantExcludedTypes)}
                   >
                     <div className="hidden-card-content">
-                      <h4>+{projectsHiddenInUnreleased} Projetos Ocultos</h4>
+                      <h4>+{projectsHiddenInUnreleased} Hidden Projects</h4>
                       <p>
-                        Ocultos por: <strong>{excludedTypesList}</strong>.
+                        Hidden by: <strong>{excludedTypesList}</strong>.
                       </p>
                       <p style={{ marginTop: '10px', color: 'var(--color-purple)' }}>
-                         Clique para reexibir estes tipos.
+                         Click to re-enable these types.
                       </p>
                     </div>
                   </div>
@@ -251,7 +251,7 @@ function HomePage() {
                   <h3 className="year-title">{year}</h3>
                 </div>
                 <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
-                  Todos os {initialYearProjects.length} projetos de {year} foram ocultos pelos filtros.
+                  All {initialYearProjects.length} projects from {year} have been hidden by filters.
                 </p>
               </section>
             );
@@ -291,12 +291,12 @@ function HomePage() {
                     onClick={() => handleRemoveExclusions(relevantExcludedTypes)} // Use specific handler
                   >
                     <div className="hidden-card-content">
-                      <h4>+{projectsHiddenInYear} Projetos Ocultos</h4>
+                      <h4>+{projectsHiddenInYear} Hidden Projects</h4>
                       <p>
-                        Ocultos por: <strong>{excludedTypesList}</strong>.
+                        Hidden by: <strong>{excludedTypesList}</strong>.
                       </p>
                       <p style={{ marginTop: '10px', color: 'var(--color-purple)' }}>
-                         Clique para reexibir estes tipos.
+                         Click to re-enable these types.
                       </p>
                     </div>
                   </div>
@@ -308,12 +308,12 @@ function HomePage() {
         
         {totalProjectsCount > 0 && totalVisibleProjects === 0 && (
             <p style={{ textAlign: 'center', marginTop: '40px', color: '#a0a0a0' }}>
-                Nenhum projeto encontrado. Todos foram ocultos pelos filtros atuais.
+                No projects found. All are currently hidden by filters.
             </p>
         )}
          {totalProjectsCount === 0 && (
             <p style={{ textAlign: 'center', marginTop: '40px', color: '#a0a0a0' }}>
-                Nenhum projeto cadastrado no portfólio.
+                No projects registered in the portfolio.
             </p>
         )}
       </div>

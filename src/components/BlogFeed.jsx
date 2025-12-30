@@ -24,7 +24,7 @@ function BlogFeed() {
           }
 
           return {
-            title: item.title || "Sem título",
+            title: item.title || "No Title", // Translated
             link: `/blog/${item.id}`, // <-- Link interno
             pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('pt-BR'),
             imageUrl: imageUrl,
@@ -32,7 +32,7 @@ function BlogFeed() {
         });
         setPosts(feedPosts);
       } catch (error) {
-        console.error("Erro ao buscar posts do blog:", error);
+        console.error("Error fetching blog posts:", error); // Translated
       } finally {
         setLoading(false);
       }
@@ -43,8 +43,8 @@ function BlogFeed() {
 
   return (
     <div className="blog-feed-container">
-      <h3>Últimas do Blog</h3>
-      {loading && <p>Carregando posts...</p>}
+      <h3>Latest from the Blog</h3>
+      {loading && <p>Loading posts...</p>}
       
       <div className="blog-post-grid">
         {posts.map((post, index) => (
@@ -56,7 +56,7 @@ function BlogFeed() {
           >
             <div className="blog-post-image-container">
               {post.imageUrl ? (
-                <img src={post.imageUrl} alt={`Capa de ${post.title}`} />
+                <img src={post.imageUrl} alt={`Cover image of ${post.title}`} />
               ) : (
                 <div className="blog-post-image-placeholder"></div>
               )}
@@ -70,7 +70,7 @@ function BlogFeed() {
       </div>
       
       <Link to="/blog" className="button-secondary blog-view-all">
-        Ver todos os posts &rarr;
+        View all posts &rarr;
       </Link>
     </div>
   )

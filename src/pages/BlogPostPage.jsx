@@ -29,10 +29,10 @@ function BlogPostPage() {
           setReadingTime(getReadingTime(data.data.content));
           setTocItems(extractToc(data.data.content));
         } else {
-          throw new Error("Post não encontrado");
+          throw new Error("Post not found");
         }
       } catch (error) {
-        console.error("Erro ao buscar post:", error);
+        console.error("Error fetching post:", error);
         setPost(null);
       } finally {
         setLoading(false);
@@ -45,8 +45,8 @@ function BlogPostPage() {
   if (loading) {
     return (
       <>
-        <title>Carregando Post... - ChrisJogos</title>
-        <p>Carregando post...</p>
+        <title>Loading Post... - ChrisJogos</title>
+        <p>Loading post...</p>
       </>
     );
   }
@@ -54,8 +54,8 @@ function BlogPostPage() {
   if (!post) {
     return (
       <>
-        <title>Post Não Encontrado - ChrisJogos</title>
-        <p>Post não encontrado.</p>
+        <title>Post Not Found - ChrisJogos</title>
+        <p>Post not found.</p>
       </>
     );
   }
@@ -68,7 +68,7 @@ function BlogPostPage() {
 
   const description = post.content
     ? post.content.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
-    : "Leia este post no blog ChrisJogos.";
+    : "Read this post on ChrisJogos blog.";
 
   return (
     <div className="blog-post-layout">
@@ -95,7 +95,7 @@ function BlogPostPage() {
             <span className="blog-post-date">{pubDate}</span>
             {readingTime > 0 && (
               <span className="blog-post-reading-time">
-                &bull; {readingTime} min de leitura
+                &bull; {readingTime} min read
               </span>
             )}
           </div>
@@ -103,7 +103,7 @@ function BlogPostPage() {
           {imageUrl && (
             <img 
               src={imageUrl} 
-              alt={`Capa de ${post.title}`} 
+              alt={`Cover image of ${post.title}`} 
               className="blog-post-cover-image"
             />
           )}

@@ -4,10 +4,10 @@ import { FaDiscord } from 'react-icons/fa'
 function DiscordCTA() {
   return (
     <>
-      <h3>Minha Comunidade</h3>
+      <h3>My Community</h3>
       <p>
-        Conheça o Concord! Há +10 anos, jogamos, 
-        trabalhamos e falamos da vida juntos.
+        Meet Concord! For over 10 years, we've been playing, 
+        working, and talking about life together.
       </p>
       <a 
         href="https://discord.chrisjogos.com/" 
@@ -16,7 +16,7 @@ function DiscordCTA() {
         className="button-secondary discord-button"
       >
         <FaDiscord />
-        Entrar no Discord
+        Join Discord
       </a>
     </>
   )
