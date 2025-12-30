@@ -138,7 +138,7 @@ img {
 
 .game-card-content h3 {
   color: var(--color-light);
-  margin-bottom: 10px;
+  margin-bottom: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
