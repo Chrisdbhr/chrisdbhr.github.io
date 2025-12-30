@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useLoaderData } from 'react-router-dom' 
+import { useLoaderData } from 'react-router-dom'
 import ProjectCard from '../components/ProjectCard'
 import BlogFeed from '../components/BlogFeed'
 import ContactForm from '../components/ContactForm'
@@ -9,62 +9,81 @@ import DiscordCTA from '../components/DiscordCTA'
 import ProjectTypeFilter from '../components/ProjectTypeFilter'
 import { normalizeEngineName } from '../utils/textUtils';
 
-// --- FUNÇÕES HELPER ---
+/**
+ * Calculates engine statistics from a list of games.
+ * @param {Array} games - List of game objects.
+ * @returns {Array} Array of [engineName, count] pairs, sorted alphabetically by engine name.
+ */
 const getEngineStats = (games) => {
   const stats = games.reduce((acc, game) => {
     const engineName = normalizeEngineName(game.engine);
     acc[engineName] = (acc[engineName] || 0) + 1;
     return acc;
   }, {});
+  // Sort alphabetically by engine name
   return Object.entries(stats).sort((a, b) => a[0].localeCompare(b[0]));
 };
 
 // 2. EXPORTE O SEU LOADER (que o main.jsx importa)
 export async function loader() {
-  const response = await fetch(`${baseURL}/items/projects?${fieldsQuery}`);
-  const data = await response.json();
-  const totalProjects = data.data;
+  try {
+    const response = await fetch(`${baseURL}/items/projects?${fieldsQuery}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const data = await response.json();
+    const totalProjects = data.data;
 
-  const now = new Date();
-  
-  const unreleasedProjects = totalProjects
-    .filter(g => new Date(g.release_date) > now)
-    .sort((a, b) => new Date(a.release_date) - new Date(b.release_date)); 
+    const now = new Date();
 
-  const pastProjects = totalProjects
-    .filter(g => new Date(g.release_date) <= now)
-    .sort((a, b) => new Date(b.release_date) - new Date(a.release_date)); 
+    const unreleasedProjects = totalProjects
+      .filter(g => new Date(g.release_date) > now)
+      .sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
 
-  const groupedReleasedProjects = pastProjects.reduce((acc, project) => {
-    const year = new Date(project.release_date).getFullYear();
-    if (!acc[year]) acc[year] = [];
-    acc[year].push(project);
-    return acc;
-  }, {});
-  
-  // Lógica para extrair tipos de projeto únicos
-  const allProjectTypes = new Set();
-  totalProjects.forEach(p => {
-    // Se project_type for null, padroniza para 'project'
-    const type = p.project_type || 'project'; 
-    allProjectTypes.add(type);
-  });
-  const uniqueProjectTypes = Array.from(allProjectTypes).sort();
-  
-  const totalProjectsCount = totalProjects.length;
-  const totalEngineStats = getEngineStats(totalProjects);
-  const sortedYears = Object.keys(groupedReleasedProjects).sort((a, b) => b - a);
-  
-  // O loader retorna um objeto com tudo que a página precisa
-  return { 
-    totalProjects, 
-    unreleasedProjects, 
-    groupedReleasedProjects, 
-    totalProjectsCount, 
-    totalEngineStats, 
-    sortedYears,
-    uniqueProjectTypes // Retorna os tipos únicos
-  };
+    const pastProjects = totalProjects
+      .filter(g => new Date(g.release_date) <= now)
+      .sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
+
+    const groupedReleasedProjects = pastProjects.reduce((acc, project) => {
+      const year = new Date(project.release_date).getFullYear();
+      if (!acc[year]) acc[year] = [];
+      acc[year].push(project);
+      return acc;
+    }, {});
+
+    // Lógica para extrair tipos de projeto únicos
+    const allProjectTypes = new Set();
+    totalProjects.forEach(p => {
+      // Se project_type for null, padroniza para 'project'
+      const type = p.project_type || 'project';
+      allProjectTypes.add(type);
+    });
+    const uniqueProjectTypes = Array.from(allProjectTypes).sort();
+
+    const totalProjectsCount = totalProjects.length;
+    const totalEngineStats = getEngineStats(totalProjects);
+    const sortedYears = Object.keys(groupedReleasedProjects).sort((a, b) => b - a);
+
+    // O loader retorna um objeto com tudo que a página precisa
+    return {
+      totalProjects,
+      unreleasedProjects,
+      groupedReleasedProjects,
+      totalProjectsCount,
+      totalEngineStats,
+      sortedYears,
+      uniqueProjectTypes // Retorna os tipos únicos
+    };
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    return {
+      totalProjects: [],
+      unreleasedProjects: [],
+      groupedReleasedProjects: {},
+      totalProjectsCount: 0,
+      totalEngineStats: [],
+      sortedYears: [],
+      uniqueProjectTypes: []
+    };
+  }
 }
 
 // --- COMPONENTE PRINCIPAL ---
@@ -81,7 +100,7 @@ function HomePage() {
 
   // Estado para os tipos de projeto que DEVEM ser excluídos
   const [excludedTypes, setExcludedTypes] = useState([]);
-  
+
   // Função para alternar o estado de um tipo de projeto
   const handleToggleType = (type) => {
     setExcludedTypes(prev => {
@@ -92,7 +111,7 @@ function HomePage() {
       }
     });
   };
-  
+
   // NOVO: Função para remover uma lista específica de exclusões (o que o usuário clicou no card)
   const handleRemoveExclusions = (typesToRemove) => {
     if (typesToRemove && typesToRemove.length > 0) {
@@ -103,22 +122,22 @@ function HomePage() {
   // 5. Função de filtro: Aplica a lógica de exclusão
   const filterProjects = (projects) => {
     if (excludedTypes.length === 0) return projects;
-    
+
     return projects.filter(project => {
       const type = project.project_type || 'project';
       return !excludedTypes.includes(type);
     });
   };
-  
+
   // 6. Aplicar o filtro nos projetos e calcular quantos foram escondidos
-  
+
   // Projetos futuros
   const filteredUnreleasedProjects = filterProjects(initialUnreleased);
-  
+
   // Projetos passados (Agrupados)
   const filteredGroupedReleasedProjects = {};
   let totalVisibleProjects = filteredUnreleasedProjects.length;
-  
+
   sortedYears.forEach(year => {
     const filtered = filterProjects(initialGrouped[year]);
     if (filtered.length > 0) {
@@ -141,10 +160,8 @@ function HomePage() {
       return Array.from(relevantTypes).sort();
   };
 
-
   const projectsHidden = totalProjectsCount - totalVisibleProjects;
   const showHiddenCard = excludedTypes.length > 0;
-
 
   return (
     <div className="page-content fade-in">
@@ -164,8 +181,6 @@ function HomePage() {
         excludedTypes={excludedTypes}
         onToggle={handleToggleType}
       />
-      
-      
 
       <div className="home-section">
         <div className="home-section-header">
@@ -188,14 +203,14 @@ function HomePage() {
             </div>
           )}
         </div>
-        
+
         {/* Renderização dos Projetos */}
-        
+
         {/* Seção Próximos Lançamentos */}
         {(initialUnreleased.length > 0) && (
           <section className="year-group">
             <h3 className="year-title upcoming-title">Upcoming Releases</h3>
-            
+
             {/* Caso A: Todos ocultos */}
             {filteredUnreleasedProjects.length === 0 && initialUnreleased.length > 0 ? (
                <p style={{ textAlign: 'center', color: 'var(--color-grey)', padding: '20px 0' }}>
@@ -213,9 +228,9 @@ function HomePage() {
                 const projectsHiddenInUnreleased = initialUnreleased.length - filteredUnreleasedProjects.length;
                 const relevantExcludedTypes = getRelevantExcludedTypes(initialUnreleased);
                 const excludedTypesList = relevantExcludedTypes.join(', ');
-                
+
                 return (
-                  <div 
+                  <div
                     className="game-card hidden-projects-card"
                     onClick={() => handleRemoveExclusions(relevantExcludedTypes)}
                   >
@@ -235,13 +250,13 @@ function HomePage() {
           )}
           </section>
         )}
-        
+
         {/* Seção Projetos Lançados (Agrupados por Ano) */}
         {sortedYears.map((year) => {
           const initialYearProjects = initialGrouped[year];
           // Garante que filteredYearProjects seja um array, mesmo que vazio
-          const filteredYearProjects = filteredGroupedReleasedProjects[year] || []; 
-          
+          const filteredYearProjects = filteredGroupedReleasedProjects[year] || [];
+
           const projectsHiddenInYear = initialYearProjects.length - filteredYearProjects.length;
           const allProjectsHidden = projectsHiddenInYear === initialYearProjects.length;
 
@@ -260,14 +275,14 @@ function HomePage() {
           }
 
           // Se não houver projetos visíveis, não renderiza a seção
-          if (filteredYearProjects.length === 0) return null; 
+          if (filteredYearProjects.length === 0) return null;
 
           const yearEngineStats = getEngineStats(filteredYearProjects);
-          
+
           // Cálculo dos tipos relevantes para este grupo
           const relevantExcludedTypes = getRelevantExcludedTypes(initialYearProjects);
           const excludedTypesList = relevantExcludedTypes.join(', ');
-          
+
           return (
             <section key={year} className="year-group">
               <div className="home-section-header">
@@ -280,15 +295,15 @@ function HomePage() {
                   ))}
                 </div>
               </div>
-              
+
               <div className="game-grid">
                 {filteredYearProjects.map((project) => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
-                
+
                 {/* Card de Projetos Ocultos (Req 3, Caso B) */}
                 {projectsHiddenInYear > 0 && showHiddenCard && (
-                  <div 
+                  <div
                     className="game-card hidden-projects-card"
                     onClick={() => handleRemoveExclusions(relevantExcludedTypes)} // Use specific handler
                   >
@@ -307,7 +322,7 @@ function HomePage() {
             </section>
           );
         })}
-        
+
         {totalProjectsCount > 0 && totalVisibleProjects === 0 && (
             <p style={{ textAlign: 'center', marginTop: '40px', color: '#a0a0a0' }}>
                 No projects found. All are currently hidden by filters.
