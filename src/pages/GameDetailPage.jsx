@@ -4,6 +4,8 @@ import { baseURL, fieldsQuery, getHashedColor, getAssetUrl } from '../utils'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 // Helper function to find the preferred English translation
 const getPreferredTranslation = (translations) => {
@@ -15,6 +17,25 @@ const getPreferredTranslation = (translations) => {
   if (ptTranslation) return ptTranslation;
   return translations[0] || {};
 }
+
+// Component for rendering code blocks with syntax highlighting
+const CodeBlock = ({ node, inline, className, children, ...props }) => {
+  const match = /language-(\w+)/.exec(className || '');
+  return !inline && match ? (
+    <SyntaxHighlighter
+      {...props}
+      style={dracula}
+      language={match[1]}
+      PreTag="div"
+    >
+      {String(children).replace(/\n$/, '')}
+    </SyntaxHighlighter>
+  ) : (
+    <code {...props} className={className}>
+      {children}
+    </code>
+  );
+};
 
 
 function GameDetailPage() {
@@ -72,6 +93,8 @@ function GameDetailPage() {
   const cardImageType = project.card_image?.type;
   const imageUrl = getAssetUrl(cardImageId, 800, '', cardImageType);
   
+  const title = translation.title || 'Title Not Available'; // Define title for meta tags
+
   const description = translation.synopsis
     ? translation.synopsis.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
     : `${title} by ChrisJogos. Find out more about this game/project.`;
@@ -136,7 +159,11 @@ function GameDetailPage() {
           )}
 
           <div className="game-synopsis">
-            <ReactMarkdown>
+            <ReactMarkdown
+              components={{
+                code: CodeBlock, // Renderiza código usando o componente CodeBlock
+              }}
+            >
               {translation.synopsis}
             </ReactMarkdown>
           </div>

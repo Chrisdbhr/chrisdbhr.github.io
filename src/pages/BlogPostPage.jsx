@@ -6,13 +6,35 @@ import rehypeSlug from 'rehype-slug'
 import TableOfContents from '../components/TableOfContents'
 import { getReadingTime, extractToc } from '../utils/textUtils'
 import { getAssetUrl, baseURL } from '../utils'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+// Component for rendering code blocks with syntax highlighting
+const CodeBlock = ({ node, inline, className, children, ...props }) => {
+  const match = /language-(\w+)/.exec(className || '');
+  return !inline && match ? (
+    <SyntaxHighlighter
+      {...props}
+      style={dracula}
+      language={match[1]}
+      PreTag="div"
+    >
+      {String(children).replace(/\n$/, '')}
+    </SyntaxHighlighter>
+  ) : (
+    <code {...props} className={className}>
+      {children}
+    </code>
+  );
+};
+
 
 function BlogPostPage() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [tocItems, setTocItems] = useState([]);
   const [readingTime, setReadingTime] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = true; // Fixed: useState(true)
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -115,6 +137,9 @@ function BlogPostPage() {
               rehypeRaw, 
               rehypeSlug 
             ]}
+            components={{
+              code: CodeBlock, // Renderiza código usando o componente CodeBlock
+            }}
           >
             {post.content}
           </ReactMarkdown>
