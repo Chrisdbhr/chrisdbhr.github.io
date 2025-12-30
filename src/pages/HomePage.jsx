@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// 1. Importe o useLoaderData para receber os dados
 import { useLoaderData } from 'react-router-dom' 
 import ProjectCard from '../components/ProjectCard'
 import BlogFeed from '../components/BlogFeed'
@@ -149,14 +148,17 @@ function HomePage() {
 
   return (
     <div className="page-content fade-in">
-      
+
+      {/* SEO META TAGS for Home Page */}
+      <title>Christopher Ravailhe - Game Developer Portfolio & Blog</title>
+      <meta name="description" content="Portfolio of C# Developer and Unity Specialist Christopher Ravailhe, featuring games with the launcher and download links, projects source code, devlogs, and technical articles." />
+
       <LauncherCTA />
 
       <div className="home-section">
         <BlogFeed />
       </div>
 
-      {/* NOVO: Componente de Filtro */}
       <ProjectTypeFilter
         types={uniqueProjectTypes}
         excludedTypes={excludedTypes}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { baseURL, fieldsQuery, getHashedColor } from '../utils'
+import { baseURL, fieldsQuery, getHashedColor, getAssetUrl } from '../utils'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
@@ -67,6 +67,15 @@ function GameDetailPage() {
 
   const translation = getPreferredTranslation(project.translations);
 
+  // SEO Meta Calculation
+  const cardImageId = project.card_image?.id;
+  const cardImageType = project.card_image?.type;
+  const imageUrl = getAssetUrl(cardImageId, 800, '', cardImageType);
+  
+  const description = translation.synopsis
+    ? translation.synopsis.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
+    : `${title} by ChrisJogos. Find out more about this game/project.`;
+
   const getEmbedUrl = (url) => {
     if (!url) return null;
     try {
@@ -84,6 +93,22 @@ function GameDetailPage() {
 
   return (
     <div className="page-content game-detail-page fade-in">
+      {/* SEO META TAGS */}
+      <title>{`${title} - ChrisJogos`}</title>
+      <meta name="description" content={description} />
+      
+      {/* Open Graph Tags */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:type" content="article" />
+      {imageUrl && <meta property="og:image" content={imageUrl} />}
+      
+      {/* Twitter Cards */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+
       <button onClick={() => navigate('/')} className="button-back">
         &larr; Go Back
       </button>
