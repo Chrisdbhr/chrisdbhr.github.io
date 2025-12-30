@@ -34,7 +34,7 @@ function BlogPostPage() {
   const [post, setPost] = useState(null);
   const [tocItems, setTocItems] = useState([]);
   const [readingTime, setReadingTime] = useState(0);
-  const [loading, setLoading] = true; // Fixed: useState(true)
+  const [loading, setLoading] = useState(true); // Fixed: useState(true)
 
   useEffect(() => {
     const fetchPost = async () => {
