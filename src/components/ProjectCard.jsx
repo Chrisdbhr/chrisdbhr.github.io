@@ -19,8 +19,10 @@ function ProjectCard({ project }) {
   const translation = getPreferredTranslation(project.translations);
   const title = translation.title || 'Title Not Available'; 
   
-  // getAssetUrl() agora usa o padrão de 800px wide e webp
-  const imageUrl = getAssetUrl(project.card_image?.id) 
+  const cardImageId = project.card_image?.id;
+  const cardImageType = project.card_image?.type;
+  
+  const imageUrl = getAssetUrl(cardImageId, undefined, '', cardImageType) 
 
   let firstLineSynopsis = '';
   if (translation.synopsis) {

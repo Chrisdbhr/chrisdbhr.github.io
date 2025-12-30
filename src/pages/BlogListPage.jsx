@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useLoaderData } from 'react-router-dom'
 import { getAssetUrl, baseURL } from '../utils' // <--- baseURL importado
 
-const API_URL = `${baseURL}/items/blog_posts?fields=id,title,date_published,cover_image.id&filter[status][_eq]=published&sort=-date_published`
+const API_URL = `${baseURL}/items/blog_posts?fields=id,title,date_published,cover_image.id,cover_image.type&filter[status][_eq]=published&sort=-date_published`
 
 // 2. Exporte o loader
 export async function loader() {
@@ -16,7 +16,7 @@ export async function loader() {
       let imageUrl = null;
       if (item.cover_image) {
         // Usando getAssetUrl para otimizar cards do blog (400px de largura, 16:9)
-        imageUrl = getAssetUrl(item.cover_image.id, 400, 'height=225&fit=cover'); 
+        imageUrl = getAssetUrl(item.cover_image.id, 400, 'height=225&fit=cover', item.cover_image.type); 
       }
 
       return {

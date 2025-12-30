@@ -610,6 +610,16 @@ img {
   line-height: 1.7;
 }
 
+.game-synopsis ul,
+.game-synopsis ol {
+  padding-left: 25px; 
+  margin-bottom: 15px;
+}
+
+.game-synopsis li {
+  margin-bottom: 5px;
+}
+
 .game-synopsis a {
   color: var(--color-purple);
   text-decoration: underline;
