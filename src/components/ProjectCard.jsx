@@ -26,6 +26,8 @@ function ProjectCard({ project }) {
   if (translation.synopsis) {
     firstLineSynopsis = translation.synopsis
       .split('\n')[0]
+      // Remove Markdown headers (#, ##, ###) se estiverem no início da linha
+      .replace(/^(#+\s*)/, '')
       .replace(/([*_~]|<br\s*\/?>|\[.*?\]\(.*?\))/g, '')
       .trim();
   }
