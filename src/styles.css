@@ -272,6 +272,16 @@ img {
   font-size: 1rem;
 }
 
+/* --- Estilo dos Links de Loja (GameDetailPage) --- */
+.game-store-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.game-store-links a {
+  width: 100%;
+}
+
 .game-detail-tags {
   display: flex;
   flex-wrap: wrap;
