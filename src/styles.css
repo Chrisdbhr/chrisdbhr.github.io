@@ -22,7 +22,7 @@ body {
   background-color: var(--color-darkest);
   color: var(--color-light);
   line-height: 1.6;
-  font-size: 18px; /* Crimson Pro fica melhor um pouco maior */
+  font-size: 18px;
 }
 
 a {
@@ -80,6 +80,12 @@ img {
   font-size: 0.9rem;
 }
 
+.page-content {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 10px;
+}
+
 .page-content h2 {
   color: var(--color-light);
   margin-bottom: 20px;
@@ -93,6 +99,8 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* --- Card de Jogo (GameCard) --- */
@@ -343,6 +351,8 @@ img {
 
 .main-content-area {
   min-width: 0;
+  width: 100%;
+  overflow-wrap: break-word;
 }
 
 .main-header h1 a {
@@ -356,6 +366,8 @@ img {
   background-color: var(--color-dark);
   padding: 20px;
   border-radius: var(--border-radius);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .home-section h2,
@@ -472,6 +484,8 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .blog-post-card {
@@ -569,10 +583,9 @@ img {
 }
 
 
-/* --- Responsividade (Ajustes) --- */
+/* --- Responsividade --- */
 @media (max-width: 900px) {
   .page-layout {
-    /* Mude para flex para poder reordenar */
     display: flex;
     flex-direction: column;
   }
@@ -596,7 +609,11 @@ img {
   .game-detail-sidebar {
     grid-row: 1; /* Move a sidebar para cima */
     margin-bottom: 20px;
-    position: static; /* <-- CORREÇÃO: Remove o "pin" no mobile */
+    position: static; 
+  }
+
+  .game-grid {
+    grid-template-columns: 1fr; /* Prevents overflow on very narrow screens */
   }
   
   .blog-post-item {
@@ -611,6 +628,20 @@ img {
   .game-detail-sidebar > .download-fallback,
   .game-detail-sidebar > .button-primary.button-disabled {
     display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-post-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-section {
+    padding: 15px;
   }
 }
 
@@ -886,6 +917,7 @@ img {
 .engine-stats-total {
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
 }
 .engine-stat-item {
   font-family: 'Inter', sans-serif;
@@ -911,6 +943,7 @@ img {
 .engine-stats-year {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .engine-stat-item-year {
   display: flex;
