@@ -49,18 +49,43 @@ export const formatDate = (dateString) => {
   });
 }
 
-export function getHashedColor(tagString) {
-  let hash = 0;
-  if (tagString.length === 0) return 'hsl(0, 0%, 30%)';
+/**
+ * @param {string} text - O texto para gerar a cor.
+ * @param {number} hueOffset - Deslocamento em graus (0 a 360). 
+ * Mude isso globalmente para girar a paleta de cores.
+ */
+export const getHashedColor = (text, hueOffset = 240) => {
+  if (!text) return 'hsl(0, 0%, 70%)';
 
-  for (let i = 0; i < tagString.length; i++) {
-    const char = tagString.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash; // Convert to 32bit integer
+  let hash = 0;
+  // Usando um multiplicador primo (31 ou 37) ajuda a espalhar melhor as cores
+  // para strings parecidas.
+  for (let i = 0; i < text.length; i++) {
+    hash = text.charCodeAt(i) + ((hash << 5) - hash);
+    hash = hash & hash;
   }
 
-  const hue = Math.abs(hash) % 360;
-  // Use 60% saturation and 35% lightness
-  // It's a dark but colorful color, perfect for light text on top
-  return `hsl(${hue}, 60%, 35%)`;
-}
+  // 1. Calcula o Hue Base (0-360)
+  const baseHue = Math.abs(hash % 360);
+
+  // 2. Aplica o OFFSET pedido.
+  // O operador % 360 garante que se passar de 360, ele volta pro 0 (roda gira).
+  const finalHue = (baseHue + hueOffset) % 360;
+
+  // --- CONFIGURAÇÕES DE VISIBILIDADE (Theme Dark) ---
+  
+  // Saturação: Entre 50% e 75% (Nem cinza, nem neon estourado)
+  // O hash define onde cai nesse range para variar um pouco.
+  const saturation = 50 + (Math.abs(hash) % 25); 
+
+  // Luminosidade: Entre 60% e 80% (Para garantir leitura no fundo escuro)
+  let lightness = 60 + (Math.abs(hash) % 20);
+
+  // Opcional: Reforço de luz para cores que o olho humano enxerga mais escuro (Azul/Roxo)
+  // Se a cor final cair entre azul e roxo (210-290), clareia mais 10%
+  if (finalHue > 210 && finalHue < 290) {
+    lightness += 10;
+  }
+
+  return `hsl(${finalHue}, ${saturation}%, ${lightness}%)`;
+};

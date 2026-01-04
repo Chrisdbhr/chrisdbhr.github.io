@@ -86,8 +86,7 @@ function ProjectCard({ project }) {
             <span
               className="game-tag"  
               style={{
-                backgroundColor: getHashedColor(projectType), 
-                color: '#fff' 
+                backgroundColor: getHashedColor(projectType)
               }}
             >
               {projectType}

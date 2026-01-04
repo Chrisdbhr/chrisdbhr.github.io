@@ -312,22 +312,25 @@ function GameDetailPage() {
             )}
           </div>
 
-          <div className="sidebar-info-box">
-            <h4>Tags</h4>
-            <div className="game-detail-tags">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag.tags_id}
-                  className="game-tag"
-                  style={{
-                    background: getHashedColor(tag.tags_id),
-                  }}
-                >
-                  {tag.tags_id}
-                </span>
-              ))}
+          {/* Only show tags section if there are tags */}
+          {project.tags && project.tags.length > 0 && (
+            <div className="sidebar-info-box">
+              <h4>Tags</h4>
+              <div className="game-detail-tags">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag.tags_id}
+                    className="game-tag"
+                    style={{
+                      background: getHashedColor(tag.tags_id),
+                    }}
+                  >
+                    {tag.tags_id}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
         </aside>
       </div>
@@ -335,4 +338,4 @@ function GameDetailPage() {
   )
 }
 
-export default GameDetailPage;
+export default GameDetailPage
