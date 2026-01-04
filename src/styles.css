@@ -164,7 +164,7 @@ img {
 .game-card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 2px;
 }
 
 /* --- Botões (Nova Paleta) --- */
@@ -690,13 +690,12 @@ img {
 /* --- Estilo das Tags (Hashed) --- */
 .game-tag {
   color: #fff;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 4px;
   font-size: 0.8rem;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  text-transform: uppercase;
 }
 
 .game-tag-outline {
@@ -1652,11 +1651,10 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 
 .filter-button {
   --filter-color: var(--color-purple); /* Fallback */
-  
   padding: 8px 15px;
   border: 2px solid var(--filter-color);
-  background-color: transparent;
-  color: var(--filter-color);
+  background-color: var(--filter-color);
+  color: #FFF;
   border-radius: 4px;
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
@@ -1682,7 +1680,6 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
 .filter-button.excluded:hover {
   background-color: #333;
   color: var(--color-light);
-  border-color: var(--color-grey);
   opacity: 1;
   transform: none;
 }

@@ -60,18 +60,19 @@ function ProjectCard({ project }) {
 
       <div className="game-card-content">
         <h3>{title}</h3>
-        
+
         {firstLineSynopsis && (
           <p className="game-card-synopsis">{firstLineSynopsis}</p>
         )}
 
         <div className="game-card-tags">
           {project.tags.slice(0, 3).map((tag) => (
-            <span 
-              key={tag.tags_id} 
+            <span
+              key={tag.tags_id}
               className="game-tag"
-              style={{ 
-                backgroundColor: getHashedColor(tag.tags_id),
+              style={{
+                backgroundColor: '#111',
+                color: getHashedColor(tag.tags_id),
               }}
             >
               {tag.tags_id}
@@ -79,20 +80,20 @@ function ProjectCard({ project }) {
           ))}
         </div>
 
-        {/* --- FOOTER ATUALIZADO --- */}
+        {/* --- FOOTER UPDATED --- */}
         <div className="game-card-footer">
           <div className="game-card-footer-left">
-            <span 
-              className="game-tag-outline"
-              style={{ 
-                borderColor: getHashedColor(projectType),
-                color: getHashedColor(projectType) 
+            <span
+              className="game-tag"  
+              style={{
+                backgroundColor: getHashedColor(projectType), 
+                color: '#fff' 
               }}
             >
               {projectType}
             </span>
           </div>
-          
+
           {project.engine && (
             <span className="engine-name">{project.engine}</span>
           )}
