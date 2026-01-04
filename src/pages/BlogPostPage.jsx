@@ -5,7 +5,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import TableOfContents from '../components/TableOfContents'
 import { getReadingTime, extractToc } from '../utils/textUtils'
-import { getAssetUrl, baseURL } from '../utils'
+import { getAssetUrl, baseURL, getHashedColor } from '../utils'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import ProjectCard from '../components/ProjectCard'
@@ -53,7 +53,7 @@ function BlogPostPage() {
         .map(field => `related_projects.projects_id.${field}`)
         .join(',');
       
-      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type,${RELATED_PROJECT_FIELDS}`
+      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type,tags,${RELATED_PROJECT_FIELDS}`
       
       try {
         setLoading(true);
@@ -141,6 +141,7 @@ function BlogPostPage() {
       <meta name="twitter:description" content={description} />
       {imageUrl && <meta name="twitter:image" content={imageUrl} />}
 
+
       <article className="blog-post-detail">
         <header className="blog-post-header">
           <h1>{post.title}</h1>
@@ -151,7 +152,29 @@ function BlogPostPage() {
                 &bull; {readingTime} min read
               </span>
             )}
-          </div>
+          </div>       
+
+          {/* Display Blog Post Tags */}
+          {(post.tags && post.tags.length > 0) && (
+            <div className="blog-post-tags">
+              {post.tags.map(tag => {
+                const tagId = tag;
+                const color = getHashedColor(tagId);
+                return (
+                  <span
+                    key={tagId}
+                    className="game-tag"
+                    style={{
+                      background: '#222',
+                      color: color
+                    }}
+                  >
+                    {tagId}
+                  </span>
+                );
+              })}
+            </div>
+          )}
 
           {imageUrl && (
             <img 
@@ -175,7 +198,7 @@ function BlogPostPage() {
             {post.content}
           </ReactMarkdown>
         </div>
-        
+
         {/* Related Projects Section */}
         {relatedProjects.length > 0 && (
           <div className="github-readme-box">

@@ -1421,6 +1421,15 @@ section.year-group:has(h3.upcoming-title) > .home-section-header > h3 {
   margin-left: 0.5rem;
 }
 
+/* Tags container for Blog Post Header */
+.blog-post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Space between tags */
+  margin-top: 10px;
+  margin-bottom: 15px; /* Space between tags and cover image/content */
+}
+
 /* --- Sidebar do TOC --- */
 .toc-sidebar {
   background-color: var(--color-bg-secondary);
