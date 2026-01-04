@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { baseURL, fieldsQuery, getHashedColor, getAssetUrl } from '../utils'
+import { baseURL, fieldsQuery, getHashedColor, getAssetUrl, formatDate } from '../utils'
 import ScreenshotGallery from '../components/ScreenshotGallery'
 import DownloadButton from '../components/DownloadButton'
 import ReactMarkdown from 'react-markdown'
@@ -36,7 +36,6 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
     </code>
   );
 };
-
 
 function GameDetailPage() {
   const { projectId } = useParams()
@@ -92,7 +91,7 @@ function GameDetailPage() {
   const cardImageId = project.card_image?.id;
   const cardImageType = project.card_image?.type;
   const imageUrl = getAssetUrl(cardImageId, 800, '', cardImageType);
-  
+
   const title = translation.title || 'Title Not Available'; // Define title for meta tags
 
   const description = translation.synopsis
@@ -114,18 +113,21 @@ function GameDetailPage() {
 
   const trailerEmbedUrl = getEmbedUrl(project.trailer_url);
 
+  // Filter only published related posts
+  const relatedPosts = project.related_posts?.filter(post => post.post_id.status === 'published') || [];
+
   return (
     <div className="page-content game-detail-page fade-in">
       {/* SEO META TAGS */}
       <title>{`${title} - ChrisJogos`}</title>
       <meta name="description" content={description} />
-      
+
       {/* Open Graph Tags */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="article" />
       {imageUrl && <meta property="og:image" content={imageUrl} />}
-      
+
       {/* Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
@@ -167,6 +169,40 @@ function GameDetailPage() {
               {translation.synopsis}
             </ReactMarkdown>
           </div>
+
+          {/* Related Posts Section */}
+          {relatedPosts.length > 0 && (
+            <div className="github-readme-box">
+              <h3>Related Articles</h3>
+              <div className="blog-post-grid">
+                {relatedPosts.map((post) => {
+                  const postImageUrl = post.post_id.cover_image
+                    ? getAssetUrl(post.post_id.cover_image.id, 400, 'height=225&fit=cover', post.post_id.cover_image.type)
+                    : null;
+
+                  return (
+                    <Link
+                      key={post.post_id.id}
+                      to={`/blog/${post.post_id.id}`}
+                      className="blog-post-card"
+                    >
+                      <div className="blog-post-image-container">
+                        {postImageUrl ? (
+                          <img src={postImageUrl} alt={`Cover image of ${post.post_id.title}`} />
+                        ) : (
+                          <div className="blog-post-image-placeholder"></div>
+                        )}
+                      </div>
+                      <div className="blog-post-content">
+                        <h4>{post.post_id.title}</h4>
+                        <span className="blog-post-date">{formatDate(post.post_id.date_published)}</span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
         </div>
 

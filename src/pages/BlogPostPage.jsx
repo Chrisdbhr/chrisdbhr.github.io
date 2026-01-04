@@ -8,6 +8,7 @@ import { getReadingTime, extractToc } from '../utils/textUtils'
 import { getAssetUrl, baseURL } from '../utils'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ProjectCard from '../components/ProjectCard'
 
 // Component for rendering code blocks with syntax highlighting
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
@@ -38,7 +39,22 @@ function BlogPostPage() {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type`
+      
+      // Fields required by ProjectCard component on the related project object
+      const PROJECT_CARD_REQUIRED_FIELDS = [
+        'id', 'status', 'release_date', 'engine', 'project_type',
+        'card_image.id', 'card_image.type',
+        'translations.*',
+        'tags.tags_id',
+      ];
+      
+      // Prefix all required fields with 'related_projects.projects_id.'
+      const RELATED_PROJECT_FIELDS = PROJECT_CARD_REQUIRED_FIELDS
+        .map(field => `related_projects.projects_id.${field}`)
+        .join(',');
+      
+      const API_URL = `${baseURL}/items/blog_posts/${slug}?fields=id,title,date_published,content,cover_image.id,cover_image.type,${RELATED_PROJECT_FIELDS}`
+      
       try {
         setLoading(true);
         const response = await fetch(API_URL);
@@ -92,6 +108,21 @@ function BlogPostPage() {
     ? post.content.substring(0, 155).replace(/(\r\n|\n|\r|#|!|\[|\]|\*)/gm, " ").trim() + "..."
     : "Read this post on ChrisJogos blog.";
 
+  // Extract and filter related projects based on environment status requirements
+  const relatedProjects = (post.related_projects || [])
+    .map(link => link.projects_id)
+    .filter(project => {
+      if (!project) return false;
+      const status = project.status;
+      
+      if (import.meta.env.DEV) {
+        return status === 'published' || status === 'draft';
+      } else {
+        return status === 'published';
+      }
+    });
+
+
   return (
     <div className="blog-post-layout">
       
@@ -144,6 +175,18 @@ function BlogPostPage() {
             {post.content}
           </ReactMarkdown>
         </div>
+        
+        {/* Related Projects Section */}
+        {relatedProjects.length > 0 && (
+          <div className="github-readme-box">
+            <h3>Related Projects</h3>
+            <div className="game-grid">
+              {relatedProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          </div>
+        )}
         
       </article>
 
