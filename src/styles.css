@@ -603,13 +603,23 @@ img {
 }
 @media (max-width: 768px) {
   .game-detail-layout {
-    grid-template-columns: 1fr; /* Coluna única */
+    grid-template-columns: 1fr;
   }
 
   .game-detail-sidebar {
-    grid-row: 1; /* Move a sidebar para cima */
+    grid-row: 1; 
     margin-bottom: 20px;
     position: static; 
+  }
+
+  /* Mobile size for Game Detail Title */
+  .game-detail-page .game-title {
+    font-size: 2rem; /* Reduced title size on mobile */
+  }
+
+  /* Mobile size for Blog Post Title */
+  .blog-post-header h1 {
+    font-size: 1.8rem; /* Reduced title size on mobile */
   }
 
   .game-grid {
