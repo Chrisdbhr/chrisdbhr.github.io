@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getAssetUrl, baseURL } from '../utils' // <--- baseURL importado
+import { getAssetUrl, baseURL } from '../utils'
 
-const API_URL = `${baseURL}/items/blog_posts?fields=id,title,date_published,cover_image.id,cover_image.type&filter[status][_eq]=published&sort=-date_published&limit=4`
+const getFilter = () => {
+  return import.meta.env.DEV
+    ? "filter[status][_in]=published,draft"
+    : "filter[status][_eq]=published";
+}
+
+const API_URL = `${baseURL}/items/blog_posts?fields=id,title,date_published,cover_image.id,cover_image.type&${getFilter()}&sort=-date_published&limit=4`
 
 function BlogFeed() {
   const [posts, setPosts] = useState([]);
@@ -11,28 +17,27 @@ function BlogFeed() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(API_URL); // <-- Usa API_URL
+        const response = await fetch(API_URL);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
+
         const data = await response.json();
-        
+
         const feedPosts = data.data.map((item) => {
           let imageUrl = null;
           if (item.cover_image) {
-            // Usando getAssetUrl para otimizar cards do blog (400px de largura, 16:9)
             imageUrl = getAssetUrl(item.cover_image.id, 400, 'height=225&fit=cover', item.cover_image.type);
           }
 
           return {
-            title: item.title || "No Title", // Translated
-            link: `/blog/${item.id}`, // <-- Link interno
+            title: item.title || "No Title",
+            link: `/blog/${item.id}`,
             pubDate: new Date(item.date_published || Date.now()).toLocaleDateString('pt-BR'),
             imageUrl: imageUrl,
           };
         });
         setPosts(feedPosts);
       } catch (error) {
-        console.error("Error fetching blog posts:", error); // Translated
+        console.error("Error fetching blog posts:", error);
       } finally {
         setLoading(false);
       }
@@ -45,13 +50,12 @@ function BlogFeed() {
     <div className="blog-feed-container">
       <h3>Latest from the Blog</h3>
       {loading && <p>Loading posts...</p>}
-      
+
       <div className="blog-post-grid">
         {posts.map((post, index) => (
-          // Usando <Link> para navegação interna
-          <Link 
-            key={index} 
-            to={post.link} 
+          <Link
+            key={index}
+            to={post.link}
             className="blog-post-card"
           >
             <div className="blog-post-image-container">
@@ -68,7 +72,7 @@ function BlogFeed() {
           </Link>
         ))}
       </div>
-      
+
       <Link to="/blog" className="button-secondary blog-view-all">
         View all posts &rarr;
       </Link>
